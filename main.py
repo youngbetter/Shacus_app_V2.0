@@ -21,10 +21,6 @@ from Appointment.APpraseHandler import APprase
 from Appointment.ApCompanionAuthHandler import AcAuthHandler
 from Appointment.ApCompanionHandler import ApCompanionHandler
 from Appointment.Ranklist import Ranklist
-from Course.Chomepage import Chomepage
-from Course.CourseAsk import CourseAsk
-from Course.CourseLike import Courselike
-from Course.Coursefav import Coursefav
 from Database.models import engine
 from ImageCallback import ImageCallback
 from Message.Sysmessage import Sysmessage
@@ -72,10 +68,6 @@ class Application(tornado.web.Application):
              (r"/PaswChange",PaswChange),
              (r"/trend/Trendspost",TRendspost),
              (r"/trend/Trendhanler",TrendHandler),
-             (r"/course/homepage",Chomepage),
-             (r"/course/ask",CourseAsk),
-             (r"/course/like",Courselike),
-             (r"/course/fav",Coursefav),
              (r"/ranklist", Ranklist),
              (r"/appointment/chat",APchatCreateHandler),
              (r"/Userinfo/imghandler",Userhpimg),
