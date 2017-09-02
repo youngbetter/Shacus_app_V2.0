@@ -1,9 +1,9 @@
 # The FROM instruction sets the Base Image for subsequent instructions.
 FROM centos:6
 
-MAINTAINER Lanway <115564098@qq.com>
+MAINTAINER Nick <1033553433@qq.com>
 
-#ÅäÖÃ»ù´¡°²×°»·¾³
+#é…ç½®åŸºç¡€å®‰è£…ç¯å¢ƒ
 RUN yum -y  groupinstall "Development tools"
 RUN yum -y install zlib-devel
 RUN yum -y install bzip2-devel
@@ -12,7 +12,7 @@ RUN yum -y install ncurses-devel
 RUN yum -y install sqlite-devel
 RUN yum -y install wget
 
-#ÅäÖÃpython
+#é…ç½®python
 WORKDIR /opt
 RUN wget --no-check-certificate https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tar.xz
 RUN tar xf Python-2.7.9.tar.xz
@@ -21,7 +21,7 @@ RUN ./configure --prefix=/usr/local
 RUN make && make altinstall
 RUN ln -s /usr/local/bin/python2.7 /usr/local/bin/python
 
-#ÅäÖÃpip
+#é…ç½®pip
 WORKDIR /usr/local/src
 RUN wget "https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz#md5=834b2904f92d46aaa333267fb1c922bb" --no-check-certificate
 RUN wget http://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.tar.gz
@@ -34,25 +34,25 @@ RUN tar -xzvf pip-1.5.4.tar.gz
 WORKDIR pip-1.5.4
 RUN python setup.py install
 
-#ÅäÖÃmysql
+#é…ç½®mysql
 RUN yum install -y mysql-server mysql mysql-devel
 
-#ÅäÖÃmysqldb
+#é…ç½®mysqldb
 RUN pip install mysql-python==1.2.3
 
-#ÅäÖÃrequest
+#é…ç½®request
 RUN pip install requests==2.12.0
 
-#ÅäÖÃsqlalchemy
+#é…ç½®sqlalchemy
 RUN pip install sqlalchemy==1.1.0
 
-#ÅäÖÃtornado
+#é…ç½®tornado
 RUN pip install tornado==4.0
 
-#ÅäÖÃredis
+#é…ç½®redis
 RUN pip install redis==2.10.5
 
-#´´½¨Ò»¸öÖ¸¶¨µÄÎÄ¼ş¼ĞÓÃÓÚ·ÅÖÃ´úÂë
+#åˆ›å»ºä¸€ä¸ªæŒ‡å®šçš„æ–‡ä»¶å¤¹ç”¨äºæ”¾ç½®ä»£ç 
 RUN mkdir -p /app
 WORKDIR /app
 COPY . /app
