@@ -189,6 +189,7 @@ class RequestsAuth(AuthBase):
         token = None
         if r.body is not None and r.headers['Content-Type'] == 'application/x-www-form-urlencoded':
             token = self.auth.token_of_request(r.url, r.body, 'application/x-www-form-urlencoded')
+            print token
         else:
             token = self.auth.token_of_request(r.url)
         r.headers['Authorization'] = 'QBox {0}'.format(token)

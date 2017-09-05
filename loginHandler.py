@@ -22,8 +22,6 @@ class LoginHandler(BaseHandler):
 
     retjson = {'code': '', 'contents': u'未处理 '}
 
-
-
     @asynchronous
     @gen.coroutine
     def post(self):

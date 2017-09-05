@@ -8,13 +8,13 @@ create datetime : 2016-09-05
 v2.0.1 
 '''
 import os
-from .user import User
-from .message import Message
-from .wordfilter import Wordfilter
-from .group import Group
-from .chatroom import Chatroom
-from .push import Push
-from .sms import SMS
+from rongcloud.user import User
+from rongcloud.message import Message
+from rongcloud.wordfilter import Wordfilter
+from rongcloud.group import Group
+from rongcloud.chatroom import Chatroom
+from rongcloud.push import Push
+from rongcloud.sms import SMS
 
 
 class RongCloud:

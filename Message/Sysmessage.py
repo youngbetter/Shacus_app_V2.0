@@ -2,10 +2,11 @@
 import json
 
 import Userinfo.Ufuncs
-from BaseHandlerh import BaseHandler
 from Database.tables import AppointmentImage, Appointment
 from FileHandler.Upload import AuthKeyHandler
 from rongcloud import RongCloud
+
+from BaseHandlerh import BaseHandler
 
 
 class Sysmessage(BaseHandler):
@@ -20,7 +21,7 @@ class Sysmessage(BaseHandler):
         ufuncs = Userinfo.Ufuncs.Ufuncs()
         if ufuncs.judge_user_valid(userid, u_auth_key):
             if request_type == '11524':   # 用户报名时给发送约拍方发送图文消息
-                rcloud = RongCloud("x4vkb1qpvxu4k", "EziWuNBddbcfz")
+                rcloud = RongCloud("vnroth0kv4dto", "0bdyYr7M2x0")
                 fromuserid = self.get_argument('fromuserid')
                 touserid = self.get_argument('touserid')
                 objectname = 'RC:ImgTextMsg'
