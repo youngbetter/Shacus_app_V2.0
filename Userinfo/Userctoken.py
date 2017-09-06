@@ -13,7 +13,6 @@ def get_token(uid,nickname):
     c = rcloud.User.getToken(userId=uid, name=nickname,portraitUri='').result
     return c['token']
 
-
 def update_token():   # 更新token
     db = get_db()
     users = db.query(User).all()
@@ -21,7 +20,5 @@ def update_token():   # 更新token
         token = get_token(user.Uid,user.Ualais)
         user.Uchattoken = token
         db.commit()
-
-# update_token()
 
 

@@ -13,7 +13,7 @@ class APgroupHandler(object):
             ap=get_db().query(Appointment).filter(Appointment.APgroup == x+1).all()
 
             if x+1 == 1:
-                apdata['type']='写真客片'
+                apdata['type'] = '写真客片'
             elif x+1 == 2:
                 apdata['type'] = '记录随拍'
             elif x+1 == 3:
@@ -30,9 +30,9 @@ class APgroupHandler(object):
 
     @staticmethod
     def GetGroupNum(groupid):
-        if groupid=='写真客片':
+        if groupid   == '写真客片':
             return 1
-        elif groupid=='记录随拍':
+        elif groupid == '记录随拍':
             return 2
         elif groupid == '练手互免':
             return 3

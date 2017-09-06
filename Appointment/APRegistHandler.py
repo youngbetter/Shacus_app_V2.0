@@ -67,7 +67,7 @@ class APregistHandler(BaseHandler):  # 报名约拍
                             self.db_error()
                 except Exception, e:
                     print e
-                    self.retjson['contents'] = '授权码不存在或已过期或改活动不存在'
+                    self.retjson['contents'] = '授权码不存在或已过期或该活动不存在'
                     self.retjson['code'] = '10279'
             elif ap_type == '10275':  # 用户取消报名
                 try:

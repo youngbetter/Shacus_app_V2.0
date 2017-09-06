@@ -7,7 +7,6 @@ sys.path.append("..")
 import base64
 
 import time
-
 from BaseHandlerh import BaseHandler
 
 class Tokengenerate(BaseHandler):
@@ -16,9 +15,7 @@ class Tokengenerate(BaseHandler):
     p_id = ''
     expire = 7200   #过期时间
     def __init__(self,uid,pid):
-
         '''
-
         Args:
             uid: 用户id 存在于数据库中
             pid: 设备ID 客户端发送
@@ -38,5 +35,7 @@ class Tokengenerate(BaseHandler):
         token = base64.urlsafe_b64encode(key)
         self.redis.set(self.u_id,token,ex=self.expire)
         return token
+
 test = Tokengenerate(1,1)
 print test.generate()
+print "test finish"

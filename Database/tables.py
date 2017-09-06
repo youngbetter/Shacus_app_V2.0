@@ -36,6 +36,18 @@ class User(Base):   #用户表   #添加聊天专用chattoken
     Ucategory = Column(Integer, nullable=False, default=0)  #用户分类：0-普通用户，1-摄影师，2-模特，3-商家
     UlikedN = Column(Integer, nullable=False, default=0)    #用户总获赞数
 
+
+class UCinfo(Base):
+    __tablename__ = 'UCinfo'
+
+    UCuid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'),nullable=False,primary_key=True)
+    UClikeN = Column(Integer, nullable=False, default=0)
+    UClikedN = Column(Integer, nullable=False, default=0)
+    UCapN = Column(Integer, nullable=False, default=0)
+    UCphotoN = Column(Integer, nullable=False, default=0)
+    UCcourseN = Column(Integer, nullable=False, default=0)
+    UCmomentN = Column(Integer, nullable=False, default=0)
+
 class Verification(Base): # 短信验证码及生成用户auth_key时间
     __tablename__ = 'Verification'
     Vphone = Column(CHAR(11),primary_key=True)
@@ -98,6 +110,14 @@ class UserHomepageimg(Base):    #用户个人图片展示
     UHpicvalid = Column(Integer, default=0)
     UHheight = Column(Integer,default=0)
     UHwidth = Column(Integer,default=0)
+
+class TrendImage(Base):
+    __tablename__ = 'TrendImage'
+
+    TIid = Column(Integer, primary_key=True)
+    TItid = Column (Integer, ForeignKey('Trend.Tid',onupdate='CASCADE'),primary_key=True)
+    TIimid = Column(Integer, ForeignKey('Image.IMid',onupdate='CASCADE'),primary_key=True)
+    TIimgurl = Column(VARCHAR(128))
 
 class CommuQuesImg(Base):   #社区问题图片
     __tablename__='CommuQuesImg'
@@ -174,11 +194,10 @@ class AppointmentInfo(Base):
     AImcomment = Column(VARCHAR(128))                                   #模特评论
     AIpcomment = Column(VARCHAR(128))                                   #摄影师评论
 
-#没懂
+#约拍报名项
 class AppointEntry(Base):
     __tablename__ = "AppointEntry"
 
-    AEapid=Column(Integer, ForeignKey('Appointment.APid' ,onupdate="CASCADE") )
     AEid = Column(Integer, primary_key=True)
     AEapid = Column(Integer, ForeignKey('Appointment.APid',onupdate='CASCADE'))
     AEregisterID = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'))
@@ -186,7 +205,6 @@ class AppointEntry(Base):
     AEchoosed = Column(Boolean, nullable=False,default=0)
     AEregistT = Column(DateTime(timezone=True), default=func.now())
     AEmessage = Column(VARCHAR(128), nullable=False, default='')
-
 
 class Favorite(Base):
     __tablename__ = 'Favorite'
@@ -219,14 +237,7 @@ class Trend(Base):
     Tcontent = Column(VARCHAR(128), nullable=False)                                             # 动态内容
     Ttitle = Column(VARCHAR(12), nullable=False)
 
-class TrendImage(Base):
-    __tablename__ = 'TrendImage'
-    TIid = Column(Integer, primary_key=True)
-    TItid = Column (Integer, ForeignKey('Trend.Tid',onupdate='CASCADE'),primary_key=True)
-    TIimid = Column(Integer, ForeignKey('Image.IMid',onupdate='CASCADE'),primary_key=True)
-    TIimgurl = Column(VARCHAR(128))
-
-class TrendComment(Base):  #社区评论
+class TrendComment(Base):  #动态评论
     __tablename__="TrendComment"
 
     TRcmtid = Column(Integer, primary_key=True , nullable=False)
@@ -266,6 +277,7 @@ class UserCollection(Base): #用户作品集
 
 class UserCollectionimg(Base):
     __tablename__ = 'UserCollectionimg'
+
     UCIuser = Column(Integer, ForeignKey(UserCollection.UCid, onupdate='CASCADE')) # 作品集id
     UCIimid = Column(Integer, ForeignKey(Image.IMid, onupdate='CASCADE'), primary_key=True)
     UCIurl = Column(VARCHAR(128))

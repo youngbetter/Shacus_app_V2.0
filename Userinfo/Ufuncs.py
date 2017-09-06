@@ -20,18 +20,15 @@ class Ufuncs(object):
         '''
         try:
             user = get_db().query(User).filter(User.Uauthkey == u_auth_key).one()
-
             uid = user.Uid
             print 'id from get auth key::;', uid
             return uid
         except Exception,e:
-            print e
+            print "数据库操作：根据用户authkey获取id失败"+str(e)
             return 0
-
     # @staticmethod
     # def user_auth():
     #@classmethod
-    #@staticmethod
     def get_user_authkey(self,u_id):
         '''
         @attention: 直接调用时需要判断是否为0,返回0则该用户不存在
@@ -46,7 +43,7 @@ class Ufuncs(object):
                print 'authkey from id::;',u_auth_key
                return u_auth_key
         except Exception, e:
-            print 'edsdsd:::',e
+            print "数据库操作：根据用户id获取authkey失败" + str(e)
             return 0
 
     #@staticmethod
@@ -62,23 +59,21 @@ class Ufuncs(object):
             if u_id == int(uid):
                 return 1   # 合法
             else:
-                print 'shdasidasd'
+                print "非法用户"
                 return 0   # 不合法
         except Exception, e:
             print e
             return 0
-
 
     @staticmethod
     def get_userlist_from_ap(apid):
         '''
         Args:
             apid: 约拍id
-        Returns:返回所有报名用户的用户简单模型
-
+        Returns:
+            返回所有报名用户的用户简单模型
         '''
         users = []
-
         try:
             registers = get_db().query(AppointEntry).filter(AppointEntry.AEapid == apid,
                                                             AppointEntry.AEvalid == 1).all()  # 返回的是报名项
@@ -92,7 +87,6 @@ class Ufuncs(object):
             return users
         except Exception, e:
             print e
-
 
     @staticmethod
     def get_users_registlist_from_uids(userids):
@@ -114,7 +108,7 @@ class Ufuncs(object):
                 )
                 users.append(new_user)
             except Exception, e:
-                print e, "找用户出现错误"
+                print "数据库操作：寻找用户失败" + str(e)
         return users
 
     @staticmethod
@@ -143,7 +137,7 @@ class Ufuncs(object):
                 print '插入新用户'
                 users.append(new_user)
             except Exception, e:
-                print e, "找用户出现错误"
+                print "数据库操作：寻找用户失败" + str(e)
         return users
 
 
@@ -167,7 +161,7 @@ class Ufuncs(object):
         authkey_handler = AuthKeyHandler()
         try:
             # user_images = get_db().query(UserImage).filter(UserImage.UIuid == userid).all()
-            #user_image = get_db().query(UserImage).filter(UserImage.UIuid == userid).one()
+            # user_image = get_db().query(UserImage).filter(UserImage.UIuid == userid).one()
             # user_images[0] = 'logo1.png'
             # for user_image in user_images:
             #     isvalid = get_db().query(Image).filter(Image.IMid == user_image.UIuid).one()

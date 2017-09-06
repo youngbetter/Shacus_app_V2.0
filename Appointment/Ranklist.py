@@ -42,6 +42,7 @@ class Ranklist(BaseHandler):
             self.retjson['code'] = '10286'
             self.retjson['content'] = u'用户认证失败！'
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))
+
     def get(self):
         rlhandler = RanklistHandler()
         rlhandler.rank_model_init()
@@ -111,7 +112,7 @@ class RanklistHandler(object):
                 # 摄影师
                 if type == 1:
                     user_model['rank'] = rs_umodel.RSPrank
-                    user_model['image'] =auth.download_url('0'+str(user.Uid)+'.png')
+                    user_model['image'] = auth.download_url('0'+str(user.Uid)+'.png')
                     #print user_model.id
                 # 模特
                 elif type == 2:
@@ -184,11 +185,6 @@ class RanklistHandler(object):
                 formor_model.RSPrank += 1
                 db.commit()
 
-
-
-
-
-
     def rank_score_finish_appoint(self, appointinfo):
         '''
         此为完成一次约拍后，模特与摄影师加分
@@ -207,7 +203,6 @@ class RanklistHandler(object):
         uid_model = appointinfo.AImid
         uid_photoer = appointinfo.AIpid
 
-
         try:
             # 模特项
             rs_model = db.query(RankScore.RSuid, RankScore.RSMscore, RankScore.RSid).\
@@ -217,7 +212,6 @@ class RanklistHandler(object):
             db.query(RankScore).filter(RankScore.RSuid == rs_model.RSuid).\
                 update({RankScore.RSMscore: score})
             # todo：排名上升下降
-
 
             # 摄影师项
             rs_photoer = db.query(RankScore.RSuid, RankScore.RSMscore, RankScore.RSid).filter(
@@ -294,10 +288,6 @@ class RanklistHandler(object):
             db.commit()
         except Exception, e:
             print e, "对模特榜进行排序时出错！"
-
-
-
-
 
 #apinfo = db.query(AppointmentInfo).filter(AppointmentInfo.AIappoid == 24).one()
 #rlhandler.rank_score_finish_appoint(apinfo)
