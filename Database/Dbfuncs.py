@@ -14,7 +14,6 @@ class Dbfuncs(object):
         retjson['contents'] = '数据库更新错误'
         retjson['code'] = '10274'
 
-# coding=utf-8
 __author__ = 'fang'
 
 def call_back(value):
