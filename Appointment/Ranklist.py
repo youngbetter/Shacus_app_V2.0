@@ -11,7 +11,7 @@ from BaseHandlerh import BaseHandler
 from Database.tables import User, RankScore, AppointmentInfo
 from Userinfo import Usermodel
 from Userinfo.Ufuncs import Ufuncs
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 
 global db
 db = get_db()

@@ -8,7 +8,7 @@ from sqlalchemy import desc
 from BaseHandlerh import BaseHandler
 from Database.models import get_db
 from Database.tables import User, UserHomepageimg, UserCollection, UserLike
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.UserImgHandler import UserImgHandler
 
 

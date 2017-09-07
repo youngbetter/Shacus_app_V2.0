@@ -1,6 +1,6 @@
 # coding=utf-8
 from Database.tables import UserImage, Image
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Database.models import get_db
 '''
 @author:兰威

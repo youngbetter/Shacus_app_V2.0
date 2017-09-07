@@ -200,7 +200,7 @@ class RegisterHandler(BaseHandler):
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))
 
     def bannerinit(self):
-        from FileHandler.Upload import AuthKeyHandler
+        from FileHandler.AuthkeyHandler import AuthKeyHandler
         bannertokens = []
 
         authkeyhandler = AuthKeyHandler()

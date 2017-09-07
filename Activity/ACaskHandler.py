@@ -12,7 +12,7 @@ import ACFunction
 from BaseHandlerh import  BaseHandler
 from Database.tables import Activity, Image
 from Database.tables import User,ActivityImage,ActivityEntry,UserImage
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
 
 class AskActivity(BaseHandler): #关于用户的一系列活动

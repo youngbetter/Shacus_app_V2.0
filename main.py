@@ -41,6 +41,9 @@ from Userinfo.UserList import UserList
 from Userinfo.Userhomepager import Userhomepager
 from Userinfo.Userhpimg import Userhpimg
 from loginHandler import LoginHandler
+
+from TRends.Trendcreat import Trendcreat
+
 define("port", default=800, help="run on the given port", type=int)
 
 
@@ -77,6 +80,8 @@ class Application(tornado.web.Application):
              (r"/recommend/reclist",UserList),
              (r"/companion/getauth", AcAuthHandler),
              (r"/user/forgotpw",Userforgotpw),
+
+             (r"/trend/creatTrend",Trendcreat)
         ]
         tornado.web.Application.__init__(self, handlers)
         self.db = scoped_session(sessionmaker(bind=engine,

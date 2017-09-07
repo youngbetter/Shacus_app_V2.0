@@ -7,10 +7,9 @@ import json
 import TRfunction
 import Userinfo.Ufuncs
 from BaseHandlerh import BaseHandler
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
 from Database.tables import Trend, TrendImage, Image, Favorite
-
 
 class TrendHandler(BaseHandler):
     retjson = {'code':'200','contents':'none'}

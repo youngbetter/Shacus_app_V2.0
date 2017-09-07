@@ -4,7 +4,7 @@
 '''
 from Database.models import get_db
 from Database.tables import UserLike, ActivityLike, ActivityEntry, Activity, Verification, UCinfo, ActivityImage, \
-    AppointmentInfo, AppointEntry, AppointLike, Appointment, AppointmentImage, User, RankScore, CourseLike, Usercourse, \
+    AppointmentInfo, AppointEntry, AppointLike, Appointment, AppointmentImage, User, RankScore,  \
     UserImage, Image, Favorite
 
 db = get_db()
@@ -72,16 +72,6 @@ for item in items:
 db.commit()
 
 items  = db.query(RankScore).all()
-for item in items:
-    db.delete(item)
-db.commit()
-
-items  = db.query(CourseLike).all()
-for item in items:
-    db.delete(item)
-db.commit()
-
-items  = db.query(Usercourse).all()
 for item in items:
     db.delete(item)
 db.commit()

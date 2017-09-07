@@ -6,13 +6,13 @@
 import json
 import TRfunction
 from BaseHandlerh import BaseHandler
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
 from Database.tables import Trend, TrendImage, Image, Favorite
 
-
 class TRendspost(BaseHandler):
     retjson = {'code':'200','contents':'null'}
+
     def post(self):
        retdata = []
        type = self.get_argument('type',default='unsolved')
@@ -22,8 +22,10 @@ class TRendspost(BaseHandler):
            ufuncs = Ufuncs() #判断用户权限
            if ufuncs.judge_user_valid(u_id , u_auth_key):#认证成功
                data=self.db.query(Trend).all()
+               #Favorite.Ftype = 3 ---- 动态
                favorites = self.db.query(Favorite).filter(Favorite.Fuid == u_id,Favorite.Ftype==3,
                                                           Favorite.Fvalid == 1).all()
+               #点赞的动态id列表
                list=[]
                exsit=0
                for items in favorites:

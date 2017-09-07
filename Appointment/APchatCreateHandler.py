@@ -3,7 +3,7 @@ import json
 from BaseHandlerh import BaseHandler
 from Database.tables import User, Appointment, AppointEntry
 from FileHandler.ImageHandler import ImageHandler
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 
 
 class APchatCreateHandler(BaseHandler):

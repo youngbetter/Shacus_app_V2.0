@@ -4,7 +4,8 @@
 '''
 from Database.models import get_db
 from Database.tables import Favorite
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
+
 def TRresponse(item,url,retdata,isfav):
     authkey= AuthKeyHandler()
     m_trresponse = dict (

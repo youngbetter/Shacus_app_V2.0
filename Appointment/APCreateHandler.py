@@ -9,7 +9,7 @@ from Appointment.APgroupHandler import APgroupHandler
 from BaseHandlerh import BaseHandler
 from Database.tables import Appointment, User
 from FileHandler.ImageHandler import ImageHandler
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
 
 

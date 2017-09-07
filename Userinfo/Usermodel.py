@@ -4,9 +4,8 @@ import time
 from Database.models import get_db
 from Database.tables import UserImage, Image, User, UserCollectionimg, UserCollection
 from FileHandler.ImageHandler import ImageHandler
-from FileHandler.Upload import AuthKeyHandler
 from Database.models import get_db
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
 '''
 @author: 黄鑫晨 兰威

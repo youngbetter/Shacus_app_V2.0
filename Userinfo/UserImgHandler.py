@@ -6,8 +6,8 @@ import urllib2
 from sqlalchemy import desc
 
 from Database.models import get_db
-from Database.tables import User, UserHomepageimg, Image, UserCollection, UserCollectionimg, UClike, UserImage, UserLike
-from FileHandler.Upload import AuthKeyHandler
+from Database.tables import User, UserHomepageimg, Image, UserCollection, UserCollectionimg, UserImage, UserLike
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 
 
 class UserImgHandler(object):

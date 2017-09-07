@@ -9,7 +9,7 @@ import Ufuncs
 from BaseHandlerh import BaseHandler
 from Database.tables import User, UCinfo, UserImage, Image
 from Usermodel import userinfo_smply
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 
 class UserInfo(BaseHandler):  #获取用户自己的ID
 

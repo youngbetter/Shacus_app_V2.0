@@ -7,7 +7,7 @@ from sqlalchemy import desc
 
 from Database.models import get_db
 from Database.tables import User, AppointEntry, UserImage, Image
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 
 
 class Ufuncs(object):

@@ -18,7 +18,9 @@ DB_CONNECT_STRING = 'mysql+mysqldb://root:ydrs.sql.7234@123.206.227.249:3306/SHA
 #DB_CONNECT_STRING = 'mysql+mysqldb://root@127.0.0.1/shacus_app?charset=utf8'
 
 #redis缓存
-pool = redis.ConnectionPool(host='123.206.227.249', port=32798,password='ydrs.redis.7234')
+#pool = redis.ConnectionPool(host='123.206.227.249', port=32798,password='ydrs.redis.7234')
+
+pool = redis.ConnectionPool(host='127.0.0.1', port=800,password='ydrs.redis.7234')
 redis_engine = redis.Redis(connection_pool=pool)
 
 

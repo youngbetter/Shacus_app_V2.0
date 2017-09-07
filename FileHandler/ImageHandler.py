@@ -37,7 +37,7 @@ class ImageHandler(object):
                 imid = new_img.IMid
                 new_imids.append(imid)
             except Exception,e:
-                print "数据库操作：图片插入失败"+str(e)
+                print "数据库操作：图片image插入失败"+str(e)
         return new_imids
 
     # @staticmethod
@@ -166,7 +166,7 @@ class ImageHandler(object):
             except Exception,e:
                 print "数据库操作：社区问题图片插入失败" + str(e)
 
-    def insert_trend_image(self, list, trend_id):  # 插入社区问题图片
+    def insert_trend_image(self, list, trend_id):  # 插入动态图片
         '''
         Args:
             list: 图片的名字的数组

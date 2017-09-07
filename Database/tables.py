@@ -115,8 +115,8 @@ class TrendImage(Base):
     __tablename__ = 'TrendImage'
 
     TIid = Column(Integer, primary_key=True)
-    TItid = Column (Integer, ForeignKey('Trend.Tid',onupdate='CASCADE'),primary_key=True)
-    TIimid = Column(Integer, ForeignKey('Image.IMid',onupdate='CASCADE'),primary_key=True)
+    TItid = Column (Integer, ForeignKey('Trend.Tid',onupdate='CASCADE'))
+    TIimid = Column(Integer, ForeignKey('Image.IMid',onupdate='CASCADE'))
     TIimgurl = Column(VARCHAR(128))
 
 class CommuQuesImg(Base):   #社区问题图片
@@ -178,7 +178,7 @@ class Appointment(Base):  #摄影师-模特约拍
     APlikeN = Column(Integer, default=0, nullable=False)
     APvalid = Column(Boolean, default=1, nullable=False)
     APregistN = Column(Integer, nullable=False, default=0)      # 报名人数
-    APstatus = Column(Integer, nullable=False, default=0)
+    APstatus = Column(Integer, nullable=False, default=0)       # 0-报名中，1-进行中，2-未评价，3-已评价
     APgroup = Column(Integer, nullable=False, default=0)        # 约拍的分类
 
 
@@ -211,7 +211,7 @@ class Favorite(Base):
 
     Fid = Column(Integer, primary_key=True)
     Fuid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'), nullable=False)
-    Ftype = Column(Integer, nullable=False, default=0)   # 1为约拍，2为
+    Ftype = Column(Integer, nullable=False, default=0)   # 1为约拍，2为  3-动态
     Ftypeid = Column(Integer, nullable=False, default=0)
     FT = Column(DateTime(timezone=True), default=func.now())
     Fvalid = Column(Boolean, nullable=False, default=1)
@@ -228,17 +228,17 @@ class AppointLike(Base):
 class Trend(Base):
     __tablename__ = "Trend"
 
-    Tid = Column(Integer, primary_key = True)
-    Tsponsorid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'), primary_key=True)  # 用户id
+    Tid = Column(Integer, nullable=False, primary_key=True, autoincrement=True)
+    Tsponsorid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'))  # 用户id
     Tsponsorimg = Column(VARCHAR(128), nullable=False)                                          # 用户头像
     TsponsT = Column(DateTime(timezone=True), default=func.now())                               # 时间
     TcommentN = Column(Integer,nullable=False, default=0)                                       # 评论数
     TlikeN =Column(Integer,nullable=False, default=0)                                           # 点赞数
-    Tcontent = Column(VARCHAR(128), nullable=False)                                             # 动态内容
-    Ttitle = Column(VARCHAR(12), nullable=False)
+    Tcontent = Column(VARCHAR(128), nullable=False, default='')                                             # 动态内容
+    Ttitle = Column(VARCHAR(12), nullable=False, default='')
 
 class TrendComment(Base):  #动态评论
-    __tablename__="TrendComment"
+    __tablename__= "TrendComment"
 
     TRcmtid = Column(Integer, primary_key=True , nullable=False)
     TRcmttid = Column(Integer, ForeignKey("Trend.Tid", onupdate="CASCADE"))     #社区问题问题id
@@ -298,7 +298,7 @@ class UCcomment(Base):
     __tablename__ = 'UCcomment'
 
     UCcmtid = Column(Integer, primary_key=True)
-    UCcmtid = Column(Integer, ForeignKey(UserCollection.UCid, onupdate='CASCADE'))
+    UCcmtcollid = Column(Integer, ForeignKey(UserCollection.UCid, onupdate='CASCADE'))
     UCcmtuid = Column(Integer, ForeignKey(User.Uid, onupdate='CASCADE'))
     UCcmtcontent = Column(VARCHAR(128))
     UCcmtvalid = Column(Boolean, nullable=False, default=1)

@@ -6,7 +6,7 @@ import  json
 
 from BaseHandlerh import BaseHandler
 from Database.tables import User
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo import Ufuncs
 from FileHandler.ImageHandler import ImageHandler
 

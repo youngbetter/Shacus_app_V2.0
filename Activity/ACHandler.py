@@ -1,6 +1,6 @@
 # coding=utf-8
 from Database.tables import User, Activity,ActivityEntry
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 
 '''
 @author:兰威

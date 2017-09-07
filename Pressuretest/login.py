@@ -78,7 +78,7 @@ class login(BaseHandler):
     @asynchronous
     @gen.coroutine
     def bannerinit(self):
-        from FileHandler.Upload import AuthKeyHandler
+        from FileHandler.AuthkeyHandler import AuthKeyHandler
         bannertokens = []
 
         authkeyhandler = AuthKeyHandler()
