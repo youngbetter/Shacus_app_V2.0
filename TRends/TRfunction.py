@@ -6,9 +6,12 @@ from Database.models import get_db
 from Database.tables import Favorite
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 
-def TRresponse(item,url,retdata,isfav):
-    authkey= AuthKeyHandler()
-    m_trresponse = dict (
+#返回动态的详细信息
+#直接返回图片的下载url
+
+def TRresponse(item, url, retdata, isfav):
+    authkey = AuthKeyHandler()
+    m_trresponse = dict(
         Tid=item.Tid,
         Tsponsorid=item.Tsponsorid,
         TsponsT=item.TsponsT.strftime('%Y-%m-%dT%H:%M:%S'),
@@ -16,7 +19,7 @@ def TRresponse(item,url,retdata,isfav):
         TlikeN=item.TlikeN,
         Tcontent=item.Tcontent,
         Ttitle=item.Ttitle,
-        Tsponsorimg = authkey.download_url(item.Tsponsorimg),
+        Tsponsorimg=authkey.download_url(item.Tsponsorimg),
         TIimgurl=authkey.download_url(url),
         TIisfavorite=isfav,
     )

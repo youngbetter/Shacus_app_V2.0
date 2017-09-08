@@ -41,8 +41,9 @@ from Userinfo.UserList import UserList
 from Userinfo.Userhomepager import Userhomepager
 from Userinfo.Userhpimg import Userhpimg
 from loginHandler import LoginHandler
-
+#added by young
 from TRends.Trendcreat import Trendcreat
+from TRends.Trendrequest import  Trendrequest
 
 from Login.login import LoginHandler     # modified by ye
 from register import RegisterHandler
@@ -86,14 +87,15 @@ class Application(tornado.web.Application):
              (r"/recommend/reclist",UserList),
              (r"/companion/getauth", AcAuthHandler),
              (r"/user/forgotpw",Userforgotpw),
-
+             #add by young
              (r"/trend/creatTrend",Trendcreat)
+             (r"/trend/requestTrend", Trendrequest)
 
              (r"/regist", RegisterHandler),     # added by ye
-            (r"/login", LoginHandler),
-            (r"/login/forgotpw", ForgotPasswordHandler),
-            (r"/PswChange", PswChange),
-            (r"/appointment/list", GetListHandler),
+             (r"/login", LoginHandler),
+             (r"/login/forgotpw", ForgotPasswordHandler),
+             (r"/PswChange", PswChange),
+             (r"/appointment/list", GetListHandler),
         ]
         tornado.web.Application.__init__(self, handlers)
         self.db = scoped_session(sessionmaker(bind=engine,

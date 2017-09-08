@@ -11,7 +11,8 @@ from Userinfo.Ufuncs import Ufuncs
 from Database.tables import Trend, TrendImage, Image, Favorite
 
 class TRendspost(BaseHandler):
-    retjson = {'code':'200','contents':'null'}
+    retjson = {'code':'200',
+               'contents':'null'}
 
     def post(self):
        retdata = []

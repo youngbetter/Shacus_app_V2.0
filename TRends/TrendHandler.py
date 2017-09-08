@@ -3,6 +3,7 @@
 @author:王佳镭
 @动态功能：用户收藏；取消收藏；查看所有收藏
 '''
+
 import json
 import TRfunction
 import Userinfo.Ufuncs
@@ -109,7 +110,6 @@ class TrendHandler(BaseHandler):
                     print e
                     self.retjson['code'] = '12402'
                     self.retjson['contents'] = r'用户未收藏任何动态'
-
 
         else:
             self.retjson['code'] = '12403'

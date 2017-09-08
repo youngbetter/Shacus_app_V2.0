@@ -175,7 +175,7 @@ class Appointment(Base):  #摄影师-模特约拍
     APcreateT = Column(DateTime(timezone=True), default=func.now())
     APtype = Column(Boolean,nullable=False,default=0)           # 约拍类型，0-摄影师约模特,1-模特约摄影师
     APaddallowed = Column(Boolean,default=0)
-    APlikeN = Column(Integer, default=0, nullable=False)
+    # APlikeN = Column(Integer, default=0, nullable=False)
     APvalid = Column(Boolean, default=1, nullable=False)
     APregistN = Column(Integer, nullable=False, default=0)      # 报名人数
     APstatus = Column(Integer, nullable=False, default=0)       # 0-报名中，1-进行中，2-未评价，3-已评价
