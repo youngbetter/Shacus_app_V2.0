@@ -200,18 +200,15 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
                 offset_apid = self.get_argument('offsetapid')
                 self.refresh_group_list(0, offset_apid,  u_id, ap_group)
 
-            '''elif request_type == '10245':  # 返回报名某约拍的全部用户列表
+            elif request_type == '10245':  # 返回报名某约拍的全部用户列表
                 ap_id = self.get_argument('apid')
                 try:
                     # todo：利用join
                     appointment = self.db.query(Appointment).filter(Appointment.APid == ap_id).one()  # 查找是否有此约拍
                     if appointment:
-                        print 'before equal'
                         try:
-                            print "in try"
-                            userids = Ufuncs.Ufuncs.get_registids_from_appointment(appointment)
-                            print 'before get '
-                            registers = Ufuncs.Ufuncs.get_users_chooselist_from_uids(userids, appointment.APid)
+                            user_ids = Ufuncs.Ufuncs.get_registids_from_appointment(appointment)
+                            registers = Ufuncs.Ufuncs.get_users_chooselist_from_uids(user_ids, appointment.APid)
                             self.retjson['code'] = '10257'
                             self.retjson['contents'] = registers
                         except Exception, e:
@@ -222,7 +219,7 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
                 except Exception, e:
                     print e
                     self.retjson['code'] = '10264'
-                    self.retjson['contents'] = u'未查询到报名人'''
+                    self.retjson['contents'] = u'未查询到报名人'
 
         else:
             self.retjson['contents'] = '授权码不存在或已过期'

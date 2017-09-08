@@ -48,7 +48,7 @@ from Login.login import LoginHandler     # modified by ye
 from register import RegisterHandler
 from Login.UserForgotPassword import ForgotPasswordHandler
 from Settings import PswChange
-from  Appointment.GetAPList import GetListHandler
+from  Appointment.GetList import GetListHandler
 
 define("port", default=800, help="run on the given port", type=int)
 
