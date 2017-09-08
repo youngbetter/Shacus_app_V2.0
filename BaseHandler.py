@@ -24,8 +24,3 @@ class BaseHandler(tornado.web.RequestHandler):
     @property
     def redis(self):
         return redis_engine
-
-
-
-
-

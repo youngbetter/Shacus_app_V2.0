@@ -6,7 +6,7 @@ from BaseHandler import BaseHandler
 
 from Database.tables import User, UCinfo, Image, UserImage, Appointment, UserLike, UserCollection
 from Database.tables import Verification
-from message import message
+from messsage import message
 
 
 def generate_verification_code(len=6):

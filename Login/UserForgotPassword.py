@@ -4,7 +4,7 @@ import json
 from BaseHandler import BaseHandler
 from Database.tables import User, Verification
 from register import generate_verification_code
-from message import message
+from messsage import message
 
 __author__ = 'yh'
 

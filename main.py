@@ -13,9 +13,9 @@ from tornado.options import define, options
 from Activity.ACHandler import ActivityCreate, ActivityRegister
 from Activity.ACaskHandler import AskActivity
 from Activity.ACentryHandler import AskEntry
-from Appointment.APAskHandler import APaskHandler
+#from Appointment.APAskHandler import APaskHandler
 from Appointment.APCreateHandler_new import APcreateHandler
-from Appointment.APRegistHandler import APregistHandler
+#from Appointment.APRegistHandler import APregistHandler
 from Appointment.APchatCreateHandler import APchatCreateHandler
 from Appointment.APpraseHandler import APprase
 from Appointment.ApCompanionAuthHandler import AcAuthHandler
@@ -26,11 +26,11 @@ from ImageCallback import ImageCallback
 from Message.Sysmessage import Sysmessage
 from Pressuretest import login
 from Pressuretest.Simplerequest import Simplerequest
-from RegisterHandler import RegisterHandler
-from Settings import PaswChange
+#from RegisterHandler import RegisterHandler
+#from Settings import PaswChange
 from TRends.TRendspost import TRendspost
 from TRends.TrendHandler import TrendHandler
-from Userinfo.Userforgotpw import Userforgotpw
+#from Userinfo.Userforgotpw import Userforgotpw
 from Userinfo.UserCollectionHandler import UserCollectionHandler
 from Userinfo.UserFavoriteHandler import UserFavorite
 from Userinfo.UserImgHandler import UserImgHandler
@@ -40,16 +40,16 @@ from Userinfo.UserLike import FindUlike
 from Userinfo.UserList import UserList
 from Userinfo.Userhomepager import Userhomepager
 from Userinfo.Userhpimg import Userhpimg
-from loginHandler import LoginHandler
+#from loginHandler import LoginHandler
 #added by young
 from TRends.Trendcreat import Trendcreat
-from TRends.Trendrequest import  Trendrequest
+from TRends.TrendRequest import Trendrequest
 
 from Login.login import LoginHandler     # modified by ye
 from register import RegisterHandler
 from Login.UserForgotPassword import ForgotPasswordHandler
 from Settings import PswChange
-from  Appointment.GetList import GetListHandler
+from Appointment.GetList import GetListHandler
 
 define("port", default=800, help="run on the given port", type=int)
 
@@ -60,11 +60,11 @@ class Application(tornado.web.Application):
              (r"/appointment/create", APcreateHandler),
              (r"/pressuretest",Simplerequest),
              (r"/pressuretest2", login.login),
-             (r"/appointment/ask", APaskHandler),
+             #(r"/appointment/ask", APaskHandler),
              (r"/appointment/prase", APprase),
-             (r"/appointment/regist", APregistHandler),
-             (r"/login", LoginHandler),
-             (r"/regist", RegisterHandler),
+             #(r"/appointment/regist", APregistHandler),
+             #(r"/login", LoginHandler),
+             #(r"/regist", RegisterHandler),
              (r"/user/homepager",Userhomepager),
              (r"/user/mylike", FindUlike),
              (r"/user/favorite", UserFavorite),
@@ -75,7 +75,7 @@ class Application(tornado.web.Application):
              (r"/activity/create", ActivityCreate),
              (r"/activity/register",ActivityRegister),
              (r"/ImageCallback",ImageCallback),
-             (r"/PaswChange",PaswChange),
+             #(r"/PaswChange",PaswChange),
              (r"/trend/Trendspost",TRendspost),
              (r"/trend/Trendhanler",TrendHandler),
              (r"/ranklist", Ranklist),
@@ -86,10 +86,10 @@ class Application(tornado.web.Application):
              (r"/sysmessage",Sysmessage),
              (r"/recommend/reclist",UserList),
              (r"/companion/getauth", AcAuthHandler),
-             (r"/user/forgotpw",Userforgotpw),
-             #add by young
-             (r"/trend/creatTrend",Trendcreat)
-             (r"/trend/requestTrend", Trendrequest)
+             #(r"/user/forgotpw",Userforgotpw),
+             #added by young
+             (r"/trend/creatTrend", Trendcreat),
+             (r"/trend/requestTrend", Trendrequest),
 
              (r"/regist", RegisterHandler),     # added by ye
              (r"/login", LoginHandler),

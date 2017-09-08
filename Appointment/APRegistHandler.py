@@ -1,7 +1,7 @@
 # coding=utf-8
 import json
 
-from  BaseHandler import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import User, AppointEntry, Appointment
 from Userinfo.Ufuncs import Ufuncs
 
