@@ -42,7 +42,7 @@ class Trendcreat(BaseHandler):
                 # query.one()/all()
                 userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).all()
                 uheadimg = userImg[0].UIurl
-
+                print uheadimg
                 try:
                     new_trend = Trend(
                         Tsponsorid=u_id,
@@ -51,9 +51,9 @@ class Trendcreat(BaseHandler):
                         Tcontent=tr_content
                     )
                     self.db.merge(new_trend)
+                    self.db.commit()
                     #存储图片
                     try:
-                        self.db.commit()
                         tr_imgs_json = json.loads(tr_imgs)
                         if tr_imgs_json:
                             trend = self.db.query(Trend).filter(Trend.Tcontent == tr_content).order_by(desc(Trend.TsponsT)).all()

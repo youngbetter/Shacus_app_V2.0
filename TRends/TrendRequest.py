@@ -6,6 +6,7 @@
 import json
 import TRfunction
 from sqlalchemy import desc
+
 from BaseHandler import BaseHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
@@ -19,43 +20,51 @@ class Trendrequest(BaseHandler):
     def post(self):
         retdata = []
         # 记录上次请求的最后一条动态id
-        last_tid = 0
         type = self.get_argument('type', default='unsolved')
         u_id = self.get_argument('uid', default='null')
         u_auth_key = self.get_argument('authkey', default='null')
+        ufunc = Ufuncs()
+        if ufunc.judge_user_valid(u_id, u_auth_key):  # 认证成功
+            # 请求刷新所有动态，下拉
+            if type == '12001':
+                try:
+                    trends = self.db.query(Trend).order_by(desc(Trend.TsponsT)).limit(1).all()
+                    timgurl = []
+                    for trend in trends:
+                        imgs = self.db.query(TrendImage).filter(TrendImage.TItid == trend.Tid).all()
+                        for img in imgs:
+                            timgurl.append(img.TIimgurl)
+                        self.response_one(trend, timgurl, retdata)
+                        print timgurl
+                        timgurl = []
+                    self.retjson['code'] = '850206'
+                    self.retjson['contents'] = retdata
+                except Exception, e:
+                    self.retjson['code'] = '850202'
+                    self.retjson['contents'] = '动态刷新失败'
 
-        # 请求刷新所有动态，下拉
-        if type == '12001':
-            ufuncs = Ufuncs()  # 判断用户权限
-            if ufuncs.judge_user_valid(u_id, u_auth_key):  # 认证成功
+            # 请求刷新所有动态，上拉
+            elif type == '850201':
                 try:
-                    trends = self.db.query(Trend).limit(10).order_by(desc(Trend.TsponsT)).all()
-                    for trend in trends:
-                        img_urls = self.db.query(TrendImage).filter(Trend.Tid == trend.Tid).all()
-                        for url in img_urls:
-                            self.response_one(trend, url, retdata)
-                    last_tid = trend.Tid
+                    last_tid = self.get_argument('lasttid')
                     print last_tid
-                except Exception, e:
-                    self.retjson['code'] = '12012'
-                    self.retjson['contents'] = '用户认证失败'
-            else:
-                self.retjson['code'] = '12012'
-                self.retjson['contents'] = '用户认证失败'
-        # 请求刷新所有动态，上拉
-        elif type == '500201':
-            ufuncs = Ufuncs()  # 判断用户权限
-            if ufuncs.judge_user_valid(u_id, u_auth_key):  # 认证成功
-                try:
-                    trends = self.db.query(Trend).limit(10).filter(Trend.Tid < last_tid).order_by(
-                        desc(Trend.TsponsT)).all()
+                    trends = self.db.query(Trend).filter(Trend.Tid < last_tid).order_by(desc(Trend.TsponsT)).limit(10).all()
+                    timgurl = []
                     for trend in trends:
-                        img_urls = self.db.query(TrendImage).filter(Trend.Tid == trend.Tid).all()
-                        for url in img_urls:
-                            self.response_one(trend, url, retdata)
+                        imgs = self.db.query(TrendImage).filter(TrendImage.TItid == trend.Tid).all()
+                        for img in imgs:
+                            timgurl.append(img.TIimgurl)
+                        self.response_one(trend, timgurl, retdata)
+                        print timgurl
+                        timgurl = []
+                    self.retjson['code'] = '850208'
+                    self.retjson['contents'] = retdata
                 except Exception, e:
-                    self.retjson['code'] = '12012'
-                    self.retjson['contents'] = '用户认证失败'
+                    self.retjson['code'] = '850204'
+                    self.retjson['contents'] = '动态加载失败'
+        else:
+            self.retjson['code'] = '12012'
+            self.retjson['contents'] = '用户认证失败'
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))  # 返回中文
 
     def response_one(self, item, url, retdata):
