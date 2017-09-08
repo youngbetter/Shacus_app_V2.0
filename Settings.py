@@ -1,36 +1,39 @@
 # -*- coding:utf-8 -*-
 '''
-@author：王佳镭 兰威
+@author：yh
 '''
-import  json
+import json
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import User
-from FileHandler.AuthkeyHandler import AuthKeyHandler
+from FileHandler.Upload import AuthKeyHandler
 from Userinfo import Ufuncs
 from FileHandler.ImageHandler import ImageHandler
 
-class PaswChange(BaseHandler):
-    retjson={'code':200,'contents':'none'}
-    retdata=[] #list array
+
+class PswChange(BaseHandler):
+
+    retjson = {'code': '200','contents': 'none'}
+    retdata = []
+
     def post(self):
-        type=self.get_argument("type",default="null")
-        if type=='10501':
-            Userid=self.get_argument("Userid","noone")
-            p_password=self.get_argument("oldpassword")
-           # m_password=self.get_argument("newpassword")
-            data=self.db.query(User).filter(Userid==User.Uid).one()
-            if data.Upassword==p_password:
-                self.retjson ['code']='10501'
-                self.retjson['contents']='获得修改密码权限'
+        type = self.get_argument("type", default="null")
+        if type == '10501':
+            user_id = self.get_argument("user_id", "none")
+            p_password = self.get_argument("old_psw")
+            data = self.db.query(User).filter(user_id == User.Uid).one()
+            if data.Upassword == p_password:
+                self.retjson['code'] = '10501'
+                self.retjson['contents'] = '获得修改密码权限'
             else:
-                self.retjson['code']='10502'
-                self.retjson['contents']='没有获得修改密码权限'
-        elif type=='10511':
-            Userid = self.get_argument("Userid", "noone")
-            m_password = self.get_argument("newpassword")
+                self.retjson['code'] = '10502'
+                self.retjson['contents'] = '没有获得修改密码权限'
+                
+        elif type == '10511':
+            user_id = self.get_argument("user_id", "none")
+            m_password = self.get_argument("new_psw")
             try:
-                data = self.db.query(User).filter(Userid == User.Uid).one()
+                data = self.db.query(User).filter(user_id == User.Uid).one()
                 data.Upassword = m_password
                 self.db.commit()
                 self.retjson['code'] = '10511'
@@ -39,25 +42,27 @@ class PaswChange(BaseHandler):
                 print e
                 self.retjson['code'] = '10512'
                 self.retjson['contents'] = '修改密码失败'
-        elif type=='10503': #修改用户昵称
-                Userid = self.get_argument("Userid", "noone")
-                Usernickname = self.get_argument("Usernickname", "noone")
+                
+        elif type == '10503':  # 修改用户昵称
+                user_id = self.get_argument("user_id", "none")
+                user_nickname = self.get_argument("user_nickname", "none")
                 try:
-                    data = self.db.query(User).filter(Userid == User.Uid).one()
-                    data.Ualais = Usernickname
+                    data = self.db.query(User).filter(user_id == User.Uid).one()
+                    data.Ualais = user_nickname
                     self.db.commit()
                     self.retjson['code'] = '10503'
-                    self.retjson['contentsuy'] = '修改昵称成功'
+                    self.retjson['contents'] = '修改昵称成功'
                 except Exception, e:
                     print e
                     self.retjson['code'] = '10504'
                     self.retjson['contents'] = '修改昵称失败'
-        elif type =='10505': #修改性别
-            Userid = self.get_argument("Userid", "noone")
-            Userphone = self.get_argument("Userphone", "noone")
+
+        elif type == '10505':  # 修改手机号
+            user_id = self.get_argument("user_id", "none")
+            user_phone = self.get_argument("user_phone", "none")
             try:
-                data = self.db.query(User).filter(Userid == User.Uid).one()
-                data.Utel = Userphone
+                data = self.db.query(User).filter(user_id == User.Uid).one()
+                data.Utel = user_phone
                 self.db.commit()
                 self.retjson['code'] = '10505'
                 self.retjson['contents'] = '修改绑定手机号成功'
@@ -65,12 +70,13 @@ class PaswChange(BaseHandler):
                 print e
                 self.retjson['code'] = '10506'
                 self.retjson['contents'] = '修改绑定手机号失败'
-        elif type == '10507': #修改地址
-            Userid = self.get_argument("Userid", "noone")
-            Userlocation = self.get_argument("Userlocation", "noone")
+
+        elif type == '10507':  # 修改地址
+            user_id = self.get_argument("user_id", "none")
+            user_location = self.get_argument("user_location", "none")
             try:
-                data = self.db.query(User).filter(Userid == User.Uid).one()
-                data.Ulocation=Userlocation
+                data = self.db.query(User).filter(user_id == User.Uid).one()
+                data.Ulocation = user_location
                 self.db.commit()
                 self.retjson['code'] = '10507'
                 self.retjson['contents'] = '修改所在地成功'
@@ -78,12 +84,13 @@ class PaswChange(BaseHandler):
                 print e
                 self.retjson['code'] = '10508'
                 self.retjson['contents'] = '修改所在地失败'
-        elif type == '10509': #修改邮箱
-            Userid = self.get_argument("Userid", "noone")
-            Usermail = self.get_argument("Usermail", "noone")
+
+        elif type == '10509':  # 修改邮箱
+            user_id = self.get_argument("user_id", "none")
+            user_mail = self.get_argument("user_mail", "none")
             try:
-                data = self.db.query(User).filter(Userid == User.Uid).one()
-                data.Umailbox = Usermail
+                data = self.db.query(User).filter(user_id == User.Uid).one()
+                data.Umailbox = user_mail
                 self.db.commit()
                 self.retjson['code'] = '10509'
                 self.retjson['contents'] = '修改邮箱成功'
@@ -92,15 +99,15 @@ class PaswChange(BaseHandler):
                 self.retjson['code'] = '10510'
                 self.retjson['contents'] = '修改邮箱失败'
 
-        #修改头像，第一次存储图片，返回token
-        elif type =='10513':
+        # 修改头像，第一次存储图片，返回token
+        elif type == '10513':
 
-            #todo:第一二次握手之间应该加一个验证码
+            # todo:第一二次握手之间应该加一个验证码
 
             u_id = self.get_argument('uid')
-            u_authkey =self.get_argument('authkey')
+            u_authkey = self.get_argument('authkey')
             image = self.get_argument('image')
-            ufuncs =Ufuncs.Ufuncs()
+            ufuncs = Ufuncs.Ufuncs()
             if ufuncs.judge_user_valid(u_id, u_authkey):
                 retjson_body = {'image_token': ''}
                 image_token_handler = AuthKeyHandler()
@@ -110,7 +117,7 @@ class PaswChange(BaseHandler):
             else :
                 self.retjson['contents'] = '用户授权码不正确'
                 self.retjson['code'] = '10514'
-        elif type =='10516':
+        elif type == '10516':
             u_id = self.get_argument('uid')
             u_authkey = self.get_argument('authkey')
             image = self.get_argument('image')
@@ -125,7 +132,8 @@ class PaswChange(BaseHandler):
             else:
                 self.retjson['contents'] = '用户授权码不正确'
                 self.retjson['code'] = '10514'
-        elif type == '10517': # 修改签名
+
+        elif type == '10517':  # 修改签名
             u_id = self.get_argument('uid')
             u_authkey = self.get_argument('authkey')
             sign = self.get_argument('sign')
@@ -134,13 +142,13 @@ class PaswChange(BaseHandler):
                 user = self.db.query(User).filter(User.Uid == u_id).one()
                 user.Usign = sign
                 self.db.commit()
-                self.retjson['contents']  = '修改个性签名成功'
+                self.retjson['contents'] = '修改个性签名成功'
                 self.retjson['code'] = '10518'
             else:
                 self.retjson['contents'] = '用户授权码不正确'
                 self.retjson['code'] = '10514'
 
-        elif type == '10519':#修改性别
+        elif type == '10519':  # 修改性别
             u_id = self.get_argument('uid')
             u_authkey = self.get_argument('authkey')
             gender = self.get_argument('gender')
@@ -172,7 +180,6 @@ class PaswChange(BaseHandler):
             else:
                 self.retjson['contents'] = '用户授权码不正确'
                 self.retjson['code'] = '10514'
-
 
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))  # 返回中文
 
