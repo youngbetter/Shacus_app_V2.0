@@ -8,7 +8,7 @@ import  json
 
 from PIL import Image
 
-from  BaseHandlerh import BaseHandler
+from  BaseHandler import BaseHandler
 
 
 class UploadException(RuntimeError):

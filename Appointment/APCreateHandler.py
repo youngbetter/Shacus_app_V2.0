@@ -6,7 +6,7 @@
 import json
 
 from Appointment.APgroupHandler import APgroupHandler
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import Appointment, User
 from FileHandler.ImageHandler import ImageHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler

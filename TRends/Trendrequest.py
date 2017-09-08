@@ -6,7 +6,7 @@
 import json
 import TRfunction
 from sqlalchemy import desc
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
 from Database.tables import Trend, TrendImage, Image, Favorite

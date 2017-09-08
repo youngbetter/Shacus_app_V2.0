@@ -6,7 +6,7 @@ from Database.tables import AppointmentImage, Appointment
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 from rongcloud import RongCloud
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 
 
 class Sysmessage(BaseHandler):

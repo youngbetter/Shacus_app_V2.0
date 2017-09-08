@@ -4,7 +4,7 @@ import json
 
 from sqlalchemy import desc
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import User, UserCollection
 from Userinfo import Usermodel
 from Userinfo.UserImgHandler import UserImgHandler

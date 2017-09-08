@@ -1,5 +1,5 @@
 # -*- coding:utf-8  -*-
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.models import get_db
 from Database.tables import Appointment
 

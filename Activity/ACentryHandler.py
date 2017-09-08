@@ -6,7 +6,7 @@ from Userinfo.Ufuncs import Ufuncs
 import json
 import ACFunction
 import ACentryFunction
-from BaseHandlerh import  BaseHandler
+from BaseHandler import  BaseHandler
 from Database.tables import ActivityEntry, Activity,ActivityLike
 
 

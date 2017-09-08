@@ -7,7 +7,7 @@ import json
 from Database.models import get_db
 from sqlalchemy import desc
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import User, RankScore, AppointmentInfo
 from Userinfo import Usermodel
 from Userinfo.Ufuncs import Ufuncs

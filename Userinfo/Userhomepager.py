@@ -8,7 +8,7 @@ import json
 import Userinfo.Ufuncs
 from Activity.ACmodel import ACmodelHandler
 from Appointment.APmodel import APmodelHandler
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import User, UCinfo, Appointment, UserLike, AppointEntry, ActivityEntry, \
     Activity
 from Userinfo.Usermodel import userinfo_smply

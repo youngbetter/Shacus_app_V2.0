@@ -10,7 +10,7 @@ from tornado import gen
 from tornado.concurrent import Future
 from tornado.web import asynchronous
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import Appointment, User
 from Userinfo import Usermodel
 from Userinfo.Ufuncs import Ufuncs

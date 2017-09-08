@@ -7,7 +7,7 @@ sys.path.append("..")
 import base64
 
 import time
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 
 class Tokengenerate(BaseHandler):
 

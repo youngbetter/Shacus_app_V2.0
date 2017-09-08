@@ -7,7 +7,7 @@
 import json
 
 import Ufuncs
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from  Database.tables import UserLike, User, UCinfo, UserImage, Image
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 

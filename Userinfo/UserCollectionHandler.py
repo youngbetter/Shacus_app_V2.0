@@ -2,7 +2,7 @@
 # 用户作品集模型
 import json
 import threading
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.models import get_db
 from Database.tables import User, UserHomepageimg, UserCollection,UCcomment
 from FileHandler.AuthkeyHandler import AuthKeyHandler

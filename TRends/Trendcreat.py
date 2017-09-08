@@ -6,7 +6,7 @@
 '''
 import time
 from sqlalchemy import desc
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import Trend, UserImage, User, Image
 from Userinfo.Ufuncs import Ufuncs
 from FileHandler.ImageHandler import ImageHandler

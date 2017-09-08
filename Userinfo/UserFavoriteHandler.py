@@ -4,7 +4,7 @@ import json
 import Userinfo.Ufuncs
 from Activity import ACFunction
 from Appointment.APmodel import APmodelHandler
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import Favorite, Appointment, Activity, User, ActivityImage, UserImage, Image
 
 '''

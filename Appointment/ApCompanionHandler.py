@@ -3,7 +3,7 @@ import json
 
 
 from Appointment.APmodel import APmodelHandler
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 
 # 约拍伴侣
 from Database.tables import  WApCompanions, WAcAuth

@@ -8,7 +8,7 @@ from sqlalchemy import desc
 from tornado import gen
 from tornado.web import asynchronous
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import User, Appointment
 from Userinfo.Usermodel import Model_daohanglan
 

@@ -1,6 +1,6 @@
 # -*-coding:utf-8 -*-
 import json
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import User, Appointment, AppointEntry
 from FileHandler.ImageHandler import ImageHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler

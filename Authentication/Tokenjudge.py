@@ -6,7 +6,7 @@ import sys
 sys.path.append("..")
 import base64
 import time
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 
 class Tokenjudge(BaseHandler):
     s_time = ''

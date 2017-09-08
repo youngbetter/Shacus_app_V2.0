@@ -2,7 +2,7 @@
 import json
 import random
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import WAcAuth
 
 '''

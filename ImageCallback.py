@@ -4,7 +4,7 @@
 '''
 
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 
 class ImageCallback(BaseHandler):
     def post(self):

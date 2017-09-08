@@ -8,7 +8,7 @@ from FileHandler.AuthkeyHandler import AuthKeyHandler
 '''
 import json
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from FileHandler.ImageHandler import ImageHandler
 from Userinfo.Ufuncs import Ufuncs
 

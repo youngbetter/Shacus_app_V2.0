@@ -8,7 +8,7 @@ import json
 from tornado import gen
 from tornado.web import asynchronous
 
-from BaseHandlerh import BaseHandler
+from BaseHandler import BaseHandler
 from Database.tables import Appointment, AppointLike
 from Userinfo.Ufuncs import Ufuncs
 
