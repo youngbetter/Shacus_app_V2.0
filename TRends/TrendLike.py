@@ -11,7 +11,7 @@ from Userinfo.Ufuncs import Ufuncs
 from Database.tables import Trend, Favorite
 from ConstVal.const import Const
 
-class TrendLikeHandler(BaseHandler):
+class TrendlikeHandler(BaseHandler):
     retjson = {'code': '200',
                'contents': 'none'}
     def post(self):

@@ -42,10 +42,10 @@ from Userinfo.Userhomepager import Userhomepager
 from Userinfo.Userhpimg import Userhpimg
 #from loginHandler import LoginHandler
 #added by young
-from TRends.TrendCreatHandler import Trendcreat
-from TRends.TrendRequestHandler import Trendrequest
-from TRends.TrendCmtHandler import TrendCmtHandler
-from TRends.TrendLikeHandler import TrendLikeHandler
+from TRends.TrendCreate import TrendcreateHandler
+from TRends.TrendRequest import TrendrequestHandler
+from TRends.TrendComment import TrendCmtHandler
+from TRends.TrendLike import TrendlikeHandler
 
 from Login.login import LoginHandler     # modified by ye
 from register import RegisterHandler
@@ -94,10 +94,10 @@ class Application(tornado.web.Application):
              #(r"/user/forgotpw",Userforgotpw),
 
              #added by young
-             (r"/trend/creatTrend", Trendcreat),
-             (r"/trend/requestTrend", Trendrequest),
+             (r"/trend/creatTrend", TrendcreateHandler),
+             (r"/trend/requestTrend", TrendrequestHandler),
              (r"/trend/commentTrend", TrendCmtHandler),
-             (r"/trend/likeTrend", TrendLikeHandler),
+             (r"/trend/likeTrend", TrendlikeHandler),
 
               # added by ye
              (r"/regist", RegisterHandler),

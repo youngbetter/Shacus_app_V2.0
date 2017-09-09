@@ -13,7 +13,7 @@ from FileHandler.ImageHandler import ImageHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 import json
 
-class Trendcreat(BaseHandler):
+class TrendcreateHandler(BaseHandler):
 
     retjson = {'code': '400',
                'contents': 'none'}

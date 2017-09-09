@@ -4,7 +4,6 @@
 @模块功能：请求动态
 '''
 import json
-import TRfunction
 from sqlalchemy import desc
 
 from BaseHandler import BaseHandler
@@ -13,7 +12,7 @@ from Userinfo.Ufuncs import Ufuncs
 from Database.tables import Trend, TrendImage, Image, Favorite
 
 
-class Trendrequest(BaseHandler):
+class TrendrequestHandler(BaseHandler):
     retjson = {'code': '200',
                'contents': 'null'}
 
