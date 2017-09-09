@@ -28,7 +28,7 @@ from Pressuretest import login
 from Pressuretest.Simplerequest import Simplerequest
 #from RegisterHandler import RegisterHandler
 #from Settings import PaswChange
-from TRends.TRendspost import TRendspost
+#from TRends.TRendspost import TRendspost
 from TRends.TrendHandler import TrendHandler
 #from Userinfo.Userforgotpw import Userforgotpw
 from Userinfo.UserCollectionHandler import UserCollectionHandler
@@ -42,8 +42,8 @@ from Userinfo.Userhomepager import Userhomepager
 from Userinfo.Userhpimg import Userhpimg
 #from loginHandler import LoginHandler
 #added by young
-from TRends.TrendCreat import Trendcreat
-from TRends.TrendRequest import Trendrequest
+from TRends.TrendCreatHandler import Trendcreat
+from TRends.TrendRequestHandler import Trendrequest
 from TRends.TrendCmtHandler import TrendCmtHandler
 
 from Login.login import LoginHandler     # modified by ye
@@ -77,7 +77,7 @@ class Application(tornado.web.Application):
              (r"/activity/register",ActivityRegister),
              (r"/ImageCallback",ImageCallback),
              #(r"/PaswChange",PaswChange),
-             (r"/trend/Trendspost",TRendspost),
+             #(r"/trend/Trendspost",TRendspost),
              (r"/trend/Trendhanler",TrendHandler),
              (r"/ranklist", Ranklist),
              (r"/appointment/chat",APchatCreateHandler),

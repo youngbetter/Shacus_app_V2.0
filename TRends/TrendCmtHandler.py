@@ -2,7 +2,7 @@
 
 '''
 @author:杨兴才
-@模块功能：创建动态
+@模块功能：创建动态评论
 '''
 import json
 import time

@@ -30,4 +30,4 @@
 
 '''
 class Const(object):
-    TEST = 'test'
+    FAVORITE_TYPE_TREND = 3
