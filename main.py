@@ -17,7 +17,7 @@ from Activity.ACentryHandler import AskEntry
 #from Appointment.APCreateHandler_new import APcreateHandler
 #from Appointment.APRegistHandler import APregistHandler
 from Appointment.APchatCreateHandler import APchatCreateHandler
-from Appointment.APpraseHandler import APprase
+#from Appointment.APpraseHandler import APprase
 from Appointment.ApCompanionAuthHandler import AcAuthHandler
 from Appointment.ApCompanionHandler import ApCompanionHandler
 from Appointment.Ranklist import Ranklist
@@ -45,6 +45,7 @@ from Userinfo.Userhpimg import Userhpimg
 from TRends.TrendCreatHandler import Trendcreat
 from TRends.TrendRequestHandler import Trendrequest
 from TRends.TrendCmtHandler import TrendCmtHandler
+from TRends.TrendLikeHandler import TrendLikeHandler
 
 from Login.login import LoginHandler     # modified by ye
 from register import RegisterHandler
@@ -65,7 +66,7 @@ class Application(tornado.web.Application):
              (r"/pressuretest",Simplerequest),
              (r"/pressuretest2", login.login),
              #(r"/appointment/ask", APaskHandler),
-             (r"/appointment/prase", APprase),
+             #(r"/appointment/prase", APprase),
              #(r"/appointment/regist", APregistHandler),
              #(r"/login", LoginHandler),
              #(r"/regist", RegisterHandler),
@@ -96,8 +97,10 @@ class Application(tornado.web.Application):
              (r"/trend/creatTrend", Trendcreat),
              (r"/trend/requestTrend", Trendrequest),
              (r"/trend/commentTrend", TrendCmtHandler),
+             (r"/trend/likeTrend", TrendLikeHandler),
 
-             (r"/regist", RegisterHandler),     # added by ye
+              # added by ye
+             (r"/regist", RegisterHandler),
              (r"/login", LoginHandler),
              (r"/login/forgotpw", ForgotPasswordHandler),
              (r"/PswChange", PswChange),
