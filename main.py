@@ -42,8 +42,9 @@ from Userinfo.Userhomepager import Userhomepager
 from Userinfo.Userhpimg import Userhpimg
 #from loginHandler import LoginHandler
 #added by young
-from TRends.Trendcreat import Trendcreat
+from TRends.TrendCreat import Trendcreat
 from TRends.TrendRequest import Trendrequest
+from TRends.TrendCmtHandler import TrendCmtHandler
 
 from Login.login import LoginHandler     # modified by ye
 from register import RegisterHandler
@@ -87,9 +88,11 @@ class Application(tornado.web.Application):
              (r"/recommend/reclist",UserList),
              (r"/companion/getauth", AcAuthHandler),
              #(r"/user/forgotpw",Userforgotpw),
+
              #added by young
              (r"/trend/creatTrend", Trendcreat),
              (r"/trend/requestTrend", Trendrequest),
+             (r"/trend/commentTrend", TrendCmtHandler),
 
              (r"/regist", RegisterHandler),     # added by ye
              (r"/login", LoginHandler),

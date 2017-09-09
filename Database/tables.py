@@ -236,15 +236,16 @@ class Trend(Base):
     TlikeN =Column(Integer,nullable=False, default=0)                                           # 点赞数
     Tcontent = Column(VARCHAR(128), nullable=False, default='')                                             # 动态内容
     Ttitle = Column(VARCHAR(12), nullable=False, default='')
+    Tvalid = Column(Boolean, nullable=False, default=1)
 
 class TrendComment(Base):  #动态评论
     __tablename__= "TrendComment"
 
-    TRcmtid = Column(Integer, primary_key=True , nullable=False)
-    TRcmttid = Column(Integer, ForeignKey("Trend.Tid", onupdate="CASCADE"))     #社区问题问题id
-    TRcmtcontent = Column(Text, nullable=False)
+    TRcmtid = Column(Integer, primary_key=True , nullable=False, autoincrement=True)
+    TRcmttid = Column(Integer, ForeignKey('Trend.Tid', onupdate='CASCADE'))     #社区问题问题id
+    TRcmtcontent = Column(VARCHAR(128), nullable=False)
     TRcmtT = Column(DateTime(timezone=True), default=func.now())
-    TRcmtvalid = Column(Boolean, nullable=False ,default=1)
+    TRcmtvalid = Column(Boolean, nullable=False, default=1)
 
 class RankScore(Base):
     '''

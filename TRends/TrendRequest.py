@@ -26,7 +26,7 @@ class Trendrequest(BaseHandler):
         ufunc = Ufuncs()
         if ufunc.judge_user_valid(u_id, u_auth_key):  # 认证成功
             # 请求刷新所有动态，下拉
-            if type == '12001':
+            if type == '85013':
                 try:
                     trends = self.db.query(Trend).order_by(desc(Trend.TsponsT)).limit(1).all()
                     timgurl = []
@@ -37,14 +37,14 @@ class Trendrequest(BaseHandler):
                         self.response_one(trend, timgurl, retdata)
                         print timgurl
                         timgurl = []
-                    self.retjson['code'] = '850206'
+                    self.retjson['code'] = '850130'
                     self.retjson['contents'] = retdata
                 except Exception, e:
-                    self.retjson['code'] = '850202'
+                    self.retjson['code'] = '850132'
                     self.retjson['contents'] = '动态刷新失败'
 
             # 请求刷新所有动态，上拉
-            elif type == '850201':
+            elif type == '85011':
                 try:
                     last_tid = self.get_argument('lasttid')
                     print last_tid
@@ -57,13 +57,13 @@ class Trendrequest(BaseHandler):
                         self.response_one(trend, timgurl, retdata)
                         print timgurl
                         timgurl = []
-                    self.retjson['code'] = '850208'
+                    self.retjson['code'] = '850110'
                     self.retjson['contents'] = retdata
                 except Exception, e:
-                    self.retjson['code'] = '850204'
+                    self.retjson['code'] = '850112'
                     self.retjson['contents'] = '动态加载失败'
         else:
-            self.retjson['code'] = '12012'
+            self.retjson['code'] = '850150'
             self.retjson['contents'] = '用户认证失败'
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))  # 返回中文
 
