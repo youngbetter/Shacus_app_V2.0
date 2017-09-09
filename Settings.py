@@ -1,7 +1,10 @@
 # -*- coding:utf-8 -*-
-'''
+
+"""
+修改个人数据资料
 @author：yh
-'''
+"""
+
 import json
 
 from BaseHandler import BaseHandler

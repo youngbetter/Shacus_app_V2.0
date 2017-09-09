@@ -3,7 +3,7 @@ import json
 
 from BaseHandler import BaseHandler
 from Database.tables import User, Verification
-from RegisterHandler import generate_verification_code
+#from RegisterHandler import generate_verification_code
 from messsage import message
 
 __author__ = 'lanwei'

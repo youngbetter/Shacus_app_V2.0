@@ -14,7 +14,7 @@ from Activity.ACHandler import ActivityCreate, ActivityRegister
 from Activity.ACaskHandler import AskActivity
 from Activity.ACentryHandler import AskEntry
 #from Appointment.APAskHandler import APaskHandler
-from Appointment.APCreateHandler_new import APcreateHandler
+#from Appointment.APCreateHandler_new import APcreateHandler
 #from Appointment.APRegistHandler import APregistHandler
 from Appointment.APchatCreateHandler import APchatCreateHandler
 from Appointment.APpraseHandler import APprase
@@ -29,7 +29,7 @@ from Pressuretest.Simplerequest import Simplerequest
 #from RegisterHandler import RegisterHandler
 #from Settings import PaswChange
 #from TRends.TRendspost import TRendspost
-from TRends.TrendHandler import TrendHandler
+#from TRends.TrendHandler import TrendHandler
 #from Userinfo.Userforgotpw import Userforgotpw
 from Userinfo.UserCollectionHandler import UserCollectionHandler
 from Userinfo.UserFavoriteHandler import UserFavorite
@@ -51,6 +51,9 @@ from register import RegisterHandler
 from Login.UserForgotPassword import ForgotPasswordHandler
 from Settings import PswChange
 from Appointment.GetList import GetListHandler
+from Appointment.APCreate import APCreateHandler
+from Appointment.APRegist import APRegistHandler
+
 
 define("port", default=800, help="run on the given port", type=int)
 
@@ -58,7 +61,7 @@ define("port", default=800, help="run on the given port", type=int)
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-             (r"/appointment/create", APcreateHandler),
+             #(r"/appointment/create", APcreateHandler),
              (r"/pressuretest",Simplerequest),
              (r"/pressuretest2", login.login),
              #(r"/appointment/ask", APaskHandler),
@@ -78,7 +81,7 @@ class Application(tornado.web.Application):
              (r"/ImageCallback",ImageCallback),
              #(r"/PaswChange",PaswChange),
              #(r"/trend/Trendspost",TRendspost),
-             (r"/trend/Trendhanler",TrendHandler),
+             #(r"/trend/Trendhanler",TrendHandler),
              (r"/ranklist", Ranklist),
              (r"/appointment/chat",APchatCreateHandler),
              (r"/Userinfo/imghandler",Userhpimg),
@@ -98,7 +101,10 @@ class Application(tornado.web.Application):
              (r"/login", LoginHandler),
              (r"/login/forgotpw", ForgotPasswordHandler),
              (r"/PswChange", PswChange),
+             (r"/appointment/create", APCreateHandler),
              (r"/appointment/list", GetListHandler),
+             (r"/appointment/regist", APRegistHandler),
+
         ]
         tornado.web.Application.__init__(self, handlers)
         self.db = scoped_session(sessionmaker(bind=engine,
