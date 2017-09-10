@@ -18,10 +18,6 @@ class TrendcreateHandler(BaseHandler):
     retjson = {'code': '400',
                'contents': 'none'}
 
-    def insert_failed(self):
-        self.retjson['code'] = '500102'
-        self.retjson['contents'] = r"数据库插入失败"
-
     #Tsponsorid Tsponsorimg Tcontent Ttitle
     def post(self):
         u_id = self.get_argument('uid')
@@ -58,20 +54,23 @@ class TrendcreateHandler(BaseHandler):
                         if tr_imgs_json:
                             trend = self.db.query(Trend).filter(Trend.Tcontent == tr_content).order_by(desc(Trend.TsponsT)).all()
                             tr_id = trend[0].Tid
-                            self.retjson['code'] = '500101'
+                            self.retjson['code'] = '850000'
                             imghandler.insert_trend_image(tr_imgs_json,tr_id)
                             retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
                             self.retjson['contents'] = retjson_body
                     except Exception, e:
                         print "动态图片插入失败"
-                        self.insert_failed()
+                        self.retjson['code'] = '850002'
+                        self.retjson['contents'] = r"动态图片插入失败"
                 except Exception,e:
                     print "动态发表失败"
-                    self.insert_failed()
+                    self.retjson['code'] = '850004'
+                    self.retjson['contents'] = r"动态发表失败"
             except Exception,e:
                 print "用户头像图片获取失败"
-                self.insert_failed()
+                self.retjson['code'] = '850006'
+                self.retjson['contents'] = r"用户头像图片获取失败"
         else:
-            self.retjson['code'] = '500104'  # 待定
+            self.retjson['code'] = '850008'
             self.retjson['contents'] = '用户验证失败'
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))

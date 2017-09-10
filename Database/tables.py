@@ -131,11 +131,13 @@ class CommuQuestion(Base):  #社区问题
 
     CQuesid = Column(Integer, primary_key=True , nullable=False)
     CQuid = Column(Integer, ForeignKey("User.Uid", onupdate="CASCADE")) #提出者id
+    CQuimurl = Column(VARCHAR(128),nullable=False)
     CQtitle = Column(VARCHAR(128), nullable=False)
     CQcontent = Column(Text, nullable=False)
     CQtime = Column(DateTime(timezone=True), default=func.now())
-    CQvalid = Column(Boolean, nullable=False ,default=1)
+    CQvalid = Column(Boolean, nullable=False, default=1)
     CQlikedN = Column(Integer, nullable=False, default=0)               #获赞数
+    CQcommentN = Column(Integer, nullable=False, default=0)               #评论数
 
 class CQcomment(Base):  #社区评论
     __tablename__="CQcomment"

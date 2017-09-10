@@ -46,6 +46,7 @@ from TRends.TrendCreate import TrendcreateHandler
 from TRends.TrendRequest import TrendrequestHandler
 from TRends.TrendComment import TrendCmtHandler
 from TRends.TrendLike import TrendlikeHandler
+from Community.QuestionCreate import QuestioncreateHandler
 
 from Login.login import LoginHandler     # modified by ye
 from register import RegisterHandler
@@ -98,6 +99,7 @@ class Application(tornado.web.Application):
              (r"/trend/requestTrend", TrendrequestHandler),
              (r"/trend/commentTrend", TrendCmtHandler),
              (r"/trend/likeTrend", TrendlikeHandler),
+             (r"/community/creatQuestion", QuestioncreateHandler),
 
               # added by ye
              (r"/regist", RegisterHandler),
