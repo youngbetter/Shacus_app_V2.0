@@ -49,7 +49,7 @@ from TRends.TrendLike import TrendlikeHandler
 from Community.QuestionCreate import QuestioncreateHandler
 from Community.QuestionRequest import CQrequestHandler
 from Community.QuestionComment import CQCmtHandler
-
+from Community.QuestionLike import CQlikeHandler
 # added by ye
 from Login.login import LoginHandler
 from register import RegisterHandler
@@ -107,6 +107,7 @@ class Application(tornado.web.Application):
              (r"/community/creatQuestion", QuestioncreateHandler),
              (r"/community/requestQuestion", CQrequestHandler),
              (r"/community/commentQuestion", CQCmtHandler),
+             (r"/community/likeQuestion", CQlikeHandler),
 
              # added by ye
              (r"/regist", RegisterHandler),

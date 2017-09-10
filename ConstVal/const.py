@@ -72,3 +72,4 @@
 '''
 class Const(object):
     FAVORITE_TYPE_TREND = 3
+    FAVORITE_TYPE_QUESTION = 4
