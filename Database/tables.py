@@ -144,7 +144,7 @@ class CQcomment(Base):  #社区评论
 
     CQcmtid = Column(Integer, primary_key=True , nullable=False)
     CQcmtquesid = Column(Integer, ForeignKey("CommuQuestion.CQuesid", onupdate="CASCADE"))     #社区问题问题id
-    CQcmtcontent = Column(Text, nullable=False)
+    CQcmtcontent = Column(VARCHAR(128), nullable=False)
     CQcmtT = Column(DateTime(timezone=True), default=func.now())
     CQcmtvalid = Column(Boolean, nullable=False ,default=1)
 

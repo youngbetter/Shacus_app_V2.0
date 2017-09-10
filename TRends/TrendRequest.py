@@ -9,7 +9,7 @@ from sqlalchemy import desc
 from BaseHandler import BaseHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
-from Database.tables import Trend, TrendImage, Image, Favorite
+from Database.tables import Trend, TrendImage
 
 
 class TrendrequestHandler(BaseHandler):
