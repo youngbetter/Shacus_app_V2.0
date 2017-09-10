@@ -5,8 +5,6 @@
 @模块功能：创建问题评论
 '''
 import json
-import time
-from sqlalchemy import and_
 from BaseHandler import BaseHandler
 from Userinfo.Ufuncs import Ufuncs
 from Database.tables import CQcomment, CommuQuestion
