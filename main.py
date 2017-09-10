@@ -16,10 +16,10 @@ from Activity.ACentryHandler import AskEntry
 #from Appointment.APAskHandler import APaskHandler
 #from Appointment.APCreateHandler_new import APcreateHandler
 #from Appointment.APRegistHandler import APregistHandler
-from Appointment.APchatCreateHandler import APchatCreateHandler
+#from Appointment.APchatCreateHandler import APchatCreateHandler
 #from Appointment.APpraseHandler import APprase
-from Appointment.ApCompanionAuthHandler import AcAuthHandler
-from Appointment.ApCompanionHandler import ApCompanionHandler
+#from Appointment.ApCompanionAuthHandler import AcAuthHandler
+#from Appointment.ApCompanionHandler import ApCompanionHandler
 from Appointment.Ranklist import Ranklist
 from Database.models import engine
 from ImageCallback import ImageCallback
@@ -48,13 +48,16 @@ from TRends.TrendComment import TrendCmtHandler
 from TRends.TrendLike import TrendlikeHandler
 from Community.QuestionCreate import QuestioncreateHandler
 
-from Login.login import LoginHandler     # modified by ye
+# added by ye
+from Login.login import LoginHandler
 from register import RegisterHandler
 from Login.UserForgotPassword import ForgotPasswordHandler
 from Settings import PswChange
 from Appointment.GetList import GetListHandler
 from Appointment.APCreate import APCreateHandler
 from Appointment.APRegist import APRegistHandler
+from Appointment.APCompanion import ApCompanionHandler
+from Appointment.APCompanionAuth import AcAuthHandler
 
 
 define("port", default=800, help="run on the given port", type=int)
@@ -85,13 +88,13 @@ class Application(tornado.web.Application):
              #(r"/trend/Trendspost",TRendspost),
              #(r"/trend/Trendhanler",TrendHandler),
              (r"/ranklist", Ranklist),
-             (r"/appointment/chat",APchatCreateHandler),
+             #(r"/appointment/chat",APchatCreateHandler),
              (r"/Userinfo/imghandler",Userhpimg),
              (r"/Userinfo/CollectionHandler",UserCollectionHandler),
-             (r"/appointment/companion",ApCompanionHandler),
+             #(r"/appointment/companion",ApCompanionHandler),
              (r"/sysmessage",Sysmessage),
              (r"/recommend/reclist",UserList),
-             (r"/companion/getauth", AcAuthHandler),
+             #(r"/companion/getauth", AcAuthHandler),
              #(r"/user/forgotpw",Userforgotpw),
 
              #added by young
@@ -101,7 +104,7 @@ class Application(tornado.web.Application):
              (r"/trend/likeTrend", TrendlikeHandler),
              (r"/community/creatQuestion", QuestioncreateHandler),
 
-              # added by ye
+             # added by ye
              (r"/regist", RegisterHandler),
              (r"/login", LoginHandler),
              (r"/login/forgotpw", ForgotPasswordHandler),
@@ -109,6 +112,8 @@ class Application(tornado.web.Application):
              (r"/appointment/create", APCreateHandler),
              (r"/appointment/list", GetListHandler),
              (r"/appointment/regist", APRegistHandler),
+             (r"/appointment/companion", ApCompanionHandler),
+             (r"/companion/getauth", AcAuthHandler),
 
         ]
         tornado.web.Application.__init__(self, handlers)
