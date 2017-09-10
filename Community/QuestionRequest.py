@@ -4,7 +4,7 @@
 @模块功能：请求社区问题
 '''
 import json
-from sqlalchemy import desc
+from sqlalchemy import desc,and_
 
 from BaseHandler import BaseHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
@@ -27,8 +27,8 @@ class CQrequestHandler(BaseHandler):
             # 请求刷新所有问题，下拉
             if type == '85051':
                 try:
-                    questions = self.db.query(CommuQuestion).order_by(desc(CommuQuestion.CQtime)).limit(10).all()
-                    print questions[0].CQuesid
+                    questions = self.db.query(CommuQuestion).filter(CommuQuestion.CQvalid == 1)\
+                        .order_by(desc(CommuQuestion.CQtime)).limit(10).all()
                     cqimgurl = []
                     for question in questions:
                         imgs = self.db.query(CommuQuesImg).filter(CommuQuesImg.CQquesid == question.CQuesid).all()
@@ -48,7 +48,9 @@ class CQrequestHandler(BaseHandler):
                 try:
                     last_cqid = self.get_argument('lastid')
                     print last_cqid
-                    questions = self.db.query(CommuQuestion).filter(CommuQuestion.CQuesid < last_cqid).order_by(desc(CommuQuestion.CQtime)).limit(10).all()
+                    questions = self.db.query(CommuQuestion)\
+                        .filter(and_(CommuQuestion.CQuesid < last_cqid, CommuQuestion.CQvalid == 1))\
+                        .order_by(desc(CommuQuestion.CQtime)).limit(10).all()
                     cqimgurl = []
                     for question in questions:
                         imgs = self.db.query(CommuQuesImg).filter(CommuQuesImg.CQquesid == CommuQuestion.CQuesid).all()

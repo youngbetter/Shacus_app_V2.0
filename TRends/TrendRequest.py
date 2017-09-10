@@ -4,7 +4,7 @@
 @模块功能：请求动态
 '''
 import json
-from sqlalchemy import desc
+from sqlalchemy import desc, and_
 
 from BaseHandler import BaseHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
@@ -27,7 +27,8 @@ class TrendrequestHandler(BaseHandler):
             # 请求刷新所有动态，下拉
             if type == '85013':
                 try:
-                    trends = self.db.query(Trend).order_by(desc(Trend.TsponsT)).limit(1).all()
+                    trends = self.db.query(Trend).filter(Trend.Tvalid == 1)\
+                        .order_by(desc(Trend.TsponsT)).limit(1).all()
                     timgurl = []
                     for trend in trends:
                         imgs = self.db.query(TrendImage).filter(TrendImage.TItid == trend.Tid).all()
@@ -47,7 +48,9 @@ class TrendrequestHandler(BaseHandler):
                 try:
                     last_tid = self.get_argument('lasttid')
                     print last_tid
-                    trends = self.db.query(Trend).filter(Trend.Tid < last_tid).order_by(desc(Trend.TsponsT)).limit(10).all()
+                    trends = self.db.query(Trend)\
+                        .filter(and_(Trend.Tid < last_tid, Trend.Tvalid == 1))\
+                        .order_by(desc(Trend.TsponsT)).limit(10).all()
                     timgurl = []
                     for trend in trends:
                         imgs = self.db.query(TrendImage).filter(TrendImage.TItid == trend.Tid).all()
