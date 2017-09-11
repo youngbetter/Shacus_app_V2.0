@@ -54,6 +54,7 @@ from Community.QuestionCollect import CQCollectHandler
 
 from Collection.CollectionLike import CollLikeHandler
 from Collection.CollectionCreate import CollcreateHandler
+from Collection.CollectionRequest import CollrequestHandler
 # added by ye
 from Login.login import LoginHandler
 from register import RegisterHandler
@@ -116,7 +117,7 @@ class Application(tornado.web.Application):
              (r"/community/collectQuestion", CQCollectHandler),     #收藏问题
              (r"/collection/createCollect", CollcreateHandler),
              (r"/collection/likeCollection", CollLikeHandler),
-
+             (r"/collection/requestCollect", CollrequestHandler),
              # added by ye
              (r"/regist", RegisterHandler),
              (r"/login", LoginHandler),

@@ -126,6 +126,6 @@ class CQrequestHandler(BaseHandler):
             CQcontent=item.CQcontent,
             CQtitle=item.CQtitle,
             CQuimurl=authkey.download_url(item.CQuimurl),
-            CQimgurl=authkey.download_url(url),
+            CQimgurl=authkey.download_urls(url),
         )
         retdata.append(m_cqresponse)

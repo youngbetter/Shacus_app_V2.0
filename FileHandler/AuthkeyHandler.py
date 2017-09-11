@@ -48,6 +48,12 @@ class AuthKeyHandler:
         private_url =auth.private_download_url(base_url, expires=3600)
         return private_url
 
+    def download_urls(self, names):
+        private_urls = []
+        for name in names:
+            private_urls.append(self.download_url(name))
+        return private_urls
+
     def download_assign_url(self,name,width,heigh):
         auth = self.get_auth_key()
         bucket_domain = 'oci8c6557.bkt.clouddn.com'
