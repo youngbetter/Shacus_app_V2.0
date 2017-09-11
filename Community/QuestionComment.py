@@ -45,10 +45,10 @@ class CQCmtHandler(BaseHandler):
                             self.retjson['contents'] = '评论发表失败'
                     else:
                         self.retjson['code'] = '850614'
-                        self.retjson['contents'] = '要评论的动态不存在或已删除'
+                        self.retjson['contents'] = '要评论的问题不存在或已删除'
                 except Exception,e:
                     self.retjson['code'] = '850616'
-                    self.retjson['contents'] = '要评论的动态不存在或已删除'
+                    self.retjson['contents'] = '要评论的问题不存在或已删除'
             #删除动态评论
             elif type == '85063':
                 cqcmt_id = self.get_argument('cmtid')

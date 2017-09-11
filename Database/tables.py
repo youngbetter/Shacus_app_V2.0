@@ -151,11 +151,20 @@ class CQcomment(Base):  #社区评论
 class CQLike(Base):
     __tablename__ = 'CQLike'
 
-    CQLid = Column(Integer,primary_key=True)
+    CQLid = Column(Integer, primary_key=True)
     CQLquesid = Column(Integer, ForeignKey("CommuQuestion.CQuesid", onupdate="CASCADE"))     #社区问题问题id
-    CQLuid = Column(Integer,ForeignKey('User.Uid', onupdate='CASCADE'))
-    CQLvalid = Column(Boolean,nullable=False, default=1)
+    CQLuid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'))
+    CQLvalid = Column(Boolean, nullable=False, default=1)
     CQLT = Column(DateTime(timezone=True), default=func.now())
+
+class CQCollect(Base):
+    __tablename__ = 'CQCollect'
+
+    CQCollid = Column(Integer, primary_key=True)
+    CQColluid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'))
+    CQCollquesid = Column(Integer, ForeignKey("CommuQuestion.CQuesid", onupdate="CASCADE"))  # 社区问题问题id
+    CQCollvalid = Column(Boolean, nullable=False, default=1)
+    CQCollT = Column(DateTime(timezone=True), default=func.now())
 
 class Appointment(Base):  #摄影师-模特约拍
     __tablename__ = 'Appointment'

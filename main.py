@@ -50,6 +50,7 @@ from Community.QuestionCreate import QuestioncreateHandler
 from Community.QuestionRequest import CQrequestHandler
 from Community.QuestionComment import CQCmtHandler
 from Community.QuestionLike import CQlikeHandler
+from Community.QuestionCollect import CQCollectHandler
 # added by ye
 from Login.login import LoginHandler
 from register import RegisterHandler
@@ -108,6 +109,7 @@ class Application(tornado.web.Application):
              (r"/community/requestQuestion", CQrequestHandler),
              (r"/community/commentQuestion", CQCmtHandler),
              (r"/community/likeQuestion", CQlikeHandler),
+             (r"/community/collectQuestion", CQCollectHandler),
 
              # added by ye
              (r"/regist", RegisterHandler),
