@@ -61,6 +61,7 @@ from Appointment.APCreate import APCreateHandler
 from Appointment.APRegist import APRegistHandler
 from Appointment.APCompanion import ApCompanionHandler
 from Appointment.APCompanionAuth import AcAuthHandler
+from Collection.CollectionLike import CollectionLikeHandler
 
 
 define("port", default=800, help="run on the given port", type=int)
@@ -121,6 +122,7 @@ class Application(tornado.web.Application):
              (r"/appointment/regist", APRegistHandler),
              (r"/appointment/companion", ApCompanionHandler),
              (r"/companion/getauth", AcAuthHandler),
+             (r"/collection/like", CollectionLikeHandler)
 
         ]
         tornado.web.Application.__init__(self, handlers)
