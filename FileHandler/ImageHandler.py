@@ -4,7 +4,7 @@ import time
 from Database.models import get_db
 from Database.tables import UserImage, Image, AppointmentImage, \
     ActivityImage, CompanionImg, WApCompanionImage,CommuQuesImg,\
-    TrendImage
+    TrendImage, UserCollectionimg
 
 '''
  创建者：兰威 黄鑫晨
@@ -187,3 +187,25 @@ class ImageHandler(object):
                 db.commit()
             except Exception,e:
                 print "数据库操作：动态图片插入失败" + str(e)
+
+    def insert_collect_image(self, list, collect_id):   #插入作品集/个人照片
+        '''
+            Args:
+                list: 图片的名字的数组
+                trend_id: 作品集的id
+        Returns:
+        '''
+        imagehandler = ImageHandler()
+        imids = imagehandler.insert(list)
+        for i in range(len(imids)):
+            image = UserCollectionimg(
+                UCIuser=collect_id,
+                UCIimid=imids[i],
+                UCIurl=list[i],
+            )
+            try:
+                db = get_db()
+                db.merge(image)
+                db.commit()
+            except Exception, e:
+                print "数据库操作：作品图片插入失败" + str(e)

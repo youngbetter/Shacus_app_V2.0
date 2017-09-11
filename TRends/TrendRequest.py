@@ -28,7 +28,7 @@ class TrendrequestHandler(BaseHandler):
             if type == '85013':
                 try:
                     trends = self.db.query(Trend).filter(Trend.Tvalid == 1)\
-                        .order_by(desc(Trend.TsponsT)).limit(1).all()
+                        .order_by(desc(Trend.TsponsT)).limit(10).all()
                     timgurl = []
                     for trend in trends:
                         imgs = self.db.query(TrendImage).filter(TrendImage.TItid == trend.Tid).all()

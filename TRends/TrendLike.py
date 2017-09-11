@@ -79,4 +79,7 @@ class TrendlikeHandler(BaseHandler):
                 except Exception, e:
                     self.retjson['code'] = '850330'
                     self.retjson['contents'] = '没有点赞过'
+        else:
+            self.retjson['code'] = '850300'
+            self.retjson['contents'] = '用户认证失败'
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))

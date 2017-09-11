@@ -280,12 +280,13 @@ class UserCollection(Base): #用户作品集
     UCid = Column(Integer, primary_key=True,nullable=False)
     UCuid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'),nullable=False)
     UCcreateT = Column(DateTime(timezone=True), default=func.now())
-    UCtitle = Column(VARCHAR(32), nullable=False)   # 作品集名称
-    UCcontent = Column(VARCHAR(128))                # 作品集描述
-    UCvalid = Column(Integer, default=0)
+    #UCtitle = Column(VARCHAR(32), nullable=False)   # 作品集名称
+    #UCcontent = Column(VARCHAR(128))                # 作品集描述
+    UCvalid = Column(Integer, default=1)
     UCiscollection = Column(Integer, default=0)     # 0-作品集 1-动态
     UClikeN = Column(Integer, default=0)
-    UCcommentN = Column(Integer, default=0)
+    #UCcommentN = Column(Integer, default=0)
+    UCuimurl = Column(VARCHAR(128), nullable=False)
 
 class UserCollectionimg(Base):
     __tablename__ = 'UserCollectionimg'
@@ -293,7 +294,7 @@ class UserCollectionimg(Base):
     UCIuser = Column(Integer, ForeignKey(UserCollection.UCid, onupdate='CASCADE')) # 作品集id
     UCIimid = Column(Integer, ForeignKey(Image.IMid, onupdate='CASCADE'), primary_key=True)
     UCIurl = Column(VARCHAR(128))
-    UCIvalid = Column(Integer, nullable=False, default=0)
+    UCIvalid = Column(Integer, nullable=False, default=1)
     UCIheight = Column(Integer, default=0)
     UCIwidth = Column(Integer, default=0)
 

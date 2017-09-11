@@ -51,6 +51,9 @@ from Community.QuestionRequest import CQrequestHandler
 from Community.QuestionComment import CQCmtHandler
 from Community.QuestionLike import CQlikeHandler
 from Community.QuestionCollect import CQCollectHandler
+
+from Collection.CollectionLike import CollLikeHandler
+from Collection.CollectionCreate import CollcreateHandler
 # added by ye
 from Login.login import LoginHandler
 from register import RegisterHandler
@@ -61,7 +64,7 @@ from Appointment.APCreate import APCreateHandler
 from Appointment.APRegist import APRegistHandler
 from Appointment.APCompanion import ApCompanionHandler
 from Appointment.APCompanionAuth import AcAuthHandler
-from Collection.CollectionLike import CollectionLikeHandler
+#from Collection.CollectionLike import CollectionLikeHandler
 
 
 define("port", default=800, help="run on the given port", type=int)
@@ -106,11 +109,13 @@ class Application(tornado.web.Application):
              (r"/trend/requestTrend", TrendrequestHandler),
              (r"/trend/commentTrend", TrendCmtHandler),
              (r"/trend/likeTrend", TrendlikeHandler),
-             (r"/community/creatQuestion", QuestioncreateHandler),
-             (r"/community/requestQuestion", CQrequestHandler),
-             (r"/community/commentQuestion", CQCmtHandler),
-             (r"/community/likeQuestion", CQlikeHandler),
-             (r"/community/collectQuestion", CQCollectHandler),
+             (r"/community/createQuestion", QuestioncreateHandler), #创建问题
+             (r"/community/requestQuestion", CQrequestHandler),     #获取问题
+             (r"/community/commentQuestion", CQCmtHandler),         #评论问题
+             (r"/community/likeQuestion", CQlikeHandler),           #给问题点赞
+             (r"/community/collectQuestion", CQCollectHandler),     #收藏问题
+             (r"/collection/createCollect", CollcreateHandler),
+             (r"/collection/likeCollection", CollLikeHandler),
 
              # added by ye
              (r"/regist", RegisterHandler),
@@ -122,7 +127,7 @@ class Application(tornado.web.Application):
              (r"/appointment/regist", APRegistHandler),
              (r"/appointment/companion", ApCompanionHandler),
              (r"/companion/getauth", AcAuthHandler),
-             (r"/collection/like", CollectionLikeHandler)
+
 
         ]
         tornado.web.Application.__init__(self, handlers)
