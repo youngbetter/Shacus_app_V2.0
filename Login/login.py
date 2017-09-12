@@ -150,8 +150,8 @@ class LoginHandler(BaseHandler):
             data = dict(
                 userModel=user_model,
                 daohanglan=self.banner_init(),
-                CollectionList=retdata,  # 好友作品集
-                RecList=[],  # 推荐作品集
+                CollectionList=retdata,             # 好友作品集
+                RecList=[],                         # 推荐作品集
                 groupList=APgroupHandler.Group(),
             )
 

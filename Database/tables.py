@@ -285,7 +285,7 @@ class UserCollection(Base): #用户作品集
     #UCtitle = Column(VARCHAR(32), nullable=False)   # 作品集名称
     #UCcontent = Column(VARCHAR(128))                # 作品集描述
     UCvalid = Column(Integer, default=1)
-    UCiscollection = Column(Integer, default=0)     # 0-作品集 1-个人照片
+    UCiscollection = Column(Integer, default=1)     # 1-作品集 0-个人照片
     UClikeN = Column(Integer, default=0)
     #UCcommentN = Column(Integer, default=0)
     UCuimurl = Column(VARCHAR(128), nullable=False)

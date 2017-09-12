@@ -31,8 +31,24 @@ class CollcreateHandler(BaseHandler):
         #用户鉴权
         ufunc = Ufuncs()
         if ufunc.judge_user_valid(u_id, u_auth_key):
-            #创建作品集
+            #创建作品集，第一步，返回凭证
             if type == '85081':
+                coll_imgs = self.get_argument('imgs')
+                print coll_imgs
+                try:
+                    tr_imgs_json = json.loads(coll_imgs)
+                    print tr_imgs_json
+                    if tr_imgs_json:
+                        retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
+                        self.retjson['code'] = '850810'
+                        self.retjson['contents'] = retjson_body
+                except Exception, e:
+                    print "生成凭证失败"
+                    self.retjson['code'] = '850812'
+                    self.retjson['contents'] = '生成凭证失败'
+
+            #第二步，存储图片
+            elif type == '85082':
                 coll_imgs = self.get_argument('imgs')
                 try:
                     # query.one()/all()
@@ -47,29 +63,22 @@ class CollcreateHandler(BaseHandler):
                             UCualais=alais,
                         )
                         self.db.merge(new_coll)
-                        #存储图片
+                        self.db.commit()
                         try:
-                            self.db.commit()
                             tr_imgs_json = json.loads(coll_imgs)
-                            if tr_imgs_json:
-                                print "uid:"+u_id
-                                coll = self.db.query(UserCollection).filter(UserCollection.UCuid == u_id).all()
-                                imghandler.insert_collect_image(tr_imgs_json, coll[-1].UCid)
-                                self.retjson['code'] = '850810'
-                                retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
-                                self.retjson['contents'] = retjson_body
-                        except Exception, e:
-                            print "作品集图片插入失败"
-                            self.retjson['code'] = '850812'
+                            coll = self.db.query(UserCollection).filter(UserCollection.UCuid == u_id).all()
+                            imghandler.insert_collect_image(tr_imgs_json, coll[-1].UCid)
+                            self.retjson['code'] = '850820'
+                            self.retjson['contents'] = '作品集发布成功'
+                        except Exception,e:
+                            self.retjson['code'] = '850826'
                             self.retjson['contents'] = '作品集图片插入失败'
                     except Exception,e:
-                        print "作品集发表失败"
-                        self.retjson['code'] = '850814'
-                        self.retjson['contents'] = '作品集发表失败'
+                        self.retjson['code'] = '850822'
+                        self.retjson['contents'] = '作品集内容插入失败'
                 except Exception,e:
-                    print "用户头像图片获取失败"
-                    self.retjson['code'] = '850816'
-                    self.retjson['contents'] = '用户头像图片获取失败'
+                    self.retjson['code'] = '850824'
+                    self.retjson['contents'] = '用户头像或昵称获取失败'
 
             # 删除作品集
             elif type == '85083':
@@ -88,8 +97,45 @@ class CollcreateHandler(BaseHandler):
                     self.retjson['code'] = '850834'
                     self.retjson['contents'] = r"此作品不存在"
 
+            #发布个人照片
             elif type == '85085':
-                pass
+                private_imgs = self.get_argument('imgs')
+                try:
+                    # query.one()/all()
+                    userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
+                    uheadimg = userImg.UIurl
+                    user = self.db.query(User).filter(User.Uid == u_id).one()
+                    alais = user.Ualais
+                    try:
+                        new_private = UserCollection(
+                            UCuid=u_id,
+                            UCuimurl=uheadimg,
+                            UCualais=alais,
+                            UCiscollection=0,
+                        )
+                        self.db.merge(new_private)
+                        # 存储图片
+                        try:
+                            self.db.commit()
+                            tr_imgs_json = json.loads(private_imgs)
+                            if tr_imgs_json:
+                                pri = self.db.query(UserCollection).filter(UserCollection.UCuid == u_id).all()
+                                imghandler.insert_collect_image(tr_imgs_json, pri[-1].UCid)
+                                self.retjson['code'] = '850850'
+                                retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
+                                self.retjson['contents'] = retjson_body
+                        except Exception, e:
+                            print "作品集图片插入失败"
+                            self.retjson['code'] = '850852'
+                            self.retjson['contents'] = '个人图片插入失败'
+                    except Exception, e:
+                        print "作品集发表失败"
+                        self.retjson['code'] = '850854'
+                        self.retjson['contents'] = '个人图片发表失败'
+                except Exception, e:
+                    print "用户头像图片获取失败"
+                    self.retjson['code'] = '850856'
+                    self.retjson['contents'] = '用户头像图片获取失败'
         else:
             self.retjson['code'] = '850800'
             self.retjson['contents'] = '用户验证失败'

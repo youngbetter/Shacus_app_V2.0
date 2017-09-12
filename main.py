@@ -106,10 +106,10 @@ class Application(tornado.web.Application):
              #(r"/user/forgotpw",Userforgotpw),
 
              #added by young
-             (r"/trend/creatTrend", TrendcreateHandler),
-             (r"/trend/requestTrend", TrendrequestHandler),
-             (r"/trend/commentTrend", TrendCmtHandler),
-             (r"/trend/likeTrend", TrendlikeHandler),
+             (r"/trend/creatTrend", TrendcreateHandler),            #创建动态
+             (r"/trend/requestTrend", TrendrequestHandler),         #请求动态
+             (r"/trend/commentTrend", TrendCmtHandler),             #评论动态
+             (r"/trend/likeTrend", TrendlikeHandler),               #动态点赞
              (r"/community/createQuestion", QuestioncreateHandler), #创建问题
              (r"/community/requestQuestion", CQrequestHandler),     #获取问题
              (r"/community/commentQuestion", CQCmtHandler),         #评论问题

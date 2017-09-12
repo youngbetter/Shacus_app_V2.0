@@ -1,6 +1,7 @@
 # coding=utf-8
 import time
 
+from sqlalchemy import and_
 from Database.models import get_db
 from Database.tables import UserImage, Image, User, UserCollectionimg, UserCollection
 from FileHandler.ImageHandler import ImageHandler
@@ -29,13 +30,24 @@ def userinfo_smply(u_info, u_change_info):
         if exist:
             userimg = user_headimage
             break
-    ret_info = {'uid': u_info.Uid, 'ualais': u_info.Ualais, 'ulocation': u_info.Ulocation,
-                     'utel': u_info.Utel, 'uname': u_info.Uname, 'umailbox': u_info.Umailbox,
-                     'ubirthday': u_info.Ubirthday.strftime('%Y-%m-%d %H:%M:%S'), 'uscore': u_info.Uscore, 'usex': u_info.Usex,
-                     'usign': u_info.Usign, 'uimage': auth.download_assign_url(userimg.UIurl, 200, 200), 'ulikeN': u_change_info.UClikeN,
-                     'ulikedN': u_change_info.UClikedN, 'uapN': u_change_info.UCapN,
-                     'uphotoN': u_change_info.UCphotoN, 'ucourseN': u_change_info.UCcourseN,
-                     'umomentN': u_change_info.UCmomentN}
+    ret_info = {
+        'uid': u_info.Uid,
+        'ualais': u_info.Ualais,
+        'ulocation': u_info.Ulocation,
+        'utel': u_info.Utel,
+        'uname': u_info.Uname,
+        'umailbox': u_info.Umailbox,
+        'ubirthday': u_info.Ubirthday.strftime('%Y-%m-%d %H:%M:%S'),
+        'uscore': u_info.Uscore, 'usex': u_info.Usex,
+        'usign': u_info.Usign,
+        'uimage': auth.download_assign_url(userimg.UIurl, 200, 200),
+        'ulikeN': u_change_info.UClikeN,
+        'ulikedN': u_change_info.UClikedN,
+        'uapN': u_change_info.UCapN,
+        'uphotoN': u_change_info.UCphotoN,
+        'ucourseN': u_change_info.UCcourseN,
+        'umomentN': u_change_info.UCmomentN
+    }
     return ret_info
 
 def Model_daohanglan(imgurl,weburl):
@@ -98,7 +110,9 @@ def rec_user_list(user):
         imghandler= AuthKeyHandler()
         uhead_pic = get_db().query(UserImage).filter(UserImage.UIuid == user.Uid).all()
         # 该用户的所有作品集
-        uc_list = get_db().query(UserCollection).filter(UserCollection.UCuser == user.Uid).all()
+        # modified by young
+        uc_list = get_db().query(UserCollection)\
+            .filter(and_(UserCollection.UCuser == user.Uid, UserCollection.UCiscollection == 1)).all()
         # 用户第一个作品集所有图片
         print uc_list[0].UCid
         uc_pic = get_db().query(UserCollectionimg).filter(UserCollectionimg.UCIuser == uc_list[0].UCid).all()
@@ -111,17 +125,17 @@ def rec_user_list(user):
         now = time.strftime('%Y', time.localtime(time.time()))  # 获取当前年份
         user_age = int(now) - int(user_bir)  # 用户年龄
         usermodel = dict(
-            id=user.Uid,  # 用户id
-            phone=user.Utel,  # 用户手机号
-            nickName=user.Ualais,  # 用户名
-            age=user_age,  # 用户年龄
-            sex=int(user.Usex),  # 用户性别
-            Ucategory=user.Ucategory,    # 用户类型
+            id=user.Uid,                # 用户id
+            phone=user.Utel,            # 用户手机号
+            nickName=user.Ualais,       # 用户名
+            age=user_age,               # 用户年龄
+            sex=int(user.Usex),         # 用户性别
+            Ucategory=user.Ucategory,   # 用户类型
         )
         user_model = dict(
             userpublish=usermodel,
-            headimg=imghandler.download_url(uhead_pic[-1].UIurl),      # 用户头像
-            UcFirstimg=imghandler.download_originpic_url(uc_pic[0].UCIurl),          # 作品集第一张
+            headimg=imghandler.download_url(uhead_pic[-1].UIurl),                       # 用户头像
+            UcFirstimg=imghandler.download_originpic_url(uc_pic[0].UCIurl),             # 作品集第一张
             Ucimg=piclist,
         )
         return user_model

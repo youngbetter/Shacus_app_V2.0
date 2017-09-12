@@ -34,11 +34,24 @@ class TrendcreateHandler(BaseHandler):
         if ufunc.judge_user_valid(u_id,u_auth_key):
             #发表动态
             if type == '85001':
+                tr_imgs = self.get_argument('imgs')
+                try:
+                    tr_imgs_json = json.loads(tr_imgs)
+                    if tr_imgs_json:
+                        retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
+                        self.retjson['code'] = '850010'
+                        self.retjson['contents'] = retjson_body
+                except Exception, e:
+                    print "生成凭证失败"
+                    self.retjson['code'] = '850012'
+                    self.retjson['contents'] = r"生成凭证失败"
+
+            #第二步，存储图片
+            elif type == '85002':
                 tr_title = self.get_argument('title')
                 tr_content = self.get_argument('content')
                 tr_imgs = self.get_argument('imgs')
                 try:
-                    # query.one()/all()
                     userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).all()
                     uheadimg = userImg[0].UIurl
                     print uheadimg
@@ -54,28 +67,24 @@ class TrendcreateHandler(BaseHandler):
                         )
                         self.db.merge(new_trend)
                         self.db.commit()
-                        #存储图片
                         try:
                             tr_imgs_json = json.loads(tr_imgs)
-                            if tr_imgs_json:
-                                trend = self.db.query(Trend).filter(Trend.Tcontent == tr_content).order_by(desc(Trend.TsponsT)).all()
-                                tr_id = trend[0].Tid
-                                self.retjson['code'] = '850010'
-                                imghandler.insert_trend_image(tr_imgs_json,tr_id)
-                                retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
-                                self.retjson['contents'] = retjson_body
-                        except Exception, e:
-                            print "动态图片插入失败"
-                            self.retjson['code'] = '850012'
+                            trend = self.db.query(Trend).filter(Trend.Tcontent == tr_content).order_by(desc(Trend.TsponsT)).all()
+                            tr_id = trend[0].Tid
+                            imghandler.insert_trend_image(tr_imgs_json, tr_id)
+                            self.retjson['code'] = '850020'
+                            self.retjson['contents'] = r"动态发表成功"
+                        except Exception,e:
+                            self.retjson['code'] = '850022'
                             self.retjson['contents'] = r"动态图片插入失败"
                     except Exception,e:
-                        print "动态发表失败"
-                        self.retjson['code'] = '850014'
+                        self.retjson['code'] = '850024'
                         self.retjson['contents'] = r"动态发表失败"
                 except Exception,e:
                     print "用户头像图片获取失败"
-                    self.retjson['code'] = '850016'
-                    self.retjson['contents'] = r"用户头像图片获取失败"
+                    self.retjson['code'] = '850026'
+                    self.retjson['contents'] = r"用户头像或昵称获取失败"
+
             #删除动态
             elif type == '85003':
                 tr_id = self.get_argument('tid')

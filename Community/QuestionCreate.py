@@ -31,6 +31,20 @@ class QuestioncreateHandler(BaseHandler):
         ufunc = Ufuncs()
         if ufunc.judge_user_valid(u_id, u_auth_key):
             if type == '85041':
+                cq_imgs = self.get_argument('imgs')
+                #生成凭证
+                try:
+                    tr_imgs_json = json.loads(cq_imgs)
+                    if tr_imgs_json:
+                        retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
+                        self.retjson['code'] = '850410'
+                        self.retjson['contents'] = retjson_body
+                except Exception, e:
+                    print "生成凭证失败"
+                    self.retjson['code'] = '850012'
+                    self.retjson['contents'] = r"生成凭证失败"
+
+            elif type == '85042':
                 cq_title = self.get_argument('title')
                 cq_content = self.get_argument('content')
                 cq_imgs = self.get_argument('imgs')
@@ -50,30 +64,29 @@ class QuestioncreateHandler(BaseHandler):
                             CQualais=alais,
                         )
                         self.db.merge(new_cq)
-                        #存储图片
+                        self.db.commit()
                         try:
-                            self.db.commit()
                             tr_imgs_json = json.loads(cq_imgs)
                             if tr_imgs_json:
-                                question = self.db.query(CommuQuestion).\
-                                    filter(and_(CommuQuestion.CQcontent == cq_content, CommuQuestion.CQuid == u_id))\
+                                question = self.db.query(CommuQuestion). \
+                                    filter(and_(CommuQuestion.CQcontent == cq_content, CommuQuestion.CQuid == u_id)) \
                                     .order_by(desc(CommuQuestion.CQtime)).one()
                                 cq_id = question.CQuesid
                                 imghandler.insert_commuques_image(tr_imgs_json, cq_id)
-                                self.retjson['code'] = '850410'
+                                self.retjson['code'] = '850420'
                                 retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
                                 self.retjson['contents'] = retjson_body
-                        except Exception, e:
+                        except Exception,e:
                             print "社区问题图片插入失败"
-                            self.retjson['code'] = '850412'
+                            self.retjson['code'] = '850422'
                             self.retjson['contents'] = '社区问题图片插入失败'
                     except Exception,e:
                         print "社区问题发表失败"
-                        self.retjson['code'] = '850414'
+                        self.retjson['code'] = '850424'
                         self.retjson['contents'] = '社区问题发表失败'
-                except Exception,e:
+                except Exception, e:
                     print "用户头像图片获取失败"
-                    self.retjson['code'] = '850416'
+                    self.retjson['code'] = '850426'
                     self.retjson['contents'] = '用户头像图片获取失败'
 
             # 删除动态

@@ -26,7 +26,8 @@ class CollrequestHandler(BaseHandler):
             # 请求刷新所有作品，下拉
             if type == '85101':
                 try:
-                    colls = self.db.query(UserCollection).filter(UserCollection.UCvalid == 1)\
+                    colls = self.db.query(UserCollection)\
+                        .filter(and_(UserCollection.UCvalid == 1, UserCollection.UCiscollection == 1))\
                         .order_by(desc(UserCollection.UCcreateT)).limit(10).all()
                     ucimgurl = []
                     for coll in colls:
@@ -48,7 +49,7 @@ class CollrequestHandler(BaseHandler):
                     last_ucid = self.get_argument('lastid')
                     print last_ucid
                     colls = self.db.query(UserCollection)\
-                        .filter(and_(UserCollection.UCid < last_ucid, UserCollection.UCvalid == 1))\
+                        .filter(and_(UserCollection.UCid < last_ucid, UserCollection.UCvalid == 1, UserCollection.UCiscollection == 1))\
                         .order_by(desc(UserCollection.UCcreateT)).limit(10).all()
                     ucimgurl = []
                     for coll in colls:
@@ -63,6 +64,24 @@ class CollrequestHandler(BaseHandler):
                 except Exception, e:
                     self.retjson['code'] = '851032'
                     self.retjson['contents'] = '作品集加载失败'
+
+            #请求个人照片
+            elif type == '85105':
+                try:
+                    privites = self.db.query(UserCollection)\
+                        .filter(and_(UserCollection.UCuid == u_id, UserCollection.UCiscollection == 0, UserCollection.UCvalid == 1)).all()
+                    priimgs = []
+                    for privite in privites:
+                        imgs = self.db.query(UserCollectionimg).filter(UserCollectionimg.UCIuser == privite.UCid).all()
+                        for img in imgs:
+                            priimgs.append(img.UCIurl)
+                        self.response_one(privite, priimgs, retdata)
+                        priimgs = []
+                        self.retjson['code'] = '851050'
+                        self.retjson['contents'] = retdata
+                except Exception,e:
+                    self.retjson['code'] = '851052'
+                    self.retjson['contents'] = '个人照片加载失败'
         else:
             self.retjson['code'] = '851000'
             self.retjson['contents'] = '用户认证失败'
