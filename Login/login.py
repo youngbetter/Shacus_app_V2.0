@@ -78,22 +78,21 @@ class LoginHandler(BaseHandler):
         self.finish()
 
     # 加载主页推荐活动照片
-    
-    @asynchronous
-    @gen.coroutine
+
+    #@asynchronous
+    #@gen.coroutine
     def banner_init(self):
         from FileHandler.AuthkeyHandler import AuthKeyHandler
         banner_tokens = []
-
         authkeyhandler = AuthKeyHandler()
         banner1 = authkeyhandler.download_url("banner/banner1.jpg")
         banner2 = authkeyhandler.download_url("banner/banner2.jpg")
         banner3 = authkeyhandler.download_url("banner/banner3.jpg")
         banner4 = authkeyhandler.download_url("banner/banner4.jpg")
-        banner_json1 = {'img_url': banner1, 'web_url': "http://www.baidu.cn/"}
-        banner_json2 = {'img_url': banner2, 'web_url': "http://www.baidu.cn/"}
-        banner_json3 = {'img_url': banner3, 'web_url': "http://www.baidu.cn/"}
-        banner_json4 = {'img_url': banner4, 'web_url': "http://www.baidu.cn/"}
+        banner_json1 = {'img_url': banner1, 'web_url': "http://www.baidu.com/"}
+        banner_json2 = {'img_url': banner2, 'web_url': "http://www.baidu.com/"}
+        banner_json3 = {'img_url': banner3, 'web_url': "http://www.baidu.com/"}
+        banner_json4 = {'img_url': banner4, 'web_url': "http://www.baidu.com/"}
         banner_tokens.append(banner_json1)
         banner_tokens.append(banner_json2)
         banner_tokens.append(banner_json3)
@@ -121,7 +120,7 @@ class LoginHandler(BaseHandler):
             ap_model_handler.ap_Model_simply(model_list_all, model_list)
             data = dict(
                 userModel=user_model,
-                daohanglan=self.banner_init(),
+                bannerList=self.banner_init(),
                 photoList=photo_list,
                 modelList=model_list,
             )
