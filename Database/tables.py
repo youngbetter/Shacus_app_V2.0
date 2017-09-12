@@ -132,12 +132,13 @@ class CommuQuestion(Base):  #社区问题
     CQuesid = Column(Integer, primary_key=True , nullable=False)
     CQuid = Column(Integer, ForeignKey("User.Uid", onupdate="CASCADE")) #提出者id
     CQuimurl = Column(VARCHAR(128),nullable=False)
+    CQualais = Column(VARCHAR(24), ForeignKey('User.Ualais', onupdate='CASCADE'),nullable=False)    #新增
     CQtitle = Column(VARCHAR(128), nullable=False)
-    CQcontent = Column(Text, nullable=False)
+    CQcontent = Column(VARCHAR(128), nullable=False)
     CQtime = Column(DateTime(timezone=True), default=func.now())
     CQvalid = Column(Boolean, nullable=False, default=1)
     CQlikedN = Column(Integer, nullable=False, default=0)               #获赞数
-    CQcommentN = Column(Integer, nullable=False, default=0)               #评论数
+    CQcommentN = Column(Integer, nullable=False, default=0)             #评论数
 
 class CQcomment(Base):  #社区评论
     __tablename__="CQcomment"
@@ -242,6 +243,7 @@ class Trend(Base):
     Tid = Column(Integer, nullable=False, primary_key=True, autoincrement=True)
     Tsponsorid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'))  # 用户id
     Tsponsorimg = Column(VARCHAR(128), nullable=False)                                          # 用户头像
+    Tualais = Column(VARCHAR(24), ForeignKey('User.Ualais', onupdate='CASCADE'), nullable=False)# 新增
     TsponsT = Column(DateTime(timezone=True), default=func.now())                               # 时间
     TcommentN = Column(Integer,nullable=False, default=0)                                       # 评论数
     TlikeN =Column(Integer,nullable=False, default=0)                                           # 点赞数
@@ -283,10 +285,11 @@ class UserCollection(Base): #用户作品集
     #UCtitle = Column(VARCHAR(32), nullable=False)   # 作品集名称
     #UCcontent = Column(VARCHAR(128))                # 作品集描述
     UCvalid = Column(Integer, default=1)
-    UCiscollection = Column(Integer, default=0)     # 0-作品集 1-动态
+    UCiscollection = Column(Integer, default=0)     # 0-作品集 1-个人照片
     UClikeN = Column(Integer, default=0)
     #UCcommentN = Column(Integer, default=0)
     UCuimurl = Column(VARCHAR(128), nullable=False)
+    UCualais = Column(VARCHAR(24), ForeignKey('User.Ualais', onupdate='CASCADE'), nullable=False)  # 新增
 
 class UserCollectionimg(Base):
     __tablename__ = 'UserCollectionimg'

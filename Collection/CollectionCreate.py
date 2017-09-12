@@ -38,10 +38,13 @@ class CollcreateHandler(BaseHandler):
                     # query.one()/all()
                     userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
                     uheadimg = userImg.UIurl
+                    user = self.db.query(User).filter(User.Uid == u_id).one()
+                    alais = user.Ualais
                     try:
                         new_coll = UserCollection(
                             UCuid=u_id,
-                            UCuimurl=uheadimg
+                            UCuimurl=uheadimg,
+                            UCualais=alais,
                         )
                         self.db.merge(new_coll)
                         #存储图片
@@ -84,6 +87,9 @@ class CollcreateHandler(BaseHandler):
                 except Exception, e:
                     self.retjson['code'] = '850834'
                     self.retjson['contents'] = r"此作品不存在"
+
+            elif type == '85085':
+                pass
         else:
             self.retjson['code'] = '850800'
             self.retjson['contents'] = '用户验证失败'

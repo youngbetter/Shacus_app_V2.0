@@ -26,7 +26,7 @@ class CQCmtHandler(BaseHandler):
                     print "1"
                     question = self.db.query(CommuQuestion).filter(CommuQuestion.CQuesid == cq_id).one()
                     print question.CQuesid
-                    #相应动态存在并且有效
+                    #相应问题存在并且有效
                     if question.CQvalid == True:
                         try:
                             new_CQcmt = CQcomment(
@@ -49,7 +49,7 @@ class CQCmtHandler(BaseHandler):
                 except Exception,e:
                     self.retjson['code'] = '850616'
                     self.retjson['contents'] = '要评论的问题不存在或已删除'
-            #删除动态评论
+            #删除问题评论
             elif type == '85063':
                 cqcmt_id = self.get_argument('cmtid')
                 try:

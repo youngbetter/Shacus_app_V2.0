@@ -9,7 +9,7 @@ from sqlalchemy import desc, and_
 from BaseHandler import BaseHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
-from Database.tables import CommuQuestion, CommuQuesImg, CQCollect
+from Database.tables import CommuQuestion, CommuQuesImg, CQCollect, CQcomment
 
 
 class CQrequestHandler(BaseHandler):
@@ -94,8 +94,8 @@ class CQrequestHandler(BaseHandler):
                     # 筛选
                     # 获取每个用户收藏的所有问题
                     colls = self.db.query(CQCollect) \
-                        .filter(and_(CQCollect.CQColluid == u_id, CQCollect.CQCollvalid == 1, CQCollect.CQCollid < last_collid)).order_by(
-                        desc(CQCollect.CQCollT)).limit(10).all()
+                        .filter(and_(CQCollect.CQColluid == u_id, CQCollect.CQCollvalid == 1, CQCollect.CQCollid < last_collid))\
+                        .order_by(desc(CQCollect.CQCollT)).limit(10).all()
                     cqimgurl = []
                     for coll in colls:
                         question = self.db.query(CommuQuestion) \
@@ -110,6 +110,45 @@ class CQrequestHandler(BaseHandler):
                 except Exception, e:
                     self.retjson['code'] = '850572'
                     self.retjson['contents'] = '收藏问题加载失败'
+
+            #请求问题模型
+            elif type == '85059':
+                cq_id = self.get_argument('cqid')
+                try:
+                    question = self.db.query(CommuQuestion).filter(CommuQuestion.CQuesid == cq_id).one()
+                    imgs = self.db.query(CommuQuesImg).filter(CommuQuesImg.CQquesid == question.CQuesid).all()
+                    cqimgurl = []
+                    for img in imgs:
+                        cqimgurl.append(img.CQimurl)
+                    self.response_one(question, cqimgurl, retdata)
+                    try:
+                        comments = self.db.query(CQcomment)\
+                            .filter(and_(CQcomment.CQcmtquesid == cq_id, CQcomment.CQcmtvalid == 1))\
+                            .order_by(desc(CQcomment.CQcmtT)).limit(10).all()
+                        if comments:
+                            print "in comment"
+                            for comment in comments:
+                                cmt = dict(
+                                    CQcmtid=comment.CQcmtid,            #评论id
+                                    CQcmtquesid=comment.CQcmtquesid,    #评论对应id
+                                    CQcmtcontent=comment.CQcmtcontent,  #评论内容
+                                    CQcmtT=comment.CQcmtT.strftime('%Y-%m-%dT%H:%M:%S'),             #评论时间
+                                    CQcmtvalid=comment.CQcmtvalid,      #评论是否有效
+                                )
+                                retdata.append(cmt)
+                            self.retjson['code'] = '850590'
+                            self.retjson['contents'] = retdata
+                        else:
+                            print "毫无评论"
+                            self.retjson['code'] = '850596'
+                            self.retjson['contents'] = retdata
+                    except Exception,e:
+                        self.retjson['code'] = '850592'
+                        self.retjson['contents'] = r"暂无评论"
+                        self.retjson['contents'] = retdata
+                except Exception,e:
+                    self.retjson['code'] = '850594'
+                    self.retjson['contents'] = r"问题查找失败"
         else:
             self.retjson['code'] = '850500'
             self.retjson['contents'] = '用户认证失败'
@@ -118,14 +157,15 @@ class CQrequestHandler(BaseHandler):
     def response_one(self, item, url, retdata):
         authkey = AuthKeyHandler()
         m_cqresponse = dict(
-            CQuesid=item.CQuesid,
-            CQuid=item.CQuid,
-            CQtime=item.CQtime.strftime('%Y-%m-%dT%H:%M:%S'),
-            CQcommentN=item.CQcommentN,
-            TliCQlikedNkeN=item.CQlikedN,
-            CQcontent=item.CQcontent,
-            CQtitle=item.CQtitle,
-            CQuimurl=authkey.download_url(item.CQuimurl),
-            CQimgurl=authkey.download_urls(url),
+            CQuesid=item.CQuesid,                               #问题id
+            CQuid=item.CQuid,                                   #用户id
+            CQtime=item.CQtime.strftime('%Y-%m-%dT%H:%M:%S'),   #问题创建时间
+            CQcommentN=item.CQcommentN,                         #问题评论数
+            CQlikedN=item.CQlikedN,                             #问题点赞数
+            CQcontent=item.CQcontent,                           #问题内容
+            CQtitle=item.CQtitle,                               #问题标题
+            CQuimurl=authkey.download_url(item.CQuimurl),       #用户头像url
+            CQuname=item.CQualais,                              #用户昵称
+            CQimgurl=authkey.download_urls(url),                #问题图片urls
         )
         retdata.append(m_cqresponse)

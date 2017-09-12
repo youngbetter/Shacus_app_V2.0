@@ -81,5 +81,6 @@ class TrendrequestHandler(BaseHandler):
             Ttitle=item.Ttitle,
             Tsponsorimg=authkey.download_url(item.Tsponsorimg),
             TIimgurl=authkey.download_urls(url),
+            Tualais=item.Tualais,
         )
         retdata.append(m_trresponse)

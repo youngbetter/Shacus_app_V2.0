@@ -42,12 +42,15 @@ class TrendcreateHandler(BaseHandler):
                     userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).all()
                     uheadimg = userImg[0].UIurl
                     print uheadimg
+                    user = self.db.query(User).filter(User.Uid == u_id).one()
+                    alais = user.Ualais
                     try:
                         new_trend = Trend(
                             Tsponsorid=u_id,
                             Tsponsorimg=uheadimg,
                             Ttitle=tr_title,
-                            Tcontent=tr_content
+                            Tcontent=tr_content,
+                            Tualais=alais,
                         )
                         self.db.merge(new_trend)
                         self.db.commit()

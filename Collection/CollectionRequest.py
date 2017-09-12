@@ -23,7 +23,7 @@ class CollrequestHandler(BaseHandler):
         u_auth_key = self.get_argument('authkey', default='null')
         ufunc = Ufuncs()
         if ufunc.judge_user_valid(u_id, u_auth_key):  # 认证成功
-            # 请求刷新所有动态，下拉
+            # 请求刷新所有作品，下拉
             if type == '85101':
                 try:
                     colls = self.db.query(UserCollection).filter(UserCollection.UCvalid == 1)\
@@ -78,5 +78,6 @@ class CollrequestHandler(BaseHandler):
             UClikeN=item.UClikeN,
             UCuimurl=authkey.download_url(item.UCuimurl),
             UCIurl=authkey.download_urls(url),
+            UCualais=item.UCualais,
         )
         retdata.append(m_collresponse)

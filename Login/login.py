@@ -82,7 +82,7 @@ class LoginHandler(BaseHandler):
     @asynchronous
     @gen.coroutine
     def banner_init(self):
-        from FileHandler.Upload import AuthKeyHandler
+        from FileHandler.AuthkeyHandler import AuthKeyHandler
         banner_tokens = []
 
         authkeyhandler = AuthKeyHandler()
@@ -90,10 +90,10 @@ class LoginHandler(BaseHandler):
         banner2 = authkeyhandler.download_url("banner/banner2.jpg")
         banner3 = authkeyhandler.download_url("banner/banner3.jpg")
         banner4 = authkeyhandler.download_url("banner/banner4.jpg")
-        banner_json1 = {'img_url': banner1, 'web_url': "http://www.shacus.cn/"}
-        banner_json2 = {'img_url': banner2, 'web_url': "http://www.shacus.cn/"}
-        banner_json3 = {'img_url': banner3, 'web_url': "http://www.shacus.cn/"}
-        banner_json4 = {'img_url': banner4, 'web_url': "http://www.shacus.cn/"}
+        banner_json1 = {'img_url': banner1, 'web_url': "http://www.baidu.cn/"}
+        banner_json2 = {'img_url': banner2, 'web_url': "http://www.baidu.cn/"}
+        banner_json3 = {'img_url': banner3, 'web_url': "http://www.baidu.cn/"}
+        banner_json4 = {'img_url': banner4, 'web_url': "http://www.baidu.cn/"}
         banner_tokens.append(banner_json1)
         banner_tokens.append(banner_json2)
         banner_tokens.append(banner_json3)
@@ -128,7 +128,7 @@ class LoginHandler(BaseHandler):
             # todo 待生成真的导航栏
 
             retdata.append(data)
-            self.retjson['code'] = '101444444441'
+            self.retjson['code'] = '10111'
             self.retjson['contents'] = retdata
         except Exception, e:
             print '异常：', e

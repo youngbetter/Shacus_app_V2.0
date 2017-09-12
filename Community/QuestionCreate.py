@@ -38,13 +38,16 @@ class QuestioncreateHandler(BaseHandler):
                     # query.one()/all()
                     userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
                     uheadimg = userImg.UIurl
+                    user = self.db.query(User).filter(User.Uid == u_id).one()
+                    alais = user.Ualais
                     print uheadimg
                     try:
                         new_cq = CommuQuestion(
                             CQuid=u_id,
                             CQtitle=cq_title,
                             CQcontent=cq_content,
-                            CQuimurl=uheadimg
+                            CQuimurl=uheadimg,
+                            CQualais=alais,
                         )
                         self.db.merge(new_cq)
                         #存储图片
