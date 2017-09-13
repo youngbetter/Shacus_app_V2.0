@@ -5,11 +5,11 @@
 '''
 import json
 from sqlalchemy import desc, and_
-
+from ConstVal.const import Const
 from BaseHandler import BaseHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
-from Database.tables import CommuQuestion, CommuQuesImg, CQCollect, CQcomment
+from Database.tables import CommuQuestion, CommuQuesImg, CQCollect, CQcomment, Favorite
 
 
 class CQrequestHandler(BaseHandler):
@@ -156,6 +156,19 @@ class CQrequestHandler(BaseHandler):
 
     def response_one(self, item, url, retdata):
         authkey = AuthKeyHandler()
+        flag = 0
+        try:
+            isCollect = self.db.query(CQCollect)\
+                .filter(and_(CQCollect.CQColluid == item.CQuid,
+                             CQCollect.CQCollquesid == item.CQuesid,)).one()
+            flag = isCollect.CQCollvalid
+            if flag == True:
+                flag = 1
+            else:
+                flag = 0
+        except Exception,e:
+            print e
+            print "没有收藏记录"
         m_cqresponse = dict(
             CQuesid=item.CQuesid,                               #问题id
             CQuid=item.CQuid,                                   #用户id
@@ -167,5 +180,6 @@ class CQrequestHandler(BaseHandler):
             CQuimurl=authkey.download_url(item.CQuimurl),       #用户头像url
             CQuname=item.CQualais,                              #用户昵称
             CQimgurl=authkey.download_urls(url),                #问题图片urls
+            CQuiscollect=flag,                                  #用户是否收藏此问题
         )
         retdata.append(m_cqresponse)

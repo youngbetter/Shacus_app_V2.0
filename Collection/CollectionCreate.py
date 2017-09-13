@@ -97,45 +97,55 @@ class CollcreateHandler(BaseHandler):
                     self.retjson['code'] = '850834'
                     self.retjson['contents'] = r"此作品不存在"
 
-            #发布个人照片
+            #发布个人照片，第一步
             elif type == '85085':
                 private_imgs = self.get_argument('imgs')
                 try:
-                    # query.one()/all()
-                    userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
-                    uheadimg = userImg.UIurl
-                    user = self.db.query(User).filter(User.Uid == u_id).one()
-                    alais = user.Ualais
+                    tr_imgs_json = json.loads(private_imgs)
+                    if tr_imgs_json:
+                        self.retjson['code'] = '850850'
+                        retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
+                        self.retjson['contents'] = retjson_body
+                except Exception,e:
+                    self.retjson['code'] = '850852'
+                self.retjson['contents'] = '生成验证失败'
+            #发布个人照片，第二步
+            elif type == '85086':
+                private_imgs = self.get_argument('imgs')
+                userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
+                uheadimg = userImg.UIurl
+                user = self.db.query(User).filter(User.Uid == u_id).one()
+                alais = user.Ualais
+                try:
+                    new_private = UserCollection(
+                        UCuid=u_id,
+                        UCuimurl=uheadimg,
+                        UCualais=alais,
+                        UCiscollection=0,
+                    )
+                    self.db.merge(new_private)
+                    self.db.commit()
+                    # 存储图片
                     try:
-                        new_private = UserCollection(
-                            UCuid=u_id,
-                            UCuimurl=uheadimg,
-                            UCualais=alais,
-                            UCiscollection=0,
-                        )
-                        self.db.merge(new_private)
-                        # 存储图片
-                        try:
-                            self.db.commit()
-                            tr_imgs_json = json.loads(private_imgs)
-                            if tr_imgs_json:
-                                pri = self.db.query(UserCollection).filter(UserCollection.UCuid == u_id).all()
-                                imghandler.insert_collect_image(tr_imgs_json, pri[-1].UCid)
-                                self.retjson['code'] = '850850'
-                                retjson_body['auth_key'] = auth_key_handler.generateToken(tr_imgs_json)
-                                self.retjson['contents'] = retjson_body
-                        except Exception, e:
-                            print "作品集图片插入失败"
-                            self.retjson['code'] = '850852'
-                            self.retjson['contents'] = '个人图片插入失败'
+                        tr_imgs_json = json.loads(private_imgs)
+                        if tr_imgs_json:
+                            pri = self.db.query(UserCollection).filter(UserCollection.UCuid == u_id).all()
+                            imghandler.insert_collect_image(tr_imgs_json, pri[-1].UCid)
+                            self.retjson['code'] = '850860'
+                            self.retjson['contents'] = '个人照片发布成功'
                     except Exception, e:
-                        print "作品集发表失败"
-                        self.retjson['code'] = '850854'
-                        self.retjson['contents'] = '个人图片发表失败'
+                        print "作品集图片插入失败"
+                        self.retjson['code'] = '850862'
+                        self.retjson['contents'] = '个人图片插入失败'
+                except Exception, e:
+                    print "作品集发表失败"
+                    self.retjson['code'] = '850864'
+                    self.retjson['contents'] = '个人图片发表失败'
                 except Exception, e:
                     print "用户头像图片获取失败"
                     self.retjson['code'] = '850856'
                     self.retjson['contents'] = '用户头像图片获取失败'
+
         else:
             self.retjson['code'] = '850800'
             self.retjson['contents'] = '用户验证失败'

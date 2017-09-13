@@ -69,7 +69,8 @@ class CollrequestHandler(BaseHandler):
             elif type == '85105':
                 try:
                     privites = self.db.query(UserCollection)\
-                        .filter(and_(UserCollection.UCuid == u_id, UserCollection.UCiscollection == 0, UserCollection.UCvalid == 1)).all()
+                        .filter(and_(UserCollection.UCuid == u_id, UserCollection.UCiscollection == 0, UserCollection.UCvalid == 1))\
+                        .order_by(desc(UserCollection.UCcreateT)).limit(10).all()
                     priimgs = []
                     for privite in privites:
                         imgs = self.db.query(UserCollectionimg).filter(UserCollectionimg.UCIuser == privite.UCid).all()
