@@ -43,7 +43,7 @@ class LoginHandler(BaseHandler):
                     if user:   #用户存在
                         password = user.Upassword
                         if m_password == password:   # 密码正确
-                            self.get_login_model(user)
+                            self.get_new_login_model(user)
                         else:
                             self.retjson['contents'] = u'密码错误'
                             self.retjson['code'] = '10114'   # 密码错误
@@ -62,7 +62,7 @@ class LoginHandler(BaseHandler):
                 u_auth_key = user.Uauthkey
                 if auth_key == u_auth_key:    # 授权码码一致
                     self.retjson['code'] = '10111'   # "登录成功"
-                    self.get_login_model(user)
+                    self.get_new_login_model(user)
                 else:
                     self.retjson['code'] = '10116'
                     self.retjson['contents'] = u'授权码不正确或已过期'
@@ -149,7 +149,7 @@ class LoginHandler(BaseHandler):
             # 约拍类型和id
             data = dict(
                 userModel=user_model,
-                daohanglan=self.banner_init(),
+                bannerList=self.banner_init(),
                 CollectionList=retdata,             # 好友作品集
                 RecList=[],                         # 推荐作品集
                 groupList=APgroupHandler.Group(),

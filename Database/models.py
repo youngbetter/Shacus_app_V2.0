@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 '''
-@author: 黄鑫晨
+@author: young,yeah
 '''
 reload(sys)
 # python的str默认是ascii编码，和unicode编码冲突,需处理
