@@ -83,7 +83,7 @@ class Application(tornado.web.Application):
              #(r"/login", LoginHandler),
              #(r"/regist", RegisterHandler),
              (r"/user/homepager",Userhomepager),
-             (r"/user/mylike", FindUlike),
+             (r"/user/mylike", FindUlike),  # updated by ye
              (r"/user/favorite", UserFavorite),
              (r"/user/info",UserInfo),
              (r"/user/indent",UserIndent),
