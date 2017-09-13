@@ -138,6 +138,7 @@ class LoginHandler(BaseHandler):
         retdata = []
         imghandler = UserImgHandler()
         user_model = Usermodel.get_user_detail_from_user(user)  # 用户模型
+
         try:
             my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
             for like in my_likes:
@@ -153,6 +154,7 @@ class LoginHandler(BaseHandler):
                 CollectionList=retdata,             # 好友作品集
                 RecList=[],                         # 推荐作品集
                 groupList=APgroupHandler.Group(),
+                #trendList
             )
 
             models.append(data)

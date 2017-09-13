@@ -143,7 +143,8 @@ class CommuQuestion(Base):  #社区问题
 class CQcomment(Base):  #社区评论
     __tablename__="CQcomment"
 
-    CQcmtid = Column(Integer, primary_key=True , nullable=False)
+    CQcmtid = Column(Integer, primary_key=True, nullable=False)
+    CQcmtuid = Column(Integer, ForeignKey("User.Uid", onupdate="CASCADE"))
     CQcmtquesid = Column(Integer, ForeignKey("CommuQuestion.CQuesid", onupdate="CASCADE"))     #社区问题问题id
     CQcmtcontent = Column(VARCHAR(128), nullable=False)
     CQcmtT = Column(DateTime(timezone=True), default=func.now())
@@ -173,8 +174,8 @@ class Appointment(Base):  #摄影师-模特约拍
     APid = Column(Integer, primary_key=True, nullable=False)
     APsponsorid = Column(Integer, ForeignKey('User.Uid', ondelete='CASCADE'), nullable=False)   #发起者
     # APtitle=Column(VARCHAR(24),nullable=False)
-    APlocation = Column(VARCHAR(128), nullable=False,default='南京')
-    APtag=Column(VARCHAR(12)) # 约拍标签？确认长度
+    APlocation = Column(VARCHAR(128), nullable=False, default='南京')
+    #APtag=Column(VARCHAR(12)) # 约拍标签？确认长度
     # APstartT = Column(DateTime, nullable=False, default='0000-00-00 00:00:00 ')
     # APendT = Column(DateTime, nullable=False, default='0000-00-00 00:00:00 ')
     # APjoinT=Column(DateTime, nullable=False, default='0000-00-00 00:00:00 ')
@@ -183,11 +184,11 @@ class Appointment(Base):  #摄影师-模特约拍
     # APfree = Column(Boolean)
     APpricetag = Column(Integer, nullable=False, default=0)     # 约拍的价格类型 0-免费，1-付费，2-待商议
     APprice = Column(VARCHAR(64))
-    APclosed = Column(Boolean,default=0)
+    APclosed = Column(Boolean, default=0)
     APcreateT = Column(DateTime(timezone=True), default=func.now())
-    APtype = Column(Boolean,nullable=False,default=0)           # 约拍类型，0-摄影师约模特,1-模特约摄影师
-    APaddallowed = Column(Boolean,default=0)
-    # APlikeN = Column(Integer, default=0, nullable=False)
+    APtype = Column(Boolean, nullable=False,default=0)           # 约拍类型，0-摄影师约模特,1-模特约摄影师
+    APaddallowed = Column(Boolean, default=0)
+    APlikeN = Column(Integer, default=0, nullable=False)
     APvalid = Column(Boolean, default=1, nullable=False)
     APregistN = Column(Integer, nullable=False, default=0)      # 报名人数
     APstatus = Column(Integer, nullable=False, default=0)       # 0-报名中，1-进行中，2-未评价，3-已评价

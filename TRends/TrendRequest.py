@@ -72,15 +72,15 @@ class TrendrequestHandler(BaseHandler):
     def response_one(self, item, url, retdata):
         authkey = AuthKeyHandler()
         m_trresponse = dict(
-            Tid=item.Tid,
-            Tsponsorid=item.Tsponsorid,
-            TsponsT=item.TsponsT.strftime('%Y-%m-%dT%H:%M:%S'),
-            TcommentN=item.TcommentN,
-            TlikeN=item.TlikeN,
-            Tcontent=item.Tcontent,
-            Ttitle=item.Ttitle,
-            Tsponsorimg=authkey.download_url(item.Tsponsorimg),
-            TIimgurl=authkey.download_urls(url),
-            Tualais=item.Tualais,
+            Tid=item.Tid,                                       #动态id
+            Tsponsorid=item.Tsponsorid,                         #发布者id
+            TsponsT=item.TsponsT.strftime('%Y-%m-%dT%H:%M:%S'), #创建时间
+            TcommentN=item.TcommentN,                           #评论数
+            TlikeN=item.TlikeN,                                 #点赞数
+            Tcontent=item.Tcontent,                             #内容
+            Ttitle=item.Ttitle,                                 #标题
+            Tsponsorimg=authkey.download_url(item.Tsponsorimg), #用户头像url
+            TIimgurl=authkey.download_urls(url),                #动态图片url
+            Tualais=item.Tualais,                               #发布者昵称
         )
         retdata.append(m_trresponse)

@@ -127,6 +127,7 @@ class CQrequestHandler(BaseHandler):
                             .order_by(desc(CQcomment.CQcmtT)).limit(10).all()
                         if comments:
                             print "in comment"
+                            cmts = []
                             for comment in comments:
                                 cmt = dict(
                                     CQcmtid=comment.CQcmtid,            #评论id
@@ -134,17 +135,21 @@ class CQrequestHandler(BaseHandler):
                                     CQcmtcontent=comment.CQcmtcontent,  #评论内容
                                     CQcmtT=comment.CQcmtT.strftime('%Y-%m-%dT%H:%M:%S'),             #评论时间
                                     CQcmtvalid=comment.CQcmtvalid,      #评论是否有效
+                                    CQcmtuid=u_id,
                                 )
-                                retdata.append(cmt)
+                                cmts.append(cmt)
+                            data = dict(
+                                Question=retdata,
+                                Comments=cmts
+                            )
                             self.retjson['code'] = '850590'
-                            self.retjson['contents'] = retdata
+                            self.retjson['contents'] = data
                         else:
                             print "毫无评论"
                             self.retjson['code'] = '850596'
                             self.retjson['contents'] = retdata
                     except Exception,e:
                         self.retjson['code'] = '850592'
-                        self.retjson['contents'] = r"暂无评论"
                         self.retjson['contents'] = retdata
                 except Exception,e:
                     self.retjson['code'] = '850594'

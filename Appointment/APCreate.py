@@ -5,14 +5,14 @@
 """
 
 import json
-
+import time
 from sqlalchemy import desc
 
 from Appointment.APgroupHandler import APgroupHandler
 from BaseHandler import BaseHandler
 from Database.tables import Appointment, User
 from FileHandler.ImageHandler import ImageHandler
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo import Ufuncs
 
 
@@ -40,32 +40,34 @@ class APCreateHandler(BaseHandler):   # 创建约拍
                 self.retjson['contents'] = retjson_body
 
             elif type == '80001':     # 请求创建约拍第二步，正式创建
-                ap_type = self.get_argument('ap_type')
-                ap_group = self.get_argument("group")
-                ap_time_request = self.get_argument("time")
-                price_type = self.get_argument("priceType")
-                ap_price = self.get_argument('price')
-                ap_content = self.get_argument('contents')
-                ap_imgs = self.get_argument('imgs')
-                new_appointment = Appointment(
 
+                ap_loc = self.get_argument('location', default='nanjing')
+                ap_time = self.get_argument('time')
+                ap_content = self.get_argument('contents')
+                ap_priceTag = self.get_argument('pricetag')
+                ap_price = self.get_argument('price')
+                ap_type = self.get_argument('ap_type')
+                ap_allowed = self.get_argument('ap_addallowed', default=0)
+                ap_status = self.get_argument('status', default=0)
+                ap_group = self.get_argument('group')
+                ap_imgs = self.get_argument('imgs')
+                new_app = Appointment(
                     APsponsorid=u_id,
-                    APtype=int(ap_type),
-                    APgroup=ap_group,
-                    APpricetag=int(price_type),
+                    APlocation=ap_loc,
+                    APtime=ap_time,
+                    APcontent=ap_content,
+                    APpricetag=ap_priceTag,
                     APprice=ap_price,
-                    APlocation='',
-                    APtime=ap_time_request,
-                    APcontent=ap_content,  # 活动介绍
-                    APclosed=0,
-                    APvalid=1,
-                    APaddallowed=0
+                    APtype=ap_type,
+                    APaddallowed=ap_allowed,
+                    APstatus=ap_status,
+                    APgroup=ap_group,
                 )
-                ap_imgs_json = json.loads(ap_imgs)
-                imghandler = ImageHandler()
+                self.db.merge(new_app)
                 try:
-                    self.db.merge(new_appointment)
                     self.db.commit()
+                    ap_imgs_json = json.loads(ap_imgs)
+                    imghandler = ImageHandler()
                     if ap_imgs_json:
                         ap = self.db.query(Appointment).filter(Appointment.APcontent == ap_content).order_by(
                             desc(Appointment.APcreateT)).all()

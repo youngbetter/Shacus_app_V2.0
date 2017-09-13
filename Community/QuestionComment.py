@@ -30,6 +30,7 @@ class CQCmtHandler(BaseHandler):
                     if question.CQvalid == True:
                         try:
                             new_CQcmt = CQcomment(
+                                CQcmtuid=u_id,
                                 CQcmtquesid=cq_id,
                                 CQcmtcontent=cq_content,
                             )
