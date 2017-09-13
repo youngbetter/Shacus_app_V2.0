@@ -22,57 +22,67 @@ class APCreateHandler(BaseHandler):   # 创建约拍
 
     def post(self):
 
-        ap_type = self.get_argument('type')
+        type = self.get_argument('type')
         u_auth_key = self.get_argument('authkey')
         u_id = self.get_argument('uid')
         ufuncs = Ufuncs.Ufuncs()
 
         if ufuncs.judge_user_valid(u_id, u_auth_key):
 
-            if ap_type == '80000' or ap_type == '80001':  # 请求创建约拍
-                ap_content = self.get_argument('contents')
+            if type == '80000':  # 请求创建约拍第一步，获取图片上传凭证
                 ap_imgs = self.get_argument('imgs')
 
-                retjson_body = {'auth_key': '', 'apId': ''}
+                retjson_body = {}
                 auth_key_handler = AuthKeyHandler()
                 ap_imgs_json = json.loads(ap_imgs)
                 retjson_body['auth_key'] = auth_key_handler.generateToken(ap_imgs_json)
-                if ap_type == '80000':  # 摄影师约模特
-                    type_ap = 1
-                elif ap_type == '80001':  # 模特约摄影师
-                    type_ap = 0
+                self.retjson['code'] = '800003'
+                self.retjson['contents'] = retjson_body
 
+            elif type == '80001':     # 请求创建约拍第二步，正式创建
+                ap_type = self.get_argument('ap_type')
+                ap_group = self.get_argument("group")
+                ap_time_request = self.get_argument("time")
+                price_type = self.get_argument("priceType")
+                ap_price = self.get_argument('price')
+                ap_content = self.get_argument('contents')
+                ap_imgs = self.get_argument('imgs')
                 new_appointment = Appointment(
 
                     APsponsorid=u_id,
-                    APtype=type_ap,
+                    APtype=int(ap_type),
+                    APgroup=ap_group,
+                    APpricetag=int(price_type),
+                    APprice=ap_price,
                     APlocation='',
-                    APtime='0000-00-00:00:00:00',
+                    APtime=ap_time_request,
                     APcontent=ap_content,  # 活动介绍
                     APclosed=0,
                     APvalid=1,
                     APaddallowed=0
                 )
+                ap_imgs_json = json.loads(ap_imgs)
+                imghandler = ImageHandler()
                 try:
                     self.db.merge(new_appointment)
                     self.db.commit()
-                    print '插入成功，进入查询'
-                    ap = self.db.query(Appointment).filter(Appointment.APcontent == ap_content).order_by(
-                        desc(Appointment.APcreateT)).all()
-                    ap_id = ap[0].APid
-                    retjson_body['apId'] = ap_id
+                    if ap_imgs_json:
+                        ap = self.db.query(Appointment).filter(Appointment.APcontent == ap_content).order_by(
+                            desc(Appointment.APcreateT)).all()
+                        ap_id = ap[0].APid
+                        imghandler.insert_appointment_image(ap_imgs_json, ap_id)
                     self.retjson['code'] = '800001'  # 发布成功
-                    self.retjson['contents'] = retjson_body
+                    self.retjson['contents'] = '发布约拍成功'
 
                 except Exception, e:
                     print '插入失败！！'
                     self.retjson['code'] = '800002'
-                    self.retjson['contents'] = r'服务器插入失败'
+                    self.retjson['contents'] = r'约拍发布失败'
 
-            elif ap_type == '80002':    # 取消约拍
+            elif type == '80002':    # 取消约拍
                 ap_id = self.get_argument('apid')
                 try:
-                    appointment = self.db.query(Appointment).filter(Appointment.APid == ap_id, \
+                    appointment = self.db.query(Appointment).filter(Appointment.APid == ap_id,\
                                                                     Appointment.APsponsorid == u_id).one()
                     if appointment.APvalid == 1:     # 约拍有效
                         if appointment.APstatus == 0:    # 还在报名中
