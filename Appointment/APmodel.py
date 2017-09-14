@@ -9,7 +9,7 @@ import time
 from Database.models import get_db
 from Database.tables import AppointLike, AppointmentImage, CompanionImg, User, AppointEntry, WApCompanionImage, \
     AppointmentInfo, UserImage
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
 
 
