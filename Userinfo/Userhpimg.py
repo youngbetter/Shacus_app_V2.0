@@ -160,7 +160,7 @@ class Userhpimg(BaseHandler):
                     # 插入数据库
                     try:
                         new_usercollection = UserCollection(
-                            UCuser=u_id,
+                            UCuid=u_id,
                             UCtitle=uc_title,
                             UCcontent='',
                             UCvalid=0,
@@ -174,7 +174,7 @@ class Userhpimg(BaseHandler):
                     try:
                         print '插入成功，进入查询'
                         uc = self.db.query(UserCollection).filter(
-                           UserCollection.UCtitle == uc_title, UserCollection.UCuser == u_id).one()
+                           UserCollection.UCtitle == uc_title, UserCollection.UCuid == u_id).one()
                         ucid = uc.UCid
                         retjson_body['ucid'] = ucid
                         retjson['contents'] = retjson_body
@@ -345,7 +345,7 @@ class Userhpimg(BaseHandler):
                 retjson['isself'] = isself
                 imghandler = UserImgHandler()
                 retdata = []
-                pic = self.db.query(UserCollection).filter(UserCollection.UCuser == u_id,UserCollection.UCvalid == 1).all()
+                pic = self.db.query(UserCollection).filter(UserCollection.UCuid == u_id,UserCollection.UCvalid == 1).all()
                 print '进入作品集列表获取'
                 try:
                     for item in pic:
@@ -394,7 +394,7 @@ class Userhpimg(BaseHandler):
                 userid = self.db.query(User).filter(User.Uauthkey == auth_key).one()
                 imghandler = UserImgHandler()
                 retdata = []
-                pic = self.db.query(UserCollection).filter(UserCollection.UCuser == u_id,UserCollection.UCvalid == 1).all()
+                pic = self.db.query(UserCollection).filter(UserCollection.UCuid == u_id,UserCollection.UCvalid == 1).all()
                 print '进入作品集列表获取'
                 try:
                     for item in pic:
@@ -420,11 +420,11 @@ class Userhpimg(BaseHandler):
                 print userid.Uid
                 print friendlist
                 try:
-                    UserCollecions = self.db.query(UserCollection).filter(UserCollection.UCuser.in_(friendlist),
+                    UserCollecions = self.db.query(UserCollection).filter(UserCollection.UCuid.in_(friendlist),
                                                                           UserCollection.UCvalid == 1).\
                         order_by(desc(UserCollection.UCid)).limit(6).all()
                     for item in UserCollecions:
-                        retdata.append(imghandler.UC_login_model(item, item.UCuser, userid.Uid))
+                        retdata.append(imghandler.UC_login_model(item, item.UCuid, userid.Uid))
                     retjson['code'] = '10830'
                     retjson['contents'] = retdata
                 except Exception, e:
@@ -449,12 +449,12 @@ class Userhpimg(BaseHandler):
                     print userid.Uid
                     print friendlist
                     try:
-                        UserCollecions = self.db.query(UserCollection).filter(UserCollection.UCuser.in_(friendlist),
+                        UserCollecions = self.db.query(UserCollection).filter(UserCollection.UCuid.in_(friendlist),
                                                                               UserCollection.UCvalid == 1,
                                                                               UserCollection.UCid < lastucid). \
                             order_by(desc(UserCollection.UCid)).limit(6).all()
                         for item in UserCollecions:
-                            retdata.append(imghandler.UC_login_model(item, item.UCuser, userid.Uid))
+                            retdata.append(imghandler.UC_login_model(item, item.UCuid, userid.Uid))
                         retjson['code'] = '10832'
                         retjson['contents'] = retdata
                     except Exception, e:
@@ -474,11 +474,11 @@ class Userhpimg(BaseHandler):
                 imghandler = UserImgHandler()
                 reclist = imghandler.reclist(userid.Uid)
                 try:
-                    UserCollecions = self.db.query(UserCollection).filter(UserCollection.UCuser.in_(reclist),
+                    UserCollecions = self.db.query(UserCollection).filter(UserCollection.UCuid.in_(reclist),
                                                                           UserCollection.UCvalid == 1). \
                         order_by(desc(UserCollection.UCid)).limit(6).all()
                     for item in UserCollecions:
-                        retdata.append(imghandler.UC_login_model(item, item.UCuser,userid.Uid))
+                        retdata.append(imghandler.UC_login_model(item, item.UCuid, userid.Uid))
                     retjson['code'] = '10834'
                     retjson['contents'] = retdata
                 except Exception, e:
@@ -498,12 +498,12 @@ class Userhpimg(BaseHandler):
                 reclist = imghandler.reclist(userid.Uid)
                 print '进入作品集列表获取'
                 try:
-                    UserCollecions = self.db.query(UserCollection).filter(UserCollection.UCuser.in_(reclist),
+                    UserCollecions = self.db.query(UserCollection).filter(UserCollection.UCuid.in_(reclist),
                                                                           UserCollection.UCvalid == 1,
                                                                           UserCollection.UCid < lastucid). \
                         order_by(desc(UserCollection.UCid)).limit(6).all()
                     for item in UserCollecions:
-                        retdata.append(imghandler.UC_login_model(item, item.UCuser, userid.Uid))
+                        retdata.append(imghandler.UC_login_model(item, item.UCuid, userid.Uid))
                     retjson['code'] = '10836'
                     retjson['contents'] = retdata
                 except Exception, e:

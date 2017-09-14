@@ -27,7 +27,7 @@ class UserList(BaseHandler):
                 else:
                     imghandler = UserImgHandler()
                     #reclist = imghandler.reclist(userid.Uid)   # 朋友的朋友列表(不包括自己)
-                    reclist = [2]  # 用于测试的朋友的朋友列表
+                    reclist = []  # 用于测试的朋友的朋友列表
                     if reclist:
                         try:
                             UserRec = self.db.query(User).filter(User.Uid.in_(reclist)).all()
@@ -51,7 +51,7 @@ class UserList(BaseHandler):
                         except Exception, e:
                             print e
                             self.retjson['contents'] = '获取推荐列表失败'
-                            
+
                     else:  # 如果用户没有关注(也就是没有朋友)，那么推荐最近的作品集
                         UserRec = self.db.query(UserCollection).filter(UserCollection.UCvalid == 1).\
                             order_by(desc(UserCollection.UCcreateT)).limit(5).all()

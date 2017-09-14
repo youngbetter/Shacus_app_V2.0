@@ -200,10 +200,10 @@ class RegisterHandler(BaseHandler):
         try:
             my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
             for like in my_likes:
-                pic = self.db.query(UserCollection).filter(UserCollection.UCuser == like.ULlikedid,
+                pic = self.db.query(UserCollection).filter(UserCollection.UCuid == like.ULlikedid,
                                                            UserCollection.UCvalid == 1).all()
                 for item in pic:
-                    retdata.append(imghandler.UC_login_model(item, item.UCuser, user.Uid))
+                    retdata.append(imghandler.UC_login_model(item, item.UCuid, user.Uid))
             # 推荐作品集
             # 约拍类型和id
             data = dict(

@@ -112,7 +112,7 @@ def rec_user_list(user):
         # 该用户的所有作品集
         # modified by young
         uc_list = get_db().query(UserCollection)\
-            .filter(and_(UserCollection.UCuser == user.Uid, UserCollection.UCiscollection == 1)).all()
+            .filter(and_(UserCollection.UCuid == user.Uid, UserCollection.UCiscollection == 1)).all()
         # 用户第一个作品集所有图片
         print uc_list[0].UCid
         uc_pic = get_db().query(UserCollectionimg).filter(UserCollectionimg.UCIuser == uc_list[0].UCid).all()

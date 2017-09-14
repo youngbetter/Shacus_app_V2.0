@@ -233,7 +233,7 @@ class UserImgHandler(object):
 
         ret_uc = dict(
             UCid=UCsample.UCid,
-            UCuser=uid,
+            UCuid=uid,
             UCcreateT=UCsample.UCcreateT.strftime('%Y-%m-%d'),
             UCtitle=UCsample.UCtitle,
             UCcontent=UCsample.UCcontent,
@@ -425,7 +425,7 @@ class UserImgHandler(object):
             print e
             ret_uc = dict(
                 UCid=UCsample.UCid,
-                UCuser=uid,
+                UCuid=uid,
                 UCmodel = usermodel,
                 UCcreateT=UCsample.UCcreateT.strftime('%Y-%m-%d'),
                 UCtitle=UCsample.UCtitle,
