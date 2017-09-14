@@ -181,10 +181,10 @@ class RegisterHandler(BaseHandler):
         banner2 = authkeyhandler.download_url("banner/banner2.jpg")
         banner3 = authkeyhandler.download_url("banner/banner3.jpg")
         banner4 = authkeyhandler.download_url("banner/banner4.jpg")
-        banner_json1 = {'imgurl': banner1, 'weburl': "http://www.shacus.cn/"}
-        banner_json2 = {'imgurl': banner2, 'weburl': "http://www.shacus.cn/"}
-        banner_json3 = {'imgurl': banner3, 'weburl': "http://www.shacus.cn/"}
-        banner_json4 = {'imgurl': banner4, 'weburl': "http://www.shacus.cn/"}
+        banner_json1 = {'img_url': banner1, 'web_url': "http://www.baidu.com/"}
+        banner_json2 = {'img_url': banner2, 'web_url': "http://www.baidu.com/"}
+        banner_json3 = {'img_url': banner3, 'web_url': "http://www.baidu.com/"}
+        banner_json4 = {'img_url': banner4, 'web_url': "http://www.baidu.com/"}
         bannertokens.append(banner_json1)
         bannertokens.append(banner_json2)
         bannertokens.append(banner_json3)
