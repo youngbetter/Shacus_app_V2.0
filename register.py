@@ -9,6 +9,9 @@ from Database.tables import User, UCinfo, Image, UserImage, Appointment, UserLik
 from Database.tables import Verification
 from messsage import message
 from Userinfo.Userctoken import get_token
+from Userinfo import Usermodel
+from Userinfo.UserImgHandler import UserImgHandler
+from Appointment.APgroupHandler import APgroupHandler
 
 
 def generate_verification_code(len=6):
@@ -168,3 +171,52 @@ class RegisterHandler(BaseHandler):
                     self.retjson['contents'] = 'Some errors when commit to database, please try again :{}'.format(e)
 
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))
+
+    def bannerinit(self):
+        from FileHandler.AuthkeyHandler import AuthKeyHandler
+        bannertokens = []
+
+        authkeyhandler = AuthKeyHandler()
+        banner1 = authkeyhandler.download_url("banner/banner1.jpg")
+        banner2 = authkeyhandler.download_url("banner/banner2.jpg")
+        banner3 = authkeyhandler.download_url("banner/banner3.jpg")
+        banner4 = authkeyhandler.download_url("banner/banner4.jpg")
+        banner_json1 = {'imgurl': banner1, 'weburl': "http://www.shacus.cn/"}
+        banner_json2 = {'imgurl': banner2, 'weburl': "http://www.shacus.cn/"}
+        banner_json3 = {'imgurl': banner3, 'weburl': "http://www.shacus.cn/"}
+        banner_json4 = {'imgurl': banner4, 'weburl': "http://www.shacus.cn/"}
+        bannertokens.append(banner_json1)
+        bannertokens.append(banner_json2)
+        bannertokens.append(banner_json3)
+        bannertokens.append(banner_json4)
+        return bannertokens
+
+
+    def get_new_login_model(self, user):
+        models = []
+        retdata = []
+        imghandler = UserImgHandler()
+        user_model = Usermodel.get_user_detail_from_user(user)  # 用户模型
+        try:
+            my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
+            for like in my_likes:
+                pic = self.db.query(UserCollection).filter(UserCollection.UCuser == like.ULlikedid,
+                                                           UserCollection.UCvalid == 1).all()
+                for item in pic:
+                    retdata.append(imghandler.UC_login_model(item, item.UCuser, user.Uid))
+            # 推荐作品集
+            # 约拍类型和id
+            data = dict(
+                userModel=user_model,
+                daohanglan=self.bannerinit(),
+                CollectionList=retdata,  # 好友作品集
+                RecList=[],  # 推荐作品集
+                groupList=APgroupHandler.Group(),
+            )
+
+            models.append(data)
+            self.retjson['code'] = '10111'
+            self.retjson['contents'] = models
+        except Exception, e:
+            print e
+            self.retjson['contents'] = r"摄影师约拍列表导入失败！"

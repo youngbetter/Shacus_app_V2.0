@@ -9,7 +9,7 @@ import json
 import Ufuncs
 from BaseHandler import BaseHandler
 from  Database.tables import UserLike, User, UCinfo, UserImage, Image
-from FileHandler.Upload import AuthKeyHandler
+from FileHandler.AuthkeyHandler import AuthKeyHandler
 
 
 class FindUlike(BaseHandler):
