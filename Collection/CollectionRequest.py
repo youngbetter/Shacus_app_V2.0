@@ -83,6 +83,44 @@ class CollrequestHandler(BaseHandler):
                 except Exception,e:
                     self.retjson['code'] = '851052'
                     self.retjson['contents'] = '个人照片加载失败'
+
+            #返回个人主页作品集，封面图
+            elif type == '85107':
+                try:
+                    colls = self.db.query(UserCollection)\
+                        .filter(and_(UserCollection.UCvalid == 1, UserCollection.UCiscollection == 1))\
+                        .order_by(desc(UserCollection.UCcreateT)).all()
+                    ucimgurl = []
+                    for coll in colls:
+                        imgs = self.db.query(UserCollectionimg).filter(UserCollectionimg.UCIuser == coll.UCid).all()
+                        ucimgurl.append(imgs[0].UCIurl)
+                        self.response_one(coll, ucimgurl, retdata)
+                        print ucimgurl
+                        ucimgurl = []
+                    self.retjson['code'] = '851070'
+                    self.retjson['contents'] = retdata
+                except Exception, e:
+                    self.retjson['code'] = '851072'
+                    self.retjson['contents'] = '作品集封面加载失败'
+
+            # 返回个人主页作品集，详情图
+            elif type == '85109':
+                coll_id = self.get_argument('UCid')
+                try:
+                    coll = self.db.query(UserCollection) \
+                        .filter(and_(UserCollection.UCid == coll_id, UserCollection.UCvalid == 1, UserCollection.UCiscollection == 1)) \
+                        .order_by(desc(UserCollection.UCcreateT)).one()
+                    ucimgurl = []
+                    imgs = self.db.query(UserCollectionimg).filter(UserCollectionimg.UCIuser == coll.UCid).all()
+                    for img in imgs:
+                        ucimgurl.append(img.UCIurl)
+                    self.response_one(coll, ucimgurl, retdata)
+                    print ucimgurl
+                    self.retjson['code'] = '851090'
+                    self.retjson['contents'] = retdata
+                except Exception, e:
+                    self.retjson['code'] = '851092'
+                    self.retjson['contents'] = '作品集详情加载失败'
         else:
             self.retjson['code'] = '851000'
             self.retjson['contents'] = '用户认证失败'
