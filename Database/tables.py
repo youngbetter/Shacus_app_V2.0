@@ -34,8 +34,6 @@ class User(Base):   #用户表   #添加聊天专用chattoken
     Uchattoken = Column(VARCHAR(128), nullable=False)       #融云的chat_token
     Uage = Column(Integer, nullable=False, default=0)
     Ucategory = Column(Integer, nullable=False, default=0)  #用户分类：0-普通用户，1-摄影师，2-模特，3-商家
-    UlikedN = Column(Integer, nullable=False, default=0)    #用户总获赞数
-
 
 class UCinfo(Base):
     __tablename__ = 'UCinfo'
@@ -149,6 +147,8 @@ class CQcomment(Base):  #社区评论
     CQcmtcontent = Column(VARCHAR(128), nullable=False)
     CQcmtT = Column(DateTime(timezone=True), default=func.now())
     CQcmtvalid = Column(Boolean, nullable=False ,default=1)
+    CQcmtuimurl = Column(VARCHAR(128), nullable=False)                                                  #新增
+    CQcmtualais = Column(VARCHAR(24), ForeignKey('User.Ualais', onupdate='CASCADE'), nullable=False)    #新增
 
 class CQLike(Base):
     __tablename__ = 'CQLike'

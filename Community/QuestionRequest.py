@@ -114,6 +114,7 @@ class CQrequestHandler(BaseHandler):
             #请求问题模型
             elif type == '85059':
                 cq_id = self.get_argument('cqid')
+                data = []
                 try:
                     question = self.db.query(CommuQuestion).filter(CommuQuestion.CQuesid == cq_id).one()
                     imgs = self.db.query(CommuQuesImg).filter(CommuQuesImg.CQquesid == question.CQuesid).all()
@@ -121,6 +122,7 @@ class CQrequestHandler(BaseHandler):
                     for img in imgs:
                         cqimgurl.append(img.CQimurl)
                     self.response_one(question, cqimgurl, retdata)
+                    data.append(retdata)
                     try:
                         comments = self.db.query(CQcomment)\
                             .filter(and_(CQcomment.CQcmtquesid == cq_id, CQcomment.CQcmtvalid == 1))\
@@ -136,6 +138,8 @@ class CQrequestHandler(BaseHandler):
                                     CQcmtT=comment.CQcmtT.strftime('%Y-%m-%dT%H:%M:%S'),             #评论时间
                                     CQcmtvalid=comment.CQcmtvalid,      #评论是否有效
                                     CQcmtuid=u_id,
+                                    CQcmtuimurl=comment.CQcmtuimurl,    #用户头像url
+                                    CQcmtualais=comment.CQcmtualais,    #用户昵称
                                 )
                                 cmts.append(cmt)
                             data = dict(

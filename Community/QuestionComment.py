@@ -7,7 +7,7 @@
 import json
 from BaseHandler import BaseHandler
 from Userinfo.Ufuncs import Ufuncs
-from Database.tables import CQcomment, CommuQuestion
+from Database.tables import CQcomment, CommuQuestion, UserImage, User
 
 class CQCmtHandler(BaseHandler):
     retjson = {'code': '200',
@@ -29,10 +29,16 @@ class CQCmtHandler(BaseHandler):
                     #相应问题存在并且有效
                     if question.CQvalid == True:
                         try:
+                            userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
+                            uheadimg = userImg.UIurl
+                            user = self.db.query(User).filter(User.Uid == u_id).one()
+                            alais = user.Ualais
                             new_CQcmt = CQcomment(
                                 CQcmtuid=u_id,
                                 CQcmtquesid=cq_id,
                                 CQcmtcontent=cq_content,
+                                CQcmtuimurl=uheadimg,
+                                CQcmtualais=alais,
                             )
                             print new_CQcmt
                             question.CQcommentN += 1
