@@ -51,6 +51,7 @@ class UserList(BaseHandler):
                         except Exception, e:
                             print e
                             self.retjson['contents'] = '获取推荐列表失败'
+                            
                     else:  # 如果用户没有关注(也就是没有朋友)，那么推荐最近的作品集
                         UserRec = self.db.query(UserCollection).filter(UserCollection.UCvalid == 1).\
                             order_by(desc(UserCollection.UCcreateT)).limit(5).all()
