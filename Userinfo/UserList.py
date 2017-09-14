@@ -27,12 +27,12 @@ class UserList(BaseHandler):
                 else:
                     imghandler = UserImgHandler()
                     #reclist = imghandler.reclist(userid.Uid)   # 朋友的朋友列表(不包括自己)
-                    reclist = [14, 15, 19, 20, 31, 38, 50, 54, 55, 93, 94, 98, 100, 103, 106]  # 用于测试的朋友的朋友列表
+                    reclist = [2]  # 用于测试的朋友的朋友列表
                     if reclist:
                         try:
                             UserRec = self.db.query(User).filter(User.Uid.in_(reclist)).all()
                             for item in UserRec:
-                                uc = self.db.query(UserCollection).filter(UserCollection.UCuser == item.Uid).all()
+                                uc = self.db.query(UserCollection).filter(UserCollection.UCuid == item.Uid).all()
                                 if uc:  # 如果有作品集
                                     retdata.append(Usermodel.rec_user_list(item))
                                 else:
@@ -41,7 +41,7 @@ class UserList(BaseHandler):
                                 NewUserRec = self.db.query(UserCollection).filter(UserCollection.UCvalid == 1). \
                                     order_by(desc(UserCollection.UCcreateT)).limit(5).all()
                                 for item in NewUserRec:
-                                    Users = self.db.query(User).filter(User.Uid == item.UCuser).all()
+                                    Users = self.db.query(User).filter(User.Uid == item.UCuid).all()
                                     retdata.append(Usermodel.rec_user_list(Users[0]))
                             #  重复返回作品集(方便客户端测试)
                             retdata += retdata
@@ -55,7 +55,7 @@ class UserList(BaseHandler):
                         UserRec = self.db.query(UserCollection).filter(UserCollection.UCvalid == 1).\
                             order_by(desc(UserCollection.UCcreateT)).limit(5).all()
                         for item in UserRec:
-                                Users = self.db.query(User).filter(User.Uid == item.UCuser).all()
+                                Users = self.db.query(User).filter(User.Uid == item.UCuid).all()
                                 retdata.append(Usermodel.rec_user_list(Users[0]))
                         #  重复返回作品集(方便客户端测试)
                         # retdata += retdata
