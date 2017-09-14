@@ -1,6 +1,6 @@
 # coding=utf-8
 '''
-@author：hxc, covered by yh
+@author：hxc, covered by yh,yxc
 '''
 import json
 
@@ -17,7 +17,7 @@ from Userinfo.Ufuncs import Ufuncs
 from Userinfo.Usermodel import Model_daohanglan
 from Userinfo.UserImgHandler import UserImgHandler
 from Appointment.APgroupHandler import APgroupHandler
-
+from TRends.TrendModel import TrendModelHandler
 
 class LoginHandler(BaseHandler):
 
@@ -138,6 +138,8 @@ class LoginHandler(BaseHandler):
         retdata = []
         imghandler = UserImgHandler()
         user_model = Usermodel.get_user_detail_from_user(user)  # 用户模型
+        tr_handler = TrendModelHandler()
+        tr_model = tr_handler.get_trendModel(user)
 
         try:
             my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
@@ -154,7 +156,7 @@ class LoginHandler(BaseHandler):
                 CollectionList=retdata,             # 好友作品集
                 RecList=[],                         # 推荐作品集
                 groupList=APgroupHandler.Group(),
-                #trendList
+                trendList=tr_model
             )
 
             models.append(data)

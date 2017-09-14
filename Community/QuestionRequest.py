@@ -134,13 +134,16 @@ class CQrequestHandler(BaseHandler):
                             print "in comment"
                             cmts = []
                             for comment in comments:
+                                valid = 1
+                                if comment.CQcmtvalid == False:
+                                   valid = 0
                                 cmt = dict(
                                     CQcmtid=comment.CQcmtid,            #评论id
                                     CQcmtquesid=comment.CQcmtquesid,    #评论对应id
                                     CQcmtcontent=comment.CQcmtcontent,  #评论内容
                                     CQcmtT=comment.CQcmtT.strftime('%Y-%m-%dT%H:%M:%S'),                #评论时间
-                                    CQcmtvalid=comment.CQcmtvalid,                                      #评论是否有效
-                                    CQcmtuid=u_id,
+                                    CQcmtvalid=valid,                                                   #评论是否有效
+                                    CQcmtuid=comment.CQcmtuid,
                                     CQcmtuimurl=authkey.download_url(comment.CQcmtuimurl),              #用户头像url
                                     CQcmtualais=comment.CQcmtualais,                                    #用户昵称
                                 )
