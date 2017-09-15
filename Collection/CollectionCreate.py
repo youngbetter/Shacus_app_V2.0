@@ -50,6 +50,7 @@ class CollcreateHandler(BaseHandler):
             #第二步，存储图片
             elif type == '85082':
                 coll_imgs = self.get_argument('imgs')
+                coll_title = self.get_argument('title')
                 try:
                     # query.one()/all()
                     userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
@@ -61,6 +62,7 @@ class CollcreateHandler(BaseHandler):
                             UCuid=u_id,
                             UCuimurl=uheadimg,
                             UCualais=alais,
+                            UCtitle=coll_title,
                         )
                         self.db.merge(new_coll)
                         self.db.commit()

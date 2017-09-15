@@ -137,5 +137,6 @@ class CollrequestHandler(BaseHandler):
             UCuimurl=authkey.download_url(item.UCuimurl),
             UCIurl=authkey.download_urls(url),
             UCualais=item.UCualais,
+            UCtitle=item.UCtitle,
         )
         retdata.append(m_collresponse)
