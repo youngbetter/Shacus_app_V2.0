@@ -74,14 +74,8 @@ define("port", default=800, help="run on the given port", type=int)
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-             #(r"/appointment/create", APcreateHandler),
              (r"/pressuretest",Simplerequest),
              (r"/pressuretest2", login.login),
-             #(r"/appointment/ask", APaskHandler),
-             #(r"/appointment/prase", APprase),
-             #(r"/appointment/regist", APregistHandler),
-             #(r"/login", LoginHandler),
-             #(r"/regist", RegisterHandler),
              (r"/user/homepager",Userhomepager),
              (r"/user/mylike", FindUlike),  # updated by ye
              (r"/user/favorite", UserFavorite),
@@ -92,19 +86,11 @@ class Application(tornado.web.Application):
              (r"/activity/create", ActivityCreate),
              (r"/activity/register",ActivityRegister),
              (r"/ImageCallback",ImageCallback),
-             #(r"/PaswChange",PaswChange),
-             #(r"/trend/Trendspost",TRendspost),
-             #(r"/trend/Trendhanler",TrendHandler),
              (r"/ranklist", Ranklist),
-             #(r"/appointment/chat",APchatCreateHandler),
              (r"/Userinfo/imghandler",Userhpimg),
              (r"/Userinfo/CollectionHandler",UserCollectionHandler),
-             #(r"/appointment/companion",ApCompanionHandler),
              (r"/sysmessage",Sysmessage),
              (r"/recommend/reclist",UserList),
-             #(r"/companion/getauth", AcAuthHandler),
-             #(r"/user/forgotpw",Userforgotpw),
-
              #added by young
              (r"/trend/creatTrend", TrendcreateHandler),            #创建动态
              (r"/trend/requestTrend", TrendrequestHandler),         #请求动态
@@ -128,8 +114,6 @@ class Application(tornado.web.Application):
              (r"/appointment/regist", APRegistHandler),
              (r"/appointment/companion", ApCompanionHandler),
              (r"/companion/getauth", AcAuthHandler),
-
-
         ]
         tornado.web.Application.__init__(self, handlers)
         self.db = scoped_session(sessionmaker(bind=engine,

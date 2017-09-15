@@ -34,7 +34,7 @@ class CQrequestHandler(BaseHandler):
                         imgs = self.db.query(CommuQuesImg).filter(CommuQuesImg.CQquesid == question.CQuesid).all()
                         for img in imgs:
                             cqimgurl.append(img.CQimurl)
-                        self.response_one(question, cqimgurl, retdata)
+                        self.response_one(u_id, question, cqimgurl, retdata)
                         print cqimgurl
                         cqimgurl = []
                     self.retjson['code'] = '850510'
@@ -56,7 +56,7 @@ class CQrequestHandler(BaseHandler):
                         imgs = self.db.query(CommuQuesImg).filter(CommuQuesImg.CQquesid == CommuQuestion.CQuesid).all()
                         for img in imgs:
                             cqimgurl.append(img.CQimurl)
-                        self.response_one(question, cqimgurl, retdata)
+                        self.response_one(u_id, question, cqimgurl, retdata)
                         print cqimgurl
                         cqimgurl = []
                     self.retjson['code'] = '850530'
@@ -79,7 +79,7 @@ class CQrequestHandler(BaseHandler):
                         imgs = self.db.query(CommuQuesImg).filter(CommuQuesImg.CQquesid == question.CQuesid).all()
                         for img in imgs:
                             cqimgurl.append(img.CQimurl)
-                        self.response_one(question, cqimgurl, retdata)
+                        self.response_one(u_id, question, cqimgurl, retdata)
                         cqimgurl = []
                     self.retjson['code'] = '850550'
                     self.retjson['contents'] = retdata
@@ -103,7 +103,7 @@ class CQrequestHandler(BaseHandler):
                         imgs = self.db.query(CommuQuesImg).filter(CommuQuesImg.CQquesid == question.CQuesid).all()
                         for img in imgs:
                             cqimgurl.append(img.CQimurl)
-                        self.response_one(question, cqimgurl, retdata)
+                        self.response_one(u_id, question, cqimgurl, retdata)
                         cqimgurl = []
                     self.retjson['code'] = '850570'
                     self.retjson['contents'] = retdata
@@ -124,7 +124,7 @@ class CQrequestHandler(BaseHandler):
                     cqimgurl = []
                     for img in imgs:
                         cqimgurl.append(img.CQimurl)
-                    self.response_one(question, cqimgurl, retdata)
+                    self.response_one(u_id, question, cqimgurl, retdata)
                     data['Question'] = retdata
                     try:
                         comments = self.db.query(CQcomment) \
@@ -166,21 +166,31 @@ class CQrequestHandler(BaseHandler):
             self.retjson['contents'] = '用户认证失败'
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))  # 返回中文
 
-    def response_one(self, item, url, retdata):
+    def response_one(self, u_id, item, url, retdata):
         authkey = AuthKeyHandler()
         flag = 0
+        f_flag = 0
         try:
             isCollect = self.db.query(CQCollect)\
                 .filter(and_(CQCollect.CQColluid == item.CQuid,
                              CQCollect.CQCollquesid == item.CQuesid,)).one()
             flag = isCollect.CQCollvalid
+            isFavorite = self.db.query(Favorite)\
+                .filter(and_(Favorite.Ftypeid == item.CQuesid,
+                             Favorite.Ftype == Const.FAVORITE_TYPE_QUESTION,
+                             Favorite.Fuid == u_id)).one()
+            f_flag = isFavorite.Fvalid
+            if f_flag == True:
+                f_flag = 1
+            else:
+                f_flag = 0
             if flag == True:
                 flag = 1
             else:
                 flag = 0
         except Exception,e:
             print e
-            print "没有收藏记录"
+            print "没有收藏点赞记录"
         m_cqresponse = dict(
             CQuesid=item.CQuesid,                               #问题id
             CQuid=item.CQuid,                                   #用户id
@@ -193,5 +203,6 @@ class CQrequestHandler(BaseHandler):
             CQuname=item.CQualais,                              #用户昵称
             CQimgurl=authkey.download_urls(url),                #问题图片urls
             CQuiscollect=flag,                                  #用户是否收藏此问题
+            CQuisfavorite=f_flag,                               #用户是否点赞此问题
         )
         retdata.append(m_cqresponse)
