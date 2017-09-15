@@ -18,31 +18,35 @@ class ActivityCreate(BaseHandler):   #创建活动
         ac_type = self.get_argument('type')
         if ac_type == '10301':  #活动第一个请求，用于同意发布活动，同时返回图片上传token
             print "进入创建活动"
-            m_user_phone = self.get_argument('username')
+            u_id = self.get_argument('uid')
             m_auth_key = self.get_argument('auth_key')
             m_title = self.get_argument('title')
             m_image = self.get_argument('images')
             if m_title:
                 if m_image:
                     try:
-                        sponsor = self.db.query(User).filter(User.Utel==m_user_phone).one()
+                        sponsor = self.db.query(User).filter(User.Uid == u_id).one()
+                        print 1
                         key = sponsor.Uauthkey
-                        m_sponsorid = sponsor.Uid
+
                         if key == m_auth_key: # 认证成功
+                            print 22
                             try:
                                 activity = self.db.query(Activity).filter(Activity.ACtitle == m_title).one()
+                                print 33
                                 if activity:
                                     self.retjson['code'] = '10312'
                                     self.retjson['contents'] = r'该活动名称已经存在'
                             except Exception,e:
-                                print e
+                                print 44
                                 retjson_body = {'image_token':'','acID':''}
                                 image_token_handler = AuthKeyHandler()
                                 m_image_json = json.loads(m_image)
                                 retjson_body['image_token'] =  image_token_handler.generateToken(m_image_json)
+                                print 55
 
                                 my_activity = Activity(
-                                    ACsponsorid = m_sponsorid,
+                                    ACsponsorid = u_id,
                                     AClocation = '',
                                     ACtitle = m_title,
                                     ACtag = '',
@@ -63,12 +67,14 @@ class ActivityCreate(BaseHandler):   #创建活动
 
                                 )
                                 self.db.merge(my_activity)
+                                print 2
                                 try :
                                     self.db.commit()
+                                    print 3
                                     ac_id = self.db.query(Activity.ACid).filter(
-                                        Activity.ACtitle == m_title and Activity.ACsponsorid == m_sponsorid
+                                        Activity.ACtitle == m_title and Activity.ACsponsorid == u_id
                                     ).one()
-                                    retjson_body['acID'] = ac_id[0];
+                                    retjson_body['acID'] = ac_id;
                                     self.retjson['code'] = '10313'
                                     self.retjson['contents'] = retjson_body
                                 except Exception,e:
@@ -77,6 +83,7 @@ class ActivityCreate(BaseHandler):   #创建活动
                                     self.retjson['code'] = '10319'
                                     self.retjson['contents'] = r'服务器错误'
                         else :
+                            print 33
                             self.retjson['code'] = '10311'
                             self.retjson['contents'] = r'用户认证码错误'
                     except Exception,e:

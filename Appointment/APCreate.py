@@ -58,7 +58,7 @@ class APCreateHandler(BaseHandler):   # 创建约拍
                     APcontent=ap_content,
                     APpricetag=ap_priceTag,
                     APprice=ap_price,
-                    APtype=ap_type,
+                    APtype=int(ap_type),
                     APaddallowed=ap_allowed,
                     APstatus=ap_status,
                     APgroup=ap_group,
@@ -66,6 +66,7 @@ class APCreateHandler(BaseHandler):   # 创建约拍
                 self.db.merge(new_app)
                 try:
                     self.db.commit()
+
                     ap_imgs_json = json.loads(ap_imgs)
                     imghandler = ImageHandler()
                     if ap_imgs_json:

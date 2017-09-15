@@ -1,6 +1,7 @@
 # coding=utf-8
 
 '''
+活动活动活动！！！！！
 @author   兰威
 @type     用户订单
 '''
@@ -12,9 +13,12 @@ from BaseHandler import BaseHandler
 from Database.tables import ActivityEntry, Activity, AppointEntry, Appointment, AppointmentInfo, ActivityImage
 from Userinfo import Ufuncs
 
+
 class UserIndent(BaseHandler):
-    retjson ={'code':'', 'contents':''}
+    retjson ={'code': '', 'contents': ''}
+
     def post(self):
+
         ret_contents = {}
         ret_activity = []
         ret_e_appointment=[]
@@ -27,7 +31,7 @@ class UserIndent(BaseHandler):
         ufuncs = Ufuncs.Ufuncs()
         if ufuncs.judge_user_valid(u_id, auth_key):
             if type == '10901':  # 查看我的已报名的约拍活动
-                ret_activity =self.get_activity(u_id,0)
+                ret_activity = self.get_activity(u_id, 0)
                 ret_contents['activity'] = ret_activity
                 ret_e_appointment =self.get_e_appointment(u_id,0)
                 ret_contents['entryappointment'] = ret_e_appointment
@@ -78,8 +82,8 @@ class UserIndent(BaseHandler):
                             else:  # 用户报名中且未被选择，添加新的约拍项
                                 registEntry.AEchoosed = 1  # 该用户被选择
                                 try:
-                                    appointment = self.db.query(Appointment.APid, Appointment.APsponsorid, Appointment.APtype,
-                                                                Appointment.APstatus).\
+                                    appointment = self.db.query(Appointment.APid, Appointment.APsponsorid,\
+                                                                Appointment.APtype, Appointment.APstatus).\
                                         filter(Appointment.APid == registEntry.AEapid).one()
                                     if appointment.APsponsorid == int(u_id):  # 该操作用户是发起者
                                         mid=pid=0
@@ -184,25 +188,21 @@ class UserIndent(BaseHandler):
                     print e
                     self.retjson['code'] = '10983'
                     self.retjson['contents'] = '未查询到该约拍'
-
-
-
-
-        else :
+        else:
             self.retjson['code'] = '10391'
             self.retjson['contents'] = '用户授权码不正确'
 
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))
 
-    def get_activity(self,u_id,number):  #按照活动的状态和用户ID查看活动详情
+    def get_activity(self, u_id, number):  # 按照活动的状态和用户ID查看活动详情
         ret_activity=[]
-        ac_enteys = self.db.query(ActivityEntry).filter(ActivityEntry.ACEregisterid == u_id,
-                                                        ActivityEntry.ACEregisttvilid == True).all()
+        ac_entries = self.db.query(ActivityEntry).filter(ActivityEntry.ACEregisterid == u_id,
+                                                         ActivityEntry.ACEregisttvilid == 1).all()
         if number == 2:
-            for ac_entey in ac_enteys:
-               ac_id = ac_entey.ACEacid
+            for ac_entry in ac_entries:
+               ac_id = ac_entry.ACEacid
                ac_info = self.db.query(Activity).filter(Activity.ACid == ac_id,
-                                                     Activity.ACstatus >= number,Activity.ACvalid == 1).all()
+                                                     Activity.ACstatus >= number, Activity.ACvalid == 1).all()
                url = self.db.query(ActivityImage).filter(ActivityImage.ACIacid == ac_id).limit(1).all()
                if ac_info:
                    if url :
@@ -215,8 +215,8 @@ class UserIndent(BaseHandler):
                 if url:
                     ret_activity.append(ACmodelHandler.ac_Model_simply(ac_mentry, url[0].ACIurl))
         else:
-            for ac_entey in ac_enteys:
-                ac_id = ac_entey.ACEacid
+            for ac_entry in ac_entries:
+                ac_id = ac_entry.ACEacid
                 ac_info = self.db.query(Activity).filter(Activity.ACid == ac_id,
                                                          Activity.ACstatus == number, Activity.ACvalid == 1).all()
                 url = self.db.query(ActivityImage).filter(ActivityImage.ACIacid == ac_id).limit(1).all()

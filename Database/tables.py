@@ -440,7 +440,7 @@ class Activity(Base):  # 活动表
 
 
 class ActivityEntry(Base):  # 活动报名表
-    __tablename__ = 'Activityaentry'
+    __tablename__ = 'ActivityEntry'
 
     ACEid = Column(Integer, primary_key=True)
     ACEacid = Column(Integer, ForeignKey('Activity.ACid', onupdate='CASCADE'))  # 活动ID
