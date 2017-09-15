@@ -65,6 +65,7 @@ from Appointment.APCreate import APCreateHandler
 from Appointment.APRegist import APRegistHandler
 from Appointment.APCompanion import ApCompanionHandler
 from Appointment.APCompanionAuth import AcAuthHandler
+from Appointment.ChooseOne import ChooseOneHandler
 #from Collection.CollectionLike import CollectionLikeHandler
 
 
@@ -114,6 +115,8 @@ class Application(tornado.web.Application):
              (r"/appointment/regist", APRegistHandler),
              (r"/appointment/companion", ApCompanionHandler),
              (r"/companion/getauth", AcAuthHandler),
+             (r"/appointment/choose", ChooseOneHandler),
+
         ]
         tornado.web.Application.__init__(self, handlers)
         self.db = scoped_session(sessionmaker(bind=engine,
