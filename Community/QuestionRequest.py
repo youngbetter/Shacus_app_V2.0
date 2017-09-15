@@ -180,10 +180,12 @@ class CQrequestHandler(BaseHandler):
                              Favorite.Ftype == Const.FAVORITE_TYPE_QUESTION,
                              Favorite.Fuid == u_id)).one()
             f_flag = isFavorite.Fvalid
+
             if f_flag == True:
                 f_flag = 1
             else:
                 f_flag = 0
+
             if flag == True:
                 flag = 1
             else:
@@ -202,7 +204,7 @@ class CQrequestHandler(BaseHandler):
             CQuimurl=authkey.download_url(item.CQuimurl),       #用户头像url
             CQuname=item.CQualais,                              #用户昵称
             CQimgurl=authkey.download_urls(url),                #问题图片urls
-            CQuiscollect=flag,                                  #用户是否收藏此问题
-            CQuisfavorite=f_flag,                               #用户是否点赞此问题
+            CQuiscollect=int(flag),                                  #用户是否收藏此问题
+            CQuisfavorite=int(f_flag),                               #用户是否点赞此问题
         )
         retdata.append(m_cqresponse)
