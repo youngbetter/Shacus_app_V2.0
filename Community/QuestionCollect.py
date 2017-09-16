@@ -21,7 +21,7 @@ class CQCollectHandler(BaseHandler):
         ufunc = Ufuncs()
         if ufunc.judge_user_valid(u_id, u_auth_key):  # 认证成功
             #收藏问题
-            if type == '85071':
+            if type == '85111':
                 try:
                     question = self.db.query(CommuQuestion).filter(CommuQuestion.CQuesid == cq_id).one()
                     #相应问题存在并且有效
@@ -29,12 +29,12 @@ class CQCollectHandler(BaseHandler):
                         try:
                             coll = self.db.query(CQCollect).filter(and_(CQCollect.CQColluid == u_id, CQCollect.CQCollquesid == cq_id)).one()
                             if coll.CQCollvalid == 1:
-                                self.retjson['code'] = '850718'
+                                self.retjson['code'] = '851118'
                                 self.retjson['contents'] = '曾收藏过'
                             else:
                                 coll.CQCollvalid = 1
                                 self.db.commit()
-                                self.retjson['code'] = '850720'
+                                self.retjson['code'] = '851120'
                                 self.retjson['contents'] = '重新收藏成功'
                         except Exception, e:
                             try:
@@ -45,35 +45,35 @@ class CQCollectHandler(BaseHandler):
                                 print new_cqcoll
                                 self.db.merge(new_cqcoll)
                                 self.db.commit()
-                                self.retjson['code'] = '850710'
+                                self.retjson['code'] = '851110'
                                 self.retjson['contents'] = '创建收藏成功'
                             except Exception,e:
                                 print e
-                                self.retjson['code'] = '850712'
+                                self.retjson['code'] = '851112'
                                 self.retjson['contents'] = '收藏失败'
                     else:
-                        self.retjson['code'] = '850714'
+                        self.retjson['code'] = '851114'
                         self.retjson['contents'] = '要收藏的问题不存在或已删除'
                 except Exception,e:
-                    self.retjson['code'] = '850716'
+                    self.retjson['code'] = '851116'
                     self.retjson['contents'] = '要收藏的问题不存在或已删除'
             #取消收藏
-            elif type == '85073':
+            elif type == '85113':
                 cqcoll_id = self.get_argument('collid')
                 try:
                     coll = self.db.query(CQCollect).filter(CQCollect.CQCollid == cqcoll_id).one()
                     if coll.CQCollvalid == 0:
-                        self.retjson['code'] = '850730'
+                        self.retjson['code'] = '851130'
                         self.retjson['contents'] = '曾已取消收藏'
                     else:
                         coll.CQCollvalid = 0
                         self.db.commit()
-                        self.retjson['code'] = '850732'
+                        self.retjson['code'] = '851132'
                         self.retjson['contents'] = '取消收藏成功'
                 except Exception, e:
-                    self.retjson['code'] = '850734'
+                    self.retjson['code'] = '851134'
                     self.retjson['contents'] = '取消收藏失败'
         else:
-            self.retjson['code'] = '850700'
+            self.retjson['code'] = '851100'
             self.retjson['contents'] = '用户认证失败'
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))
