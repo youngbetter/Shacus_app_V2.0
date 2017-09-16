@@ -431,8 +431,8 @@ class UserImgHandler(object):
                 UCtitle=UCsample.UCtitle,
                 UCcontent=UCsample.UCcontent,
                 UCsimpleimg=imgsimple,      # 缩略图url
-                UCpicnum=num,             # 作品集图片数
-                UserHeadimg=userpublish,  # 发布作者的头像
+                UCpicnum=num,               # 作品集图片数
+                UserHeadimg=userpublish,    # 发布作者的头像
             )
             return ret_uc
 

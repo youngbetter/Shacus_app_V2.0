@@ -18,6 +18,7 @@ from Userinfo.Usermodel import Model_daohanglan
 from Userinfo.UserImgHandler import UserImgHandler
 from Appointment.APgroupHandler import APgroupHandler
 from TRends.TrendModel import TrendModelHandler
+from Collection.CollectModel import CollModelHandler
 
 class LoginHandler(BaseHandler):
 
@@ -43,6 +44,7 @@ class LoginHandler(BaseHandler):
                     if user:   #用户存在
                         password = user.Upassword
                         if m_password == password:   # 密码正确
+                            print "True"
                             self.get_new_login_model(user)
                         else:
                             self.retjson['contents'] = u'密码错误'
@@ -139,7 +141,9 @@ class LoginHandler(BaseHandler):
         imghandler = UserImgHandler()
         user_model = Usermodel.get_user_detail_from_user(user)  # 用户模型
         tr_handler = TrendModelHandler()
-        tr_model = tr_handler.get_trendModel(user)
+        tr_model = tr_handler.get_trendModel(user.Uid)
+        coll_handler = CollModelHandler()
+        coll_model = coll_handler.get_collModel(user.Uid)
 
         try:
             my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
@@ -148,12 +152,13 @@ class LoginHandler(BaseHandler):
                                                            UserCollection.UCvalid == 1).all()
                 for item in pic:
                     retdata.append(imghandler.UC_login_model(item, item.UCuid, user.Uid))
+
             # 推荐作品集
             # 约拍类型和id
             data = dict(
                 userModel=user_model,
                 bannerList=self.banner_init(),
-                CollectionList=retdata,             # 好友作品集
+                CollectionList=coll_model,             # 好友作品集
                 RecList=[],                         # 推荐作品集
                 groupList=APgroupHandler.Group(),
                 trendList=tr_model
