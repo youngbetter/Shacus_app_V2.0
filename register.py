@@ -12,6 +12,8 @@ from Userinfo.Userctoken import get_token
 from Userinfo import Usermodel
 from Userinfo.UserImgHandler import UserImgHandler
 from Appointment.APgroupHandler import APgroupHandler
+from TRends.TrendModel import TrendModelHandler
+from Collection.CollectModel import CollModelHandler
 
 
 def generate_verification_code(len=6):
@@ -197,21 +199,28 @@ class RegisterHandler(BaseHandler):
         retdata = []
         imghandler = UserImgHandler()
         user_model = Usermodel.get_user_detail_from_user(user)  # 用户模型
+        tr_handler = TrendModelHandler()
+        tr_model = tr_handler.get_trendModel(user.Uid)
+        coll_handler = CollModelHandler()
+        coll_model = coll_handler.get_collModel(user.Uid)
+
         try:
-            my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
-            for like in my_likes:
-                pic = self.db.query(UserCollection).filter(UserCollection.UCuid == like.ULlikedid,
-                                                           UserCollection.UCvalid == 1).all()
-                for item in pic:
-                    retdata.append(imghandler.UC_login_model(item, item.UCuid, user.Uid))
+            # my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
+            # for like in my_likes:
+            #     pic = self.db.query(UserCollection).filter(UserCollection.UCuid == like.ULlikedid,
+            #                                                UserCollection.UCvalid == 1).all()
+            #     for item in pic:
+            #         retdata.append(imghandler.UC_login_model(item, item.UCuid, user.Uid))
+
             # 推荐作品集
             # 约拍类型和id
             data = dict(
                 userModel=user_model,
-                daohanglan=self.bannerinit(),
-                CollectionList=retdata,  # 好友作品集
+                bannerList=self.banner_init(),
+                CollectionList=coll_model,  # 好友作品集
                 RecList=[],  # 推荐作品集
                 groupList=APgroupHandler.Group(),
+                trendList=tr_model
             )
 
             models.append(data)
