@@ -12,7 +12,7 @@ class CollModelHandler(object):
     # 用于登录时获取，作品集模型
     def get_collModel(self, uid):
         retdata = []
-        colls = get_db().query(UserCollection).filter(and_(UserCollection.UCuid == uid,
+        colls = get_db().query(UserCollection).filter(and_(
                                              UserCollection.UCvalid == 1,
                                              UserCollection.UCiscollection == 1)) \
             .order_by(desc(UserCollection.UCcreateT)).limit(10).all()

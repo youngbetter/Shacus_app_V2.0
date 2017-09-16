@@ -109,12 +109,15 @@ class LoginHandler(BaseHandler):
         photo_list = []  # 摄影师发布的约拍
         model_list = []
         try:
+
             photo_list_all = self.db.query(Appointment).filter(Appointment.APtype == 1,
                                                                Appointment.APvalid == 1). \
                 order_by(desc(Appointment.APcreateT)).limit(6).all()
+            print 22222222222222
             model_list_all = self.db.query(Appointment).filter(Appointment.APtype == 0,
                                                                Appointment.APvalid == 1). \
                 order_by(desc(Appointment.APcreateT)).limit(6).all()
+            print 3333333333333
             from Appointment.APmodel import APmodelHandler
             ap_model_handler = APmodelHandler()  # 创建对象
 
@@ -146,12 +149,12 @@ class LoginHandler(BaseHandler):
         coll_model = coll_handler.get_collModel(user.Uid)
 
         try:
-            my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
-            for like in my_likes:
-                pic = self.db.query(UserCollection).filter(UserCollection.UCuid == like.ULlikedid,
-                                                           UserCollection.UCvalid == 1).all()
-                for item in pic:
-                    retdata.append(imghandler.UC_login_model(item, item.UCuid, user.Uid))
+            # my_likes = self.db.query(UserLike).filter(UserLike.ULlikeid == user.Uid, UserLike.ULvalid == 1).all()
+            # for like in my_likes:
+            #     pic = self.db.query(UserCollection).filter(UserCollection.UCuid == like.ULlikedid,
+            #                                                UserCollection.UCvalid == 1).all()
+            #     for item in pic:
+            #         retdata.append(imghandler.UC_login_model(item, item.UCuid, user.Uid))
 
             # 推荐作品集
             # 约拍类型和id
