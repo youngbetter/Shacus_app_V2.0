@@ -59,9 +59,10 @@ class CQCollectHandler(BaseHandler):
                     self.retjson['contents'] = '要收藏的问题不存在或已删除'
             #取消收藏
             elif type == '85113':
-                cqcoll_id = self.get_argument('collid')
                 try:
-                    coll = self.db.query(CQCollect).filter(CQCollect.CQCollid == cqcoll_id).one()
+                    coll = self.db.query(CQCollect)\
+                        .filter(and_(CQCollect.CQColluid == u_id,
+                                     CQCollect.CQCollquesid == cq_id)).one()
                     if coll.CQCollvalid == 0:
                         self.retjson['code'] = '851130'
                         self.retjson['contents'] = '曾已取消收藏'

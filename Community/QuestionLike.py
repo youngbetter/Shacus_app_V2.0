@@ -57,7 +57,7 @@ class CQlikeHandler(BaseHandler):
                         self.retjson['contents'] = '点赞成功'
                     except Exception,e:
                         self.retjson['code'] = '850712'
-                        self.retjson['contents']= '点赞新增失败'
+                        self.retjson['contents'] = '点赞新增失败'
             #取消点赞
             elif type == '85073':
                 try:
