@@ -34,6 +34,8 @@ class CQlikeHandler(BaseHandler):
                             question = self.db.query(CommuQuestion).filter(CommuQuestion.CQuesid == cq_id).one()
                             question.CQlikedN += 1
                             self.db.commit()
+                            self.retjson['code'] = '850710'
+                            self.retjson['contents'] = '点赞成功'
                         except Exception,e:
                             self.retjson['code'] = '850716'
                             self.retjson['contents'] = '点赞数据插入失败'
@@ -68,7 +70,7 @@ class CQlikeHandler(BaseHandler):
                             question = self.db.query(CommuQuestion).filter(CommuQuestion.CQuesid == cq_id).one()
                             question.CQlikedN -= 1
                             self.db.commit()
-                            self.retjson['code'] = '850736'
+                            self.retjson['code'] = '850730'
                             self.retjson['contents'] = '取消点赞成功'
                         except Exception, e:
                             self.retjson['code'] = '850732'
