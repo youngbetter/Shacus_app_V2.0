@@ -35,7 +35,7 @@ class User(Base):  # 用户表   #添加聊天专用chattoken
     Uauthkey = Column(VARCHAR(32))  # 用户授权码，用于七牛云上传下载文件
     Uchattoken = Column(VARCHAR(128), nullable=False)  # 融云的chat_token
     Uage = Column(Integer, nullable=False, default=0)
-    Ucategory = Column(Integer, nullable=False, default=0)  # 用户分类：0-普通用户，1-摄影师，2-模特，3-商家
+    Ucategory = Column(Integer, nullable=False, default=4)  # 用户分类：0-普通用户，1-摄影师，2-模特，3-商家
 
 
 class UCinfo(Base):

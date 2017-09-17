@@ -41,10 +41,12 @@ def generate_auth_key(len=32):
 
 
 class RegisterHandler(BaseHandler):
+
     print '进入register'
     retjson = {'code': '400', 'contents': 'None'}
 
     def post(self):
+
         type = self.get_argument('type', default='unsolved')
         if type == '10001':  # 验证手机号
             m_phone = self.get_argument('phone')
@@ -71,6 +73,7 @@ class RegisterHandler(BaseHandler):
                 message(code, m_phone)
 
         elif type == '10002':  # 验证验证码
+
             m_phone = self.get_argument('phone')
             code = self.get_argument('code')
             try:
@@ -89,41 +92,44 @@ class RegisterHandler(BaseHandler):
                 self.retjson['contents'] = u'该手机号码未发送验证码'
 
         elif type == '10003':  # 填写详细信息
+
             m_password = self.get_argument('password')
             m_nick_name = self.get_argument('nickName')  # 昵称
             m_phone = self.get_argument('phone')
             m_auth_key = generate_auth_key()
 
-            new_user = User(
-                Upassword=m_password,
-                Ualais=m_nick_name,
-                Uname='',
-                Ulocation='',  # 新用户注册默认level为1
-                Umailbox='',
-                Ubirthday='2000-01-01 00:00:00',
-                Utel=m_phone,
-                Uscore=0,
-                Usex=1,
-                Usign='',
-                Uauthkey=m_auth_key,
-                Uchattoken=''
-
-            )
             try:
                 same_nickname_user = self.db.query(User).filter(User.Ualais == m_nick_name).one()
                 if same_nickname_user:  # 该昵称已被使用
                     self.retjson['code'] = '10008'
                     self.retjson['contents'] = r'该昵称已被使用'
+
             except:  # 昵称没有被使用
-                self.db.merge(new_user)
+                new_user = User(
+                    Upassword=m_password,
+                    Ualais=m_nick_name,
+                    Uname='',
+                    Ulocation='',  # 新用户注册默认level为1
+                    Umailbox='',
+                    Ubirthday='2000-01-01 00:00:00',
+                    Utel=m_phone,
+                    Uscore=0,
+                    Usex=1,
+                    Usign='',
+                    Uauthkey=m_auth_key,
+                    Uchattoken=''
+
+                )
                 try:
+                    self.db.merge(new_user)
                     self.db.commit()
-                    user = self.db.query(User).filter(User.Ualais == m_nick_name, ).one()
+                    user = self.db.query(User).filter(User.Ualais == m_nick_name).one()
                     # m_time = user.UregistT
                     m_id = user.Uid
                     m_token = get_token(m_id, user.Ualais)
                     user.Uchattoken = m_token
-                    try:                    # 初始化用户图片
+
+                    try:                    # 初始化用户图片,第一步插入Image总表
                         image = Image(
                             IMvalid=True,
                             IMT=time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -133,21 +139,23 @@ class RegisterHandler(BaseHandler):
                         self.db.commit()
                         new_img = self.db.query(Image).filter(Image.IMname == m_nick_name).one()
                         imid = new_img.IMid
-                        userImage = UserImage(
+                        userImage = UserImage(        # 第二步插入userImage
                             UIuid=m_id,
                             UIimid=imid,
                             UIurl="user-default-image.jpg"
                         )
                         self.db.merge(userImage)
                         self.db.commit()
+
                     except Exception, e:
+
                         self.retjson['code'] = '100001'
                         self.retjson['contents'] = r'用户图片初始化失败'
 
                     # rank_list_handler = RanklistHandler()
                     # rank_list_handler.insert_new_rank(m_id)
 
-                    try:               # 初始化用户详细信息
+                    try:                 # 初始化用户详细信息
                         u_info = UCinfo(
                             UCuid=m_id,
                             UClikeN=0,
@@ -162,7 +170,7 @@ class RegisterHandler(BaseHandler):
                         self.db.commit()
                     except Exception, e:
                         print e
-                        self.retjson['contents'] = r'初始化用户信息时出错'  # ucinfo插入失败
+                        self.retjson['contents'] = r'初始化用户信息时出错'  #  ucinfo插入失败
                     self.get_new_login_model(user)
                     self.retjson['code'] = '10004'  # success
 
@@ -170,7 +178,7 @@ class RegisterHandler(BaseHandler):
                     print e
                     self.db.rollback()
                     self.retjson['code'] = '10009'
-                    self.retjson['contents'] = 'Some errors when commit to database, please try again :{}'.format(e)
+                    self.retjson['contents'] = '新建用户失败'
 
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))
 
@@ -193,8 +201,8 @@ class RegisterHandler(BaseHandler):
         bannertokens.append(banner_json4)
         return bannertokens
 
-
     def get_new_login_model(self, user):
+
         models = []
         retdata = []
         imghandler = UserImgHandler()
@@ -216,7 +224,7 @@ class RegisterHandler(BaseHandler):
             # 约拍类型和id
             data = dict(
                 userModel=user_model,
-                bannerList=self.banner_init(),
+                bannerList=self.bannerinit(),
                 CollectionList=coll_model,  # 好友作品集
                 RecList=[],  # 推荐作品集
                 groupList=APgroupHandler.Group(),

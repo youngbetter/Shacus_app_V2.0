@@ -23,7 +23,7 @@ class UserList(BaseHandler):
                 userid = self.db.query(User).filter(User.Uauthkey == authkey).one()  # 用户本身
                 if userid.Ucategory == 0:
                     self.retjson['code'] = '10851'
-                    self.retjson['contents'] = '请设置您的用户类型:摄影师or模特'
+                    self.retjson['contents'] = '请设置您的用户类 型:摄影师or模特'
                 else:
                     imghandler = UserImgHandler()
                     #reclist = imghandler.reclist(userid.Uid)   # 朋友的朋友列表(不包括自己)
