@@ -2,7 +2,7 @@
 # 摄影师和模特的推荐列表
 import json
 
-from sqlalchemy import desc
+from sqlalchemy import desc, and_
 
 from BaseHandler import BaseHandler
 from Database.tables import User, UserCollection
@@ -28,6 +28,8 @@ class UserList(BaseHandler):
                     imghandler = UserImgHandler()
                     #reclist = imghandler.reclist(userid.Uid)   # 朋友的朋友列表(不包括自己)
                     reclist = []  # 用于测试的朋友的朋友列表
+                    #todo:增加reclist的获取
+                    
                     if reclist:
                         try:
                             UserRec = self.db.query(User).filter(User.Uid.in_(reclist)).all()
@@ -53,11 +55,15 @@ class UserList(BaseHandler):
                             self.retjson['contents'] = '获取推荐列表失败'
 
                     else:  # 如果用户没有关注(也就是没有朋友)，那么推荐最近的作品集
-                        UserRec = self.db.query(UserCollection).filter(UserCollection.UCvalid == 1).\
-                            order_by(desc(UserCollection.UCcreateT)).limit(5).all()
+                        UserRec = self.db.query(UserCollection)\
+                            .filter(and_(UserCollection.UCvalid == 1, UserCollection.UCiscollection == 1)).\
+                            order_by(desc(UserCollection.UCcreateT)).limit(10).all()
+                        user_id_exist = []
                         for item in UserRec:
-                                Users = self.db.query(User).filter(User.Uid == item.UCuid).all()
-                                retdata.append(Usermodel.rec_user_list(Users[0]))
+                            if item.UCuid not in user_id_exist:
+                                user = self.db.query(User).filter(User.Uid == item.UCuid).one()
+                                user_id_exist.append(item.UCuid)
+                                retdata.append(Usermodel.rec_user_list(user))
                         #  重复返回作品集(方便客户端测试)
                         # retdata += retdata
                         # retdata += retdata
