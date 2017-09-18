@@ -4,7 +4,7 @@
 @模块功能：请求动态
 '''
 from sqlalchemy import desc
-from Database.tables import Trend, TrendImage
+from Database.tables import Trend, TrendImage, UserLike
 from Database.models import get_db
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 
@@ -19,13 +19,23 @@ class TrendModelHandler(object):
             imgs = get_db().query(TrendImage).filter(TrendImage.TItid == trend.Tid).all()
             for img in imgs:
                 timgurl.append(img.TIimgurl)
-            self.response_one(trend, timgurl, retdata)
+            self.response_one(uid, trend, timgurl, retdata)
             print timgurl
             timgurl = []
         return retdata
 
-    def response_one(self, item, url, retdata):
+    def response_one(self, u_id, item, url, retdata):
         authkey = AuthKeyHandler()
+
+        l_flag = 0
+        try:
+            like = get_db().query(UserLike).filter(UserLike.ULlikeid == u_id,
+                                                  UserLike.ULlikedid == item.Tsponsorid,
+                                                  UserLike.ULvalid == 1).one()
+            l_flag = like.ULvalid
+        except Exception, e:
+            l_flag = 0
+
         m_trresponse = dict(
             Tid=item.Tid,                                       #动态id
             Tsponsorid=item.Tsponsorid,                         #发布者id
@@ -37,5 +47,6 @@ class TrendModelHandler(object):
             Tsponsorimg=authkey.download_url(item.Tsponsorimg), #用户头像url
             TIimgurl=authkey.download_urls(url),                #动态图片url
             Tualais=item.Tualais,                               #发布者昵称
+            Tislike=int(l_flag),  # 用户是否关注发布者
         )
         retdata.append(m_trresponse)
