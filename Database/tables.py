@@ -307,8 +307,8 @@ class UserCollection(Base):  # 用户作品集
     UCid = Column(Integer, primary_key=True, nullable=False)
     UCuid = Column(Integer, ForeignKey('User.Uid', onupdate='CASCADE'), nullable=False)
     UCcreateT = Column(DateTime(timezone=True), default=func.now())
-    UCtitle = Column(VARCHAR(32), nullable=False)   # 作品集名称
-    UCcontent = Column(VARCHAR(128),default='',nullable=True)                # 作品集描述
+    UCtitle = Column(VARCHAR(32), nullable=True, default='')   # 作品集名称
+    UCcontent = Column(VARCHAR(128), default='', nullable=True)                # 作品集描述
     UCvalid = Column(Integer, default=1)
     UCiscollection = Column(Integer, default=1)  # 1-作品集 0-个人照片
     UClikeN = Column(Integer, default=0)
