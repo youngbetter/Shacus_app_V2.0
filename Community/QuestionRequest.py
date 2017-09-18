@@ -94,11 +94,15 @@ class CQrequestHandler(BaseHandler):
                     last_collid = self.get_argument('lastid')
                     # 筛选
                     # 获取每个用户收藏的所有问题
+                    print 1
+                    last = self.db.query(CQCollect).filter(CQCollect.CQCollquesid == last_collid).one()
+                    print 2
                     colls = self.db.query(CQCollect) \
                         .filter(and_(CQCollect.CQColluid == u_id,
                                      CQCollect.CQCollvalid == 1,
-                                     CQCollect.CQCollid < last_collid))\
+                                     CQCollect.CQCollT < last.CQCollT))\
                         .order_by(desc(CQCollect.CQCollT)).limit(10).all()
+                    print 3
                     cqimgurl = []
                     for coll in colls:
                         question = self.db.query(CommuQuestion) \
@@ -173,6 +177,7 @@ class CQrequestHandler(BaseHandler):
         authkey = AuthKeyHandler()
         flag = 0
         f_flag = 0
+        coll_id = 0
         try:
             isCollect = self.db.query(CQCollect)\
                 .filter(and_(CQCollect.CQColluid == item.CQuid,
@@ -183,6 +188,14 @@ class CQrequestHandler(BaseHandler):
                              Favorite.Ftype == Const.FAVORITE_TYPE_QUESTION,
                              Favorite.Fuid == u_id)).one()
             f_flag = isFavorite.Fvalid
+            try:
+                quess_coll = self.db.query(CQCollect).filter(and_(CQCollect.CQColluid == u_id,
+                                                              CQCollect.CQCollquesid == item.CQuesid,
+                                                              CQCollect.CQCollvalid == 1)).one()
+                coll_id = quess_coll.CQCollid
+            except Exception,e:
+                coll_id = 0
+                print e
 
             if f_flag == True:
                 f_flag = 1
@@ -207,7 +220,9 @@ class CQrequestHandler(BaseHandler):
             CQuimurl=authkey.download_url(item.CQuimurl),       #用户头像url
             CQuname=item.CQualais,                              #用户昵称
             CQimgurl=authkey.download_urls(url),                #问题图片urls
-            CQuiscollect=int(flag),                                  #用户是否收藏此问题
-            CQuisfavorite=int(f_flag),                               #用户是否点赞此问题
+            CQuiscollect=int(flag),                             #用户是否收藏此问题
+            CQuisfavorite=int(f_flag),                          #用户是否点赞此问题
         )
+        if coll_id != 0:
+            m_cqresponse['CQcollid'] = coll_id
         retdata.append(m_cqresponse)
