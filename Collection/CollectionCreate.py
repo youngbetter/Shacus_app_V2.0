@@ -110,7 +110,7 @@ class CollcreateHandler(BaseHandler):
                         self.retjson['contents'] = retjson_body
                 except Exception,e:
                     self.retjson['code'] = '850852'
-                self.retjson['contents'] = '生成验证失败'
+                    self.retjson['contents'] = '生成验证失败'
             #发布个人照片，第二步
             elif type == '85086':
                 private_imgs = self.get_argument('imgs')

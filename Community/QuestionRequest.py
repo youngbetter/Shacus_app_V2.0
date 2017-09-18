@@ -71,7 +71,8 @@ class CQrequestHandler(BaseHandler):
                     #筛选
                     #获取每个用户收藏的所有问题
                     colls = self.db.query(CQCollect)\
-                        .filter(and_(CQCollect.CQColluid == u_id, CQCollect.CQCollvalid == 1)).order_by(desc(CQCollect.CQCollT)).limit(10).all()
+                        .filter(and_(CQCollect.CQColluid == u_id, CQCollect.CQCollvalid == 1))\
+                        .order_by(desc(CQCollect.CQCollT)).limit(10).all()
                     cqimgurl = []
                     for coll in colls:
                         question = self.db.query(CommuQuestion)\
@@ -94,7 +95,9 @@ class CQrequestHandler(BaseHandler):
                     # 筛选
                     # 获取每个用户收藏的所有问题
                     colls = self.db.query(CQCollect) \
-                        .filter(and_(CQCollect.CQColluid == u_id, CQCollect.CQCollvalid == 1, CQCollect.CQCollid < last_collid))\
+                        .filter(and_(CQCollect.CQColluid == u_id,
+                                     CQCollect.CQCollvalid == 1,
+                                     CQCollect.CQCollid < last_collid))\
                         .order_by(desc(CQCollect.CQCollT)).limit(10).all()
                     cqimgurl = []
                     for coll in colls:
