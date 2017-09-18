@@ -26,8 +26,8 @@ class UserList(BaseHandler):
                     self.retjson['contents'] = '请设置您的用户类 型:摄影师or模特'
                 else:
                     imghandler = UserImgHandler()
-                    #reclist = imghandler.reclist(userid.Uid)   # 朋友的朋友列表(不包括自己)
-                    reclist = []  # 用于测试的朋友的朋友列表
+                    reclist = imghandler.reclist(userid.Uid)   # 朋友的朋友列表(不包括自己)
+                    #reclist = []  # 用于测试的朋友的朋友列表
                     #todo:增加reclist的获取
                     
                     if reclist:
@@ -40,8 +40,10 @@ class UserList(BaseHandler):
                                 else:
                                     continue
                             if retdata == []:
-                                NewUserRec = self.db.query(UserCollection).filter(UserCollection.UCvalid == 1). \
-                                    order_by(desc(UserCollection.UCcreateT)).limit(5).all()
+                                NewUserRec = self.db.query(UserCollection)\
+                                    .filter(and_(UserCollection.UCvalid == 1,
+                                                 UserCollection.UCiscollection == 1))\
+                                    .order_by(desc(UserCollection.UCcreateT)).limit(10).all()
                                 for item in NewUserRec:
                                     Users = self.db.query(User).filter(User.Uid == item.UCuid).all()
                                     retdata.append(Usermodel.rec_user_list(Users[0]))
