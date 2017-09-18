@@ -94,15 +94,15 @@ class CQrequestHandler(BaseHandler):
                     last_collid = self.get_argument('lastid')
                     # 筛选
                     # 获取每个用户收藏的所有问题
-                    print 1
-                    last = self.db.query(CQCollect).filter(CQCollect.CQCollquesid == last_collid).one()
-                    print 2
+                    print last_collid
+                    last = self.db.query(CQCollect).filter(and_(CQCollect.CQColluid == u_id,
+                                                                CQCollect.CQCollquesid == last_collid,
+                                                                CQCollect.CQCollvalid == 1)).one()
                     colls = self.db.query(CQCollect) \
                         .filter(and_(CQCollect.CQColluid == u_id,
                                      CQCollect.CQCollvalid == 1,
                                      CQCollect.CQCollT < last.CQCollT))\
                         .order_by(desc(CQCollect.CQCollT)).limit(10).all()
-                    print 3
                     cqimgurl = []
                     for coll in colls:
                         question = self.db.query(CommuQuestion) \
