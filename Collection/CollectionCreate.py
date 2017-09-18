@@ -51,6 +51,8 @@ class CollcreateHandler(BaseHandler):
             elif type == '85082':
                 coll_imgs = self.get_argument('imgs')
                 coll_title = self.get_argument('title')
+                contents = self.get_argument('content')
+
                 try:
                     # query.one()/all()
                     userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
@@ -63,6 +65,7 @@ class CollcreateHandler(BaseHandler):
                             UCuimurl=uheadimg,
                             UCualais=alais,
                             UCtitle=coll_title,
+                            UCcontent=contents,
                         )
                         self.db.merge(new_coll)
                         self.db.commit()
@@ -124,6 +127,7 @@ class CollcreateHandler(BaseHandler):
                         UCuimurl=uheadimg,
                         UCualais=alais,
                         UCiscollection=0,
+                        UCtitle='',
                     )
                     self.db.merge(new_private)
                     self.db.commit()

@@ -9,7 +9,7 @@ from sqlalchemy import desc, and_
 from BaseHandler import BaseHandler
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.Ufuncs import Ufuncs
-from Database.tables import Trend, TrendImage, Favorite
+from Database.tables import Trend, TrendImage, UserLike
 from ConstVal.const import Const
 
 
@@ -72,11 +72,15 @@ class TrendrequestHandler(BaseHandler):
 
     def response_one(self, u_id, item, url, retdata):
         authkey = AuthKeyHandler()
-        isFavorite = self.db.query(Favorite) \
-            .filter(and_(Favorite.Ftypeid == item.Tid,
-                         Favorite.Ftype == Const.FAVORITE_TYPE_TREND,
-                         Favorite.Fuid == u_id)).one()
-        f_flag = isFavorite.Fvalid
+        l_flag = 0
+        try:
+            like = self.db.query(UserLike).filter(UserLike.ULlikeid == u_id,
+                                                  UserLike.ULlikedid == item.Tsponsorid,
+                                                  UserLike.ULvalid == 1).one()
+            l_flag = like.ULvalid
+        except Exception,e:
+            l_flag = 0
+
         m_trresponse = dict(
             Tid=item.Tid,                                       #动态id
             Tsponsorid=item.Tsponsorid,                         #发布者id
@@ -88,6 +92,6 @@ class TrendrequestHandler(BaseHandler):
             Tsponsorimg=authkey.download_url(item.Tsponsorimg), #用户头像url
             TIimgurl=authkey.download_urls(url),                #动态图片url
             Tualais=item.Tualais,                               #发布者昵称
-            Tisfavorite=int(f_flag),                            #用户是否点赞此动态
+            Tislike=int(l_flag),                                #用户是否关注发布者
         )
         retdata.append(m_trresponse)
