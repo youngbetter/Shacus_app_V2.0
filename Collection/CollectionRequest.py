@@ -69,7 +69,9 @@ class CollrequestHandler(BaseHandler):
             elif type == '85105':
                 try:
                     privites = self.db.query(UserCollection)\
-                        .filter(and_(UserCollection.UCuid == u_id, UserCollection.UCiscollection == 0, UserCollection.UCvalid == 1))\
+                        .filter(and_(UserCollection.UCuid == u_id,
+                                     UserCollection.UCiscollection == 0,
+                                     UserCollection.UCvalid == 1))\
                         .order_by(desc(UserCollection.UCcreateT)).limit(10).all()
                     priimgs = []
                     for privite in privites:
@@ -88,7 +90,9 @@ class CollrequestHandler(BaseHandler):
             elif type == '85107':
                 try:
                     colls = self.db.query(UserCollection)\
-                        .filter(and_(UserCollection.UCvalid == 1, UserCollection.UCiscollection == 1))\
+                        .filter(and_(UserCollection.UCuid == u_id,
+                                     UserCollection.UCvalid == 1,
+                                     UserCollection.UCiscollection == 1))\
                         .order_by(desc(UserCollection.UCcreateT)).all()
                     ucimgurl = []
                     for coll in colls:
@@ -108,7 +112,10 @@ class CollrequestHandler(BaseHandler):
                 coll_id = self.get_argument('UCid')
                 try:
                     coll = self.db.query(UserCollection) \
-                        .filter(and_(UserCollection.UCid == coll_id, UserCollection.UCvalid == 1, UserCollection.UCiscollection == 1)) \
+                        .filter(and_(UserCollection.UCuid == u_id,
+                                     UserCollection.UCid == coll_id,
+                                     UserCollection.UCvalid == 1,
+                                     UserCollection.UCiscollection == 1)) \
                         .order_by(desc(UserCollection.UCcreateT)).one()
                     ucimgurl = []
                     imgs = self.db.query(UserCollectionimg).filter(UserCollectionimg.UCIuser == coll.UCid).all()
