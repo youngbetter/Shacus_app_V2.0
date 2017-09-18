@@ -102,8 +102,8 @@ class Application(tornado.web.Application):
              (r"/community/commentQuestion", CQCmtHandler),         #评论问题
              (r"/community/likeQuestion", CQlikeHandler),           #给问题点赞
              (r"/community/collectQuestion", CQCollectHandler),     #收藏问题
-             (r"/collection/createCollect", CollcreateHandler),
              (r"/collection/likeCollection", CollLikeHandler),
+             (r"/collection/createCollect", CollcreateHandler),
              (r"/collection/requestCollect", CollrequestHandler),
              # added by ye
              (r"/regist", RegisterHandler),
