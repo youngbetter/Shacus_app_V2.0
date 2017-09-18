@@ -47,6 +47,6 @@ class TrendModelHandler(object):
             Tsponsorimg=authkey.download_url(item.Tsponsorimg), #用户头像url
             TIimgurl=authkey.download_urls(url),                #动态图片url
             Tualais=item.Tualais,                               #发布者昵称
-            Tislike=int(l_flag),  # 用户是否关注发布者
+            Tislike=int(l_flag),                                # 用户是否关注发布者
         )
         retdata.append(m_trresponse)
