@@ -100,6 +100,7 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
             self.no_result_found(e)
 
     def get_my_appointment(self, u_id, number):
+        numble = number - 1                # 1请求报名中，2请求进行中，3请求已完成
         ap_my_entrys = []
         retdata =[]
         try:
@@ -210,11 +211,11 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
                     self.no_result_found(e)
 
             elif request_type == '10240':  # 请求自己发布的所有约拍
-                group = int (self.get_argument('group'))
-                if group == 0:
+                group = int(self.get_argument('group'))
+                if group == 0:                               # 获取自己发布的所有约拍
                     self.ap_ask_user(u_id, retdata)
                 else:
-                    self.get_my_appointment(u_id,group)
+                    self.get_my_appointment(u_id, group)
 
             elif request_type == '10241':  # 请求指定用户参与的所有约拍
                 find_u_id = self.get_argument('finduid')

@@ -29,13 +29,13 @@ class UserIndent(BaseHandler):
         u_id = self.get_argument('uid')
         auth_key = self.get_argument('authkey')
         ufuncs = Ufuncs.Ufuncs()
+
         if ufuncs.judge_user_valid(u_id, auth_key):
-            if type == '10901':  # 查看我的已报名的约拍活动
-                ret_activity = self.get_activity(u_id, 0)
-                ret_contents['activity'] = ret_activity
-                ret_e_appointment =self.get_e_appointment(u_id,0)
+
+            if type == '10901':      # 查看我的已报名的约拍
+                ret_e_appointment = self.get_e_appointment(u_id, 0)
                 ret_contents['entryappointment'] = ret_e_appointment
-                ret_my_appointment = self.get_my_appointment(u_id,0)
+                ret_my_appointment = self.get_my_appointment(u_id, 0)
                 ret_contents['myappointment'] = ret_my_appointment
                 self.retjson['code'] = '10392'
                 self.retjson['contents'] =ret_contents
@@ -69,70 +69,6 @@ class UserIndent(BaseHandler):
                 self.retjson['code'] = '10395'
                 self.retjson['contents'] = ret_contents
 
-            elif type == '10904':  # 选择约拍对象
-                apid = self.get_argument('apid')
-                chooseuid = self.get_argument('chooseduid')
-                try:
-                    registEntry = self.db.query(AppointEntry).\
-                        filter(AppointEntry.AEregisterID == chooseuid, AppointEntry.AEapid == apid).one()  # 查找报名项
-                    if registEntry:
-                        if registEntry.AEvalid == 1:  # 用户未取消报名
-                            if registEntry.AEchoosed:
-                                self.retjson['contents'] = u'之前已选择过该用户！'
-                            else:  # 用户报名中且未被选择，添加新的约拍项
-                                registEntry.AEchoosed = 1  # 该用户被选择
-                                try:
-                                    appointment = self.db.query(Appointment.APid, Appointment.APsponsorid,\
-                                                                Appointment.APtype, Appointment.APstatus).\
-                                        filter(Appointment.APid == registEntry.AEapid).one()
-                                    if appointment.APsponsorid == int(u_id):  # 该操作用户是发起者
-                                        mid=pid=0
-                                        if appointment.APtype == 1:  # 发起者是摄影师：
-                                            mid = chooseuid
-                                            pid = u_id
-                                        elif appointment.APtype == 0:  # 发起者是模特：
-                                            mid = u_id
-                                            pid = chooseuid
-                                        print 'before change'
-                                        self.db.query(Appointment).filter(Appointment.APid == appointment.APid).\
-                                        update({"APstatus": 1}, synchronize_session='evaluate') # 将该约拍项移到进行中
-                                        print 'after change'
-                                        newappinfo = AppointmentInfo(
-                                            AImid=mid,
-                                            AIpid=pid,
-                                            AIappoid=apid
-                                        )
-                                        try:
-                                            self.db.merge(newappinfo)
-                                            self.db.commit()
-                                            self.retjson['code'] = '10920'
-                                            self.retjson['contents'] = u"选择约拍对象成功"
-                                        except Exception, e:
-                                            print e
-                                            self.retjson['code'] = '10925'
-                                            self.retjson['contents'] = u"数据库插入错误"
-                                    else:
-                                        self.retjson['code'] = '10921'
-                                        self.retjson['contents'] = u"该用户没有选择权限！"
-                                except Exception, e:
-                                    print e
-                                    self.retjson['code'] = '10924'
-                                    self.retjson['contents'] = u'该约拍不存在或已过期'
-                        else:
-                            self.retjson['code'] = '10923'
-                            self.retjson['contents'] = u'用户已取消报名！'
-                except Exception,e:
-                    print e
-                    self.retjson['contents'] = u'选择用户未报名该约拍'
-
-
-            elif type == '10906': #结束活动
-                ac_id = self.get_argument("acid")
-                self.finish_avtivity(u_id, ac_id)
-
-            elif type == '10907': #结束活动报名
-                ac_id = self.get_argument('acid')
-                self.finnish_activity_register(u_id,ac_id)
             elif type == '10905':  # 将约拍移动到已完成
                 ap_id = self.get_argument('apid')
                 try:
@@ -194,56 +130,16 @@ class UserIndent(BaseHandler):
 
         self.write(json.dumps(self.retjson, ensure_ascii=False, indent=2))
 
-    def get_activity(self, u_id, number):  # 按照活动的状态和用户ID查看活动详情
-        ret_activity=[]
-        ac_entries = self.db.query(ActivityEntry).filter(ActivityEntry.ACEregisterid == u_id,
-                                                         ActivityEntry.ACEregisttvilid == 1).all()
-        if number == 2:
-            for ac_entry in ac_entries:
-               ac_id = ac_entry.ACEacid
-               ac_info = self.db.query(Activity).filter(Activity.ACid == ac_id,
-                                                     Activity.ACstatus >= number, Activity.ACvalid == 1).all()
-               url = self.db.query(ActivityImage).filter(ActivityImage.ACIacid == ac_id).limit(1).all()
-               if ac_info:
-                   if url :
-                    ret_activity.append(ACmodelHandler.ac_Model_simply(ac_info[0],url[0].ACIurl))
-            ac_mentrys = self.db.query(Activity).filter(Activity.ACsponsorid == u_id,Activity.ACvalid == 1,
-                                                        Activity.ACstatus >= number).all()
-            for ac_mentry in ac_mentrys:
-                ac_id = ac_mentry.ACid
-                url = self.db.query(ActivityImage).filter(ActivityImage.ACIacid == ac_id).limit(1).all()
-                if url:
-                    ret_activity.append(ACmodelHandler.ac_Model_simply(ac_mentry, url[0].ACIurl))
-        else:
-            for ac_entry in ac_entries:
-                ac_id = ac_entry.ACEacid
-                ac_info = self.db.query(Activity).filter(Activity.ACid == ac_id,
-                                                         Activity.ACstatus == number, Activity.ACvalid == 1).all()
-                url = self.db.query(ActivityImage).filter(ActivityImage.ACIacid == ac_id).limit(1).all()
-                if ac_info:
-                    if url:
-                        ret_activity.append(ACmodelHandler.ac_Model_simply(ac_info[0], url[0].ACIurl))
-            ac_mentrys = self.db.query(Activity).filter(Activity.ACsponsorid == u_id, Activity.ACvalid == 1,
-                                                        Activity.ACstatus == number).all()
-            for ac_mentry in ac_mentrys:
-                ac_id = ac_mentry.ACid
-                url = self.db.query(ActivityImage).filter(ActivityImage.ACIacid == ac_id).limit(1).all()
-                if url:
-                    ret_activity.append(ACmodelHandler.ac_Model_simply(ac_mentry, url[0].ACIurl))
-        return ret_activity
-
-
-    def get_e_appointment(self,u_id,number):
+    def get_e_appointment(self, u_id, number):
         ret_e_appointment = []
         ap_e_info = []
         if number == 0:
            ap_e_entrys = self.db.query(AppointEntry).filter(AppointEntry.AEregisterID == u_id,
-                                                         AppointEntry.AEvalid == True).all()
-        else :
-
+                                                         AppointEntry.AEvalid == 1).all()
+        if number == 1:
             ap_e_entrys = self.db.query(AppointEntry).filter(AppointEntry.AEregisterID == u_id,
-                                                                 AppointEntry.AEvalid == True,
-                                                                 AppointEntry.AEchoosed ==True).all()
+                                                                 AppointEntry.AEvalid == 1,
+                                                                 AppointEntry.AEchoosed == 1).all()
         if number == 2:
             for ap_e_entry in ap_e_entrys:
                 ap_id = ap_e_entry.AEapid
@@ -265,21 +161,15 @@ class UserIndent(BaseHandler):
 
         return ret_e_appointment
 
-    def get_my_appointment(self,u_id,number):
+    def get_my_appointment(self, u_id, number):
         ap_my_entrys = []
         ret_my_appointment =[]
-        if number == 2:
-            try:
-                ap_my_entrys = self.db.query(Appointment).filter(Appointment.APsponsorid == u_id,Appointment.APstatus >= number,Appointment.APstatus <= number+1).all()
-            except Exception,e:
-                print e
-            ret_my_appointment = APmodelHandler.ap_Model_simply(ap_my_entrys, ret_my_appointment,u_id)
-        else:
-            try:
-                ap_my_entrys = self.db.query(Appointment).filter(Appointment.APsponsorid == u_id,Appointment.APstatus == number).all()
-            except Exception,e:
-                print e
-            ret_my_appointment = APmodelHandler.ap_Model_simply(ap_my_entrys, ret_my_appointment,u_id)
+        try:
+            ap_my_entrys = self.db.query(Appointment).filter(Appointment.APsponsorid == u_id, Appointment.APvalid == 1,
+                                                             Appointment.APstatus == number).all()
+        except Exception, e:
+            print e
+        ret_my_appointment = APmodelHandler.ap_Model_simply(ap_my_entrys, ret_my_appointment,u_id)
         return ret_my_appointment
 
     def finnish_activity_register(self,u_id,ac_id):     #结束活动报名
