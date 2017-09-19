@@ -224,6 +224,8 @@ class AppointmentInfo(Base):
     AIpscore = Column(Float, default=0)  # 摄影师评分
     AImcomment = Column(VARCHAR(128))  # 模特评论
     AIpcomment = Column(VARCHAR(128))  # 摄影师评论
+    AImfinish = Column(Boolean, default=0)  # 模特确认完成约拍
+    AIpfinish = Column(Boolean, default=0)   # 摄影师确认完成约拍
 
 
 # 约拍报名项
