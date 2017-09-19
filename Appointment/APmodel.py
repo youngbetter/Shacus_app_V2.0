@@ -85,6 +85,7 @@ class APmodelHandler(object):
                 APcontent=appointment.APcontent,
                 APgroup=appointment.APgroup,
                 sponsorid=int(user_id),
+                APstatus=appointment.APstatus
                 )
         return ret_ap
 

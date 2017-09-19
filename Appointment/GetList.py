@@ -91,15 +91,41 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
         try:
             appointments1 = self.db.query(Appointment).filter(Appointment.APsponsorid == uid,\
                                                               Appointment.APvalid == 1).all()  # 用户自己发起的
-            appointentries = self.db.query(AppointEntry).filter(AppointEntry.AEregisterID == uid,\
-                                                               AppointEntry.AEvalid == 1).all()  # 用户报名的
 
             APmodelHandler.ap_Model_simply(appointments1, retdata)
-            APmodelHandler.ap_Model_simply(self.get_ap_Model_by_aeids(appointentries), retdata)
             self.retjson['code'] = '10256'
             self.retjson['contents'] = retdata
         except Exception, e:
             print e
+            self.no_result_found(e)
+
+    def get_my_appointment(self, u_id, number):
+        ap_my_entrys = []
+        retdata =[]
+        try:
+            ap_my_entrys = self.db.query(Appointment).filter(Appointment.APsponsorid == u_id, Appointment.APvalid == 1,
+                                                             Appointment.APstatus == number).all()  # 用户发布的
+            appointentries = self.db.query(AppointEntry).filter(AppointEntry.AEregisterID == u_id, \
+                                                                AppointEntry.AEvalid == 1).all()  # 用户报名的
+            print 1
+            regist_aps = []
+
+            for ap in appointentries:
+                id = ap.AEapid
+                try:
+                    appoint = self.db.query(Appointment).filter(Appointment.APid == id, Appointment.APvalid == 1,
+                                                            Appointment.APstatus == number).one()
+                    regist_aps.append(appoint)
+                except:
+                    print 'invalid'
+
+            APmodelHandler.ap_Model_simply(ap_my_entrys, retdata)
+            APmodelHandler.ap_Model_simply(regist_aps, retdata)
+
+            self.retjson['code'] = '10256'
+            self.retjson['contents'] = retdata
+
+        except Exception, e:
             self.no_result_found(e)
 
     def refresh_group_list(self, type, offset_apid, u_id, group):
@@ -183,8 +209,12 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
                 except Exception, e:
                     self.no_result_found(e)
 
-            elif request_type == '10240':  # 请求自己参与（包括发布）的所有约拍
-                self.ap_ask_user(u_id, retdata)
+            elif request_type == '10240':  # 请求自己发布的所有约拍
+                group = int (self.get_argument('group'))
+                if group == 0:
+                    self.ap_ask_user(u_id, retdata)
+                else:
+                    self.get_my_appointment(u_id,group)
 
             elif request_type == '10241':  # 请求指定用户参与的所有约拍
                 find_u_id = self.get_argument('finduid')
