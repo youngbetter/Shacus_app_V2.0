@@ -100,12 +100,12 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
             self.no_result_found(e)
 
     def get_my_appointment(self, u_id, number):
-        numble = number - 1                # 1请求报名中，2请求进行中，3请求已完成
+        num = number - 1                # 1请求报名中，2请求进行中，3请求已完成
         ap_my_entrys = []
         retdata =[]
         try:
             ap_my_entrys = self.db.query(Appointment).filter(Appointment.APsponsorid == u_id, Appointment.APvalid == 1,
-                                                             Appointment.APstatus == number).all()  # 用户发布的
+                                                             Appointment.APstatus == num).all()  # 用户发布的
             appointentries = self.db.query(AppointEntry).filter(AppointEntry.AEregisterID == u_id, \
                                                                 AppointEntry.AEvalid == 1).all()  # 用户报名的
             print 1
@@ -115,7 +115,7 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
                 id = ap.AEapid
                 try:
                     appoint = self.db.query(Appointment).filter(Appointment.APid == id, Appointment.APvalid == 1,
-                                                            Appointment.APstatus == number).one()
+                                                            Appointment.APstatus == num).one()
                     regist_aps.append(appoint)
                 except:
                     print 'invalid'
@@ -244,7 +244,7 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
                             self.retjson['contents'] = registers
                         except Exception, e:
                             print e
-                            self.retjson['code'] = '10257'
+                            self.retjson['code'] = '10258'
                             self.retjson['contents'] = u'读写错误'
 
                 except Exception, e:
