@@ -244,13 +244,13 @@ class GetListHandler(BaseHandler):  # 请求约拍列表
                             self.retjson['contents'] = registers
                         except Exception, e:
                             print e
-                            self.retjson['code'] = '10258'
-                            self.retjson['contents'] = u'读写错误'
+                            self.retjson['code'] = '10264'
+                            self.retjson['contents'] = u'未查询到报名人'
 
                 except Exception, e:
                     print e
-                    self.retjson['code'] = '10264'
-                    self.retjson['contents'] = u'未查询到报名人'
+                    self.retjson['code'] = '10258'
+                    self.retjson['contents'] = u'未查询该约拍'
 
         else:
             self.retjson['contents'] = '授权码不存在或已过期'
