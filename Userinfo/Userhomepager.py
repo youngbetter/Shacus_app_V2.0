@@ -46,6 +46,11 @@ class Userhomepager(BaseHandler):
                     ret_json_contents['follow'] =True
                 else:
                     ret_json_contents['follow'] = False
+
+                appointments1 = self.db.query(Appointment).filter(Appointment.APsponsorid == u_id, \
+                                                                  Appointment.APvalid == 1).all()  # 用户自己发起的
+                app_num = len(appointments1)
+                ret_json_contents['appnum'] = app_num
                 # # 筛选有效的约拍信息
                 # u_appointment_infos = self.db.query(AppointEntry).filter(AppointEntry.AEregisterID == u_other_id,
                 #                                                          AppointEntry.AEvalid ==1).all()
