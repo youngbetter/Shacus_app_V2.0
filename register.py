@@ -77,19 +77,25 @@ class RegisterHandler(BaseHandler):
             m_phone = self.get_argument('phone')
             code = self.get_argument('code')
             try:
-                item = self.db.query(Verification).filter(Verification.Vphone == m_phone).one()
-                # exist = self.db.query(Verification).filter(Verification.Vphone == m_phone).one()
-                # delta = datetime.datetime.now() - exist.VT
-                if item.Vcode == code:
-                    # if delta>datetime.timedelta(minutes=10):
-                    self.retjson['code'] = '10004'
-                    self.retjson['contents'] = u'验证码验证成功'
-                else:
-                    self.retjson['code'] = '10006'
-                    self.retjson['contents'] = u'验证码验证失败'
+                user = self.db.query(User).filter(User.Utel == m_phone).one()
+                if user:
+                    self.retjson['contents'] = u"该手机号已经被注册，请更换手机号或直接登录"
+                    self.retjson['code'] = "10005"
             except:
-                self.retjson['code'] = '10007'
-                self.retjson['contents'] = u'该手机号码未发送验证码'
+                try:
+                    item = self.db.query(Verification).filter(Verification.Vphone == m_phone).one()
+                    # exist = self.db.query(Verification).filter(Verification.Vphone == m_phone).one()
+                    # delta = datetime.datetime.now() - exist.VT
+                    if item.Vcode == code:
+                        # if delta>datetime.timedelta(minutes=10):
+                        self.retjson['code'] = '10004'
+                        self.retjson['contents'] = u'验证码验证成功'
+                    else:
+                        self.retjson['code'] = '10006'
+                        self.retjson['contents'] = u'验证码验证失败'
+                except:
+                    self.retjson['code'] = '10007'
+                    self.retjson['contents'] = u'该手机号码未发送验证码'
 
         elif type == '10003':  # 填写详细信息
 
