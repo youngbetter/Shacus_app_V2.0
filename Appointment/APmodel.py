@@ -1,7 +1,7 @@
 # coding=utf-8
 """
 返回不同格式的约拍模型
-@author：黄鑫晨
+
 @attention: Model为模型，model为模特
 """
 import time

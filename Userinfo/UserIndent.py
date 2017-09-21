@@ -2,7 +2,6 @@
 
 '''
 活动活动活动！！！！！
-@author   兰威
 @type     用户订单
 '''
 import json

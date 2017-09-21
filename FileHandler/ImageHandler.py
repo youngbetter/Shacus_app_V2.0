@@ -6,11 +6,6 @@ from Database.tables import UserImage, Image, AppointmentImage, \
     ActivityImage, CompanionImg, WApCompanionImage,CommuQuesImg,\
     TrendImage, UserCollectionimg
 
-'''
- 创建者：兰威 黄鑫晨
- 创建时间：2016-08-30 18:05
-'''
-
 
 class ImageHandler(object):
     # def __init__(self):

@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
-'''
- 作用：处理七牛云上传凭证获取
- 创建者：兰威
- 创建时间：2016-08-30 18:05
-'''
+
 import json
 import urllib2
 

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
-@author:兰威
-'''
+
 import sys
 sys.path.append("..")
 import base64

@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 '''
-@author 兰威
 @type 发送短信验证码
 '''
 

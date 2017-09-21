@@ -1,6 +1,5 @@
 # coding=utf-8
 '''
-@author 兰威
 用于查看用户个人主页
 '''
 import json

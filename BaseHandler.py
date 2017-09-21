@@ -5,10 +5,6 @@ import tornado.web
 from Database import models
 from Database.models import redis_engine
 
-'''
-@author: 黄鑫晨
-'''
-
 class BaseHandler(tornado.web.RequestHandler):
 
     @property  # python装饰器把一个方法变成属性调用

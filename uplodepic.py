@@ -1,7 +1,7 @@
 # -*-coding: utf-8 -*-
 import base64
 
-__author__='兰威'
+
 import hashlib
 import io
 import  json

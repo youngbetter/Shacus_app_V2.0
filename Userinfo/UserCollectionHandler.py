@@ -4,7 +4,7 @@ import json
 import threading
 from BaseHandler import BaseHandler
 from Database.models import get_db
-from Database.tables import User, UserHomepageimg, UserCollection,UCcomment
+from Database.tables import User, UserHomepageimg, UserCollection,UCcomment,UClike
 from FileHandler.AuthkeyHandler import AuthKeyHandler
 from Userinfo.UserImgHandler import UserImgHandler
 

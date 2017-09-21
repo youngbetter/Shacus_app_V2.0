@@ -1,7 +1,4 @@
 # -*-coding: utf-8 -*-
-'''
-@author: 兰威
-'''
 
 
 from BaseHandler import BaseHandler

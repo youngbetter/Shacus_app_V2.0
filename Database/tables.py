@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-'''
-@author: 黄鑫晨 兰威 王佳镭
-'''
 
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime, Boolean
 from sqlalchemy.types import CHAR, Integer, VARCHAR, Boolean, Float, Text

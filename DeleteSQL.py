@@ -1,7 +1,5 @@
 # -*- coding:utf-8 -*-
-'''
-@author: 兰威
-'''
+
 from Database.models import get_db
 from Database.tables import UserLike, ActivityLike, ActivityEntry, Activity, Verification, UCinfo, ActivityImage, \
     AppointmentInfo, AppointEntry, AppointLike, Appointment, AppointmentImage, User, RankScore,  \

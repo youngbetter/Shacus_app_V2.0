@@ -13,7 +13,7 @@ class Sysmessage(BaseHandler):
 
     retjson = {'code': '', 'contents': u'未处理 '}
 
-    #向用户发送一条信息，同时弹出一个小灰条
+    # 向用户发送一条信息，同时弹出一个小灰条
     def post(self):
         userid = self.get_argument('userid')
         u_auth_key = self.get_argument('authkey')

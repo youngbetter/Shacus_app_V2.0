@@ -1,8 +1,6 @@
 
 # coding=utf-8
-'''
-@author: 黄鑫晨
-'''
+
 from  BaseHandler import BaseHandler
 def commit(self,retjson):
     try:

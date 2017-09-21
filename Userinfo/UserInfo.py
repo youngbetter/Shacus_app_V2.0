@@ -1,6 +1,5 @@
 # coding=utf-8
 '''
-@author 兰威
 @type 用于获取用户基本信息
 '''
 import json

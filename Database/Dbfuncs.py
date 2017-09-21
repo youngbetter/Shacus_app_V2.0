@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
-@author: 黄鑫晨
-'''
+
 class Dbfuncs(object):
 
     @staticmethod

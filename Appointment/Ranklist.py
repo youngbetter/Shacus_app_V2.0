@@ -1,8 +1,5 @@
 # coding=utf-8
-'''
-@author:黄鑫晨
-@create_time:2016-09-09
-'''
+
 import json
 from Database.models import get_db
 from sqlalchemy import desc

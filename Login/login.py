@@ -1,7 +1,5 @@
 # coding=utf-8
-'''
-@author：hxc, covered by yh,yxc
-'''
+
 import json
 
 import tornado
