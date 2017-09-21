@@ -23,15 +23,15 @@ class CQCmtHandler(BaseHandler):
             if type == '85061':
                 cq_content = self.get_argument('content')
                 try:
-                    print "1"
                     question = self.db.query(CommuQuestion).filter(CommuQuestion.CQuesid == cq_id).one()
-                    print question.CQuesid
-                    #相应问题存在并且有效
-                    if question.CQvalid == True:
+                    # 相应问题存在并且有效
+                    if question.CQvalid == 1:
                         try:
-                            userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).one()
-                            uheadimg = userImg.UIurl
+                            userImg = self.db.query(UserImage).filter(UserImage.UIuid == u_id).all()
+                            print '1111'
+                            uheadimg = userImg[-1].UIurl
                             user = self.db.query(User).filter(User.Uid == u_id).one()
+                            print '222'
                             alais = user.Ualais
                             new_CQcmt = CQcomment(
                                 CQcmtuid=u_id,
@@ -40,13 +40,13 @@ class CQCmtHandler(BaseHandler):
                                 CQcmtuimurl=uheadimg,
                                 CQcmtualais=alais,
                             )
-                            print new_CQcmt
+                            print "hello", new_CQcmt
                             question.CQcommentN += 1
                             self.db.merge(new_CQcmt)
                             self.db.commit()
                             self.retjson['code'] = '850610'
                             self.retjson['contents'] = '评论发表成功'
-                        except Exception,e:
+                        except Exception, e:
                             print e
                             self.retjson['code'] = '850612'
                             self.retjson['contents'] = '评论发表失败'
